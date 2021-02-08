@@ -83,7 +83,7 @@
 		  xhttp.open("GET", "/cinema/generator?seat="+seat, true);
 		  xhttp.send();
 		  
-		/*
+		/////
 			if(vacant){
 				count++;
 				$("#seat"+seat).html('<button  onclick="add2cart('+seat+', '+price+', false, false)" class="btn btn-sm btn-warning">'+seat+' <hr/> Price:<br/>'+price+'</button>');
@@ -97,7 +97,7 @@
 		
 	  $("#ticketsCount").html(count);
 	   $("#invoice").html(tickets);
-	   */
+	  /////
 	}
 </script>
 
