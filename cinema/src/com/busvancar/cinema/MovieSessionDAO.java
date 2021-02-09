@@ -1,23 +1,26 @@
 package com.busvancar.cinema;
 
+import java.math.RoundingMode;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MovieSessionDAO {
     private Connection jdbcConnection;
-    
-    public MovieSessionDAO() {
+	private final int ROWS = 12;
+	
+	public  MovieSessionDAO() {
     	System.out.println("New Movie Session DAO was created...");
     }
      
     protected void connect() throws SQLException {
         if (jdbcConnection == null || jdbcConnection.isClosed()) {
             try {
-                Class.forName("com.mysql.jdbc.Driver");
+                Class.forName("com.mysql.cj.jdbc.Driver");
             } catch (ClassNotFoundException e) {
                 throw new SQLException(e);
             }
@@ -182,23 +185,40 @@ public class MovieSessionDAO {
 	}
 	
 	public int getMovieSessionBasePrice(int movieSession) {
-		String sqlQuery = "SELECT * FROM session WHERE session_id = ? ";
+		String sqlQuery = "SELECT price FROM session WHERE session_id = ? ";
 		try {
 			connect();
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
-   	 	
    	 	try(PreparedStatement statement = jdbcConnection.prepareStatement(sqlQuery)){
          	statement.setInt(1, movieSession);
    	        try(ResultSet rs = statement.executeQuery()){
-	         	   if(rs.next())
-	         		   return rs.getInt("price");
+	         	   if(rs.next()) {
+	         			return rs.getInt("price");
+	         	   }
    	        }
         }catch (SQLException e) {
 			e.printStackTrace();
 		}
+   	 	
+	   	
 		return 0;
+	}
+	
+	
+	public double getPrice(int movieSessionBasePrice, int seat) {
+		DecimalFormat df = new DecimalFormat("#.##");
+		df.setRoundingMode(RoundingMode.CEILING);
+		
+		int tempSeat = seat-1;
+		double priceIncrementRate = 1;
+		while(tempSeat > ROWS ) {
+			priceIncrementRate += 0.049;
+			tempSeat -= ROWS;
+		}
+		
+		return Double.parseDouble(df.format(movieSessionBasePrice * priceIncrementRate / 100));
 	}
 
  }

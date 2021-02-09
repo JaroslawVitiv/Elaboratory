@@ -38,6 +38,7 @@ public class TicketGeneratorServlet extends HttpServlet {
     }
 
 	/**
+	 * @throws SQLException 
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void processData(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -50,8 +51,20 @@ public class TicketGeneratorServlet extends HttpServlet {
 		int movieSession = Integer.parseInt(request.getParameter("movie_session"));
 		int seat  = Integer.parseInt(request.getParameter("seat"));
 		MovieSessionDAO msDao = new MovieSessionDAO();
-
-		double price =  tDao.getPrice(msDao.getMovieSessionBasePrice(movieSession), seat);
+		MovieSession ms;
+		
+		double price = 0;
+		int coins = 0;
+		try {
+			ms = msDao.getMovieSession(movieSession);
+			coins = (int)(ms.getPrice()*100);
+			price =  msDao.getPrice(coins, seat);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 		
 		
 		HttpSession session = request.getSession();
@@ -78,7 +91,8 @@ public class TicketGeneratorServlet extends HttpServlet {
 		
 		Ticket[] tickets = tDao.geAllTickets(movieSession);
 		
-		out.print(getSeats(tickets, tDao.getPrice(msDao.getMovieSessionBasePrice(movieSession), 1)));
+		out.print(getSeats(tickets, msDao.getPrice(coins, 1)));
+		
 		
 	}
 	
@@ -96,19 +110,19 @@ public class TicketGeneratorServlet extends HttpServlet {
 				
 			if(seats[num]!=null) {
 				if(seats[num].getPurchaserId() > 0) {
-					seatsLine.append(getSeat(num, Double.parseDouble(df.format(basePrice * priceIncrementRate)), "danger", "disabled"));
+					seatsLine.append(getSeat(num, Double.parseDouble(df.format(basePrice * priceIncrementRate)), "danger ", " disabled "));
 				} else {
 					if(seats[num].getSessionToken().equals(sessionToken)) {
-						seatsLine.append(getSeat(num, Double.parseDouble(df.format(basePrice * priceIncrementRate)), "warning", ""));
+						seatsLine.append(getSeat(num, Double.parseDouble(df.format(basePrice * priceIncrementRate)), "warning ", " "));
 					} else {
-						seatsLine.append(getSeat(num, Double.parseDouble(df.format(basePrice * priceIncrementRate)), "warning", "disabled"));
+						seatsLine.append(getSeat(num, Double.parseDouble(df.format(basePrice * priceIncrementRate)), "warning ", " disabled "));
 					}
 				}
 			} else {
 					seatsLine.append(getSeat(num, Double.parseDouble(df.format(basePrice * priceIncrementRate)), "success", ""));
 			}
 			
-			if(num % ROWS  == 0) {
+			if((num+1) % ROWS  == 0) {
 				priceIncrementRate += 0.049;
 			}
 		}
@@ -117,7 +131,7 @@ public class TicketGeneratorServlet extends HttpServlet {
 	}
 	
 	private String getSeat(int seatNumber, double price,  String color, String disabled) {
-		return " <div><span id=\"seat"+(seatNumber+1)+"\" ><button onclick=\"add2cart("+(seatNumber+1)+", "+price+")\" class=\"btn btn-sm btn-"+color+"\"  "+disabled+">"+(seatNumber+1)+" <hr/> Price:<br/>"+price+"</button></span></div> ";
+		return " <div><span id=\"seat"+(seatNumber+1)+"\" ><button onclick=\"add2cart("+(seatNumber+1)+")\" class=\"btn btn-sm btn-"+color+"\"  "+disabled+" />"+(seatNumber+1)+" <hr/> Price:<br/>"+price+"</button></span></div> ";
 	}
 	
 
@@ -125,10 +139,14 @@ public class TicketGeneratorServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		processData(request, response);
+		
+			processData(request, response);
+	
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		processData(request, response);
+
+			processData(request, response);
+	
 	}
 }

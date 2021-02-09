@@ -20,6 +20,10 @@
 	  justify-content:center;
 	}
 	
+	a{
+		margin:30px;
+	}
+	
 	.grid-container > div {
 	  text-align: center;
 	  font-size: 30px;
@@ -58,10 +62,6 @@
 		float: right;
 	}
 	
-	a{
-		margin:30px;
-	}
-	
 	#cart {
 	   	 position: fixed;
 		 top:5%;
@@ -73,16 +73,15 @@
 <script>
 	var tickets = [];
 	var count = 0;
-	function add2cart(seat, price) {
+	function add2cart(seat) {
 		var xhttp = new XMLHttpRequest();
 		  xhttp.onreadystatechange = function() {
 		    if (this.readyState == 4 && this.status == 200) {
-		     document.getElementById("cinemaHall").innerHTML = this.responseText;
+		      document.getElementById("cinemaHall").innerHTML = this.responseText;
 		    }
 		  };
-		  xhttp.open("GET", "/cinema/generator?seat="+seat+"&movie_session="+<%= request.getParameter("movie_session") %>., true);
+		  xhttp.open("GET", "/cinema/generator?seat="+seat+"&movie_session="+<%= request.getParameter("movie_session") %> , true);
 		  xhttp.send();
-		  
 	}
 </script>
 

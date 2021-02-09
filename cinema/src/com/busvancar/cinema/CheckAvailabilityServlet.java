@@ -31,7 +31,7 @@ public class CheckAvailabilityServlet extends HttpServlet {
 		return basicPrice;
 	}
 	
-	private void setbasicPrice( double basicPrice) {
+	private void setbasicPrice(double basicPrice) {
 		this.basicPrice =  basicPrice;
 	}
      
@@ -89,7 +89,7 @@ public class CheckAvailabilityServlet extends HttpServlet {
 				
 				
 				Ticket[] tickets = tDao.geAllTickets(movieSession);
-				cinemaHall.append(getSeats(tickets, tDao.getPrice(msDao.getMovieSessionBasePrice(movieSession), 1)));
+				cinemaHall.append(getSeats(tickets, msDao.getPrice(msDao.getMovieSessionBasePrice(movieSession), 1)));
 			
 				basicPrice = ms.getPrice();
 			request.setAttribute("cinemaHall", cinemaHall.toString());
@@ -139,35 +139,35 @@ public class CheckAvailabilityServlet extends HttpServlet {
 		df.setRoundingMode(RoundingMode.CEILING);
 		
 		
-		seatsLine.append("<div id=\"cinemaHall\" class=\"grid-container\">");
+		seatsLine.append("<div  id=\"cinemaHall\"> <div  class=\"grid-container\">  ");
 		
 		for(int num = 0; num < seats.length; num++) {
 			
 				
 			if(seats[num]!=null) {
 				if(seats[num].getPurchaserId() > 0) {
-					seatsLine.append(getSeat(num, Double.parseDouble(df.format(basePrice * priceIncrementRate)), "danger", "disabled"));
+					seatsLine.append(getSeat(num, Double.parseDouble(df.format(basePrice * priceIncrementRate)), "danger ", " disabled "));
 				} else {
 					if(seats[num].getSessionToken().equals(sessionToken)) {
-						seatsLine.append(getSeat(num, Double.parseDouble(df.format(basePrice * priceIncrementRate)), "warning", ""));
+						seatsLine.append(getSeat(num, Double.parseDouble(df.format(basePrice * priceIncrementRate)), "warning ", " "));
 					} else {
-						seatsLine.append(getSeat(num, Double.parseDouble(df.format(basePrice * priceIncrementRate)), "warning", "disabled"));
+						seatsLine.append(getSeat(num, Double.parseDouble(df.format(basePrice * priceIncrementRate)), "warning ", " disabled "));
 					}
 				}
 			} else {
-					seatsLine.append(getSeat(num, Double.parseDouble(df.format(basePrice * priceIncrementRate)), "success", ""));
+					seatsLine.append(getSeat(num, Double.parseDouble(df.format(basePrice * priceIncrementRate)), "success ", " "));
 			}
 			
-			if(num % ROWS  == 0) {
+			if((num+1) % ROWS  == 0) {
 				priceIncrementRate += 0.049;
 			}
 		}
-		seatsLine.append("</div>");
+		seatsLine.append("</div></div>");
 		return seatsLine.toString();
 	}
 
 	private String getSeat(int seatNumber, double price,  String color, String disabled) {
-		return " <div><span id=\"seat"+(seatNumber+1)+"\" ><button onclick=\"add2cart("+(seatNumber+1)+", "+price+")\" class=\"btn btn-sm btn-"+color+"\"  "+disabled+">"+(seatNumber+1)+" <hr/> Price:<br/>"+price+"</button></span></div> ";
+		return " <div><span id=\"seat"+(seatNumber+1)+"\" ><button  onclick=\"add2cart("+(seatNumber+1)+")\" class=\"btn btn-sm btn-"+color+"\"  "+disabled+">"+(seatNumber+1)+" <hr/> Price:<br/>"+price+"</button></span></div> ";
 	}
 	
 

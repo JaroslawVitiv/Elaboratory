@@ -9,10 +9,6 @@ import javax.sql.DataSource;
      
 public class ConnectionPool {
        
-        private ConnectionPool(){
-            //private constructor
-        }
-     
         private static ConnectionPool instance = null;
        
         public static ConnectionPool getInstance(){

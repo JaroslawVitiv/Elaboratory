@@ -12,13 +12,12 @@ import java.util.List;
 
 public class TicketDAO {
 	private Connection jdbcConnection;
-	private final int ROWS = 12;
 	private final int SEATS = 96;
 	
     protected void connect() throws SQLException {
         if (jdbcConnection == null || jdbcConnection.isClosed()) {
             try {
-                Class.forName("com.mysql.jdbc.Driver");
+                Class.forName("com.mysql.cj.jdbc.Driver");
             } catch (ClassNotFoundException e) {
                 throw new SQLException(e);
             }
@@ -97,19 +96,7 @@ public class TicketDAO {
 	       return false;
 	 }
 
-	public double getPrice(int movieSessionBasePrice, int seat) {
-		DecimalFormat df = new DecimalFormat("#.##");
-		df.setRoundingMode(RoundingMode.CEILING);
-		
-		int tempSeat = seat-1;
-		double priceIncrementRate = 1;
-		while(tempSeat > ROWS) {
-			priceIncrementRate += 0.049;
-			tempSeat -= ROWS;
-		}
-		
-		return Double.parseDouble(df.format(movieSessionBasePrice * priceIncrementRate / 100));
-	}
+	
 
 	public boolean removeTicket(Ticket ticket) {
 		String sql = "DELETE FROM ticket WHERE seat = ? AND session_id = ? AND purchaser_id = ? AND session_token = ?";
@@ -188,7 +175,6 @@ public class TicketDAO {
 	        try {
 				disconnect();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 	         
