@@ -73,31 +73,16 @@
 <script>
 	var tickets = [];
 	var count = 0;
-	function add2cart(seat, price, vacant, paid) {
+	function add2cart(seat, price) {
 		var xhttp = new XMLHttpRequest();
 		  xhttp.onreadystatechange = function() {
 		    if (this.readyState == 4 && this.status == 200) {
 		     document.getElementById("cinemaHall").innerHTML = this.responseText;
 		    }
 		  };
-		  xhttp.open("GET", "/cinema/generator?seat="+seat, true);
+		  xhttp.open("GET", "/cinema/generator?seat="+seat+"&movie_session="+<%= request.getParameter("movie_session") %>., true);
 		  xhttp.send();
 		  
-		/////
-			if(vacant){
-				count++;
-				$("#seat"+seat).html('<button  onclick="add2cart('+seat+', '+price+', false, false)" class="btn btn-sm btn-warning">'+seat+' <hr/> Price:<br/>'+price+'</button>');
-				tickets.push(seat+" yes "+price+" YES");
-		 	}else{
-		 		count--;
-		 		$("#seat"+seat).html('<button  onclick="add2cart('+seat+', '+price+', true, false)" class="btn btn-sm btn-success">'+seat+' <hr/> Price:<br/>'+price+'</button>');
-		 		tickets.push(seat+" no "+price+" NO");
-		 	}
-		
-		
-	  $("#ticketsCount").html(count);
-	   $("#invoice").html(tickets);
-	  /////
 	}
 </script>
 

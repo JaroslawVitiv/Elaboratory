@@ -11,7 +11,7 @@ public class Ticket {
 	private double price;
 	private String genre;
 	private int purchaserId;
-	private String sessionKey;
+	private String sessionToken;
 	private Timestamp time; 
 	
 
@@ -94,14 +94,14 @@ public class Ticket {
 
 
 
-	public String getSessionKey() {
-		return sessionKey;
+	public String getSessionToken() {
+		return sessionToken;
 	}
 
 
 
-	public void setSessionKey(String sessionKey) {
-		this.sessionKey = sessionKey;
+	public void setSessionToken(String sessionToken) {
+		this.sessionToken = sessionToken;
 	}
 
 

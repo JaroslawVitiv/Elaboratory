@@ -180,5 +180,25 @@ public class MovieSessionDAO {
 	        disconnect();
 	        return movieSession;
 	}
+	
+	public int getMovieSessionBasePrice(int movieSession) {
+		String sqlQuery = "SELECT * FROM session WHERE session_id = ? ";
+		try {
+			connect();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+   	 	
+   	 	try(PreparedStatement statement = jdbcConnection.prepareStatement(sqlQuery)){
+         	statement.setInt(1, movieSession);
+   	        try(ResultSet rs = statement.executeQuery()){
+	         	   if(rs.next())
+	         		   return rs.getInt("price");
+   	        }
+        }catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
 
  }

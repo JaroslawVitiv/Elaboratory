@@ -7,6 +7,7 @@ import java.math.RoundingMode;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -24,6 +25,7 @@ public class CheckAvailabilityServlet extends HttpServlet {
 	private final int SEATS = 96;
 	private double basicPrice;
 	private double priceIncrementRate;
+	private String sessionToken;
 	
 	private double getBasicPrice(){
 		return basicPrice;
@@ -47,18 +49,23 @@ public class CheckAvailabilityServlet extends HttpServlet {
 	 */
 	protected void processData(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		MovieSessionDAO movieDao = new MovieSessionDAO();
+		MovieSessionDAO msDao = new MovieSessionDAO();
+		TicketDAO tDao = new TicketDAO();
 		MovieSession ms = null;
 		
 		HttpSession session = request.getSession();
+		if(session.getAttribute("session_token") == null) {
+			session.setAttribute("session_token", UUID.randomUUID().toString());
+		}
+		sessionToken = (String) session.getAttribute("session_token");
+		int movieSession = Integer.parseInt(request.getParameter("movie_session"));
 		response.setContentType("text/html");  
 		
 		
-		//List<Ticket> tickets;
 		StringBuilder cinemaHall = new StringBuilder();
 		String path;
 		try {
-				ms = movieDao.getMovieSession(Integer.parseInt(request.getParameter("movie_session")));
+				ms = msDao.getMovieSession(movieSession);
 				path = "images" + File.separator +ms.getMoviePoster();
 				
 				cinemaHall.append("<div >");
@@ -79,8 +86,10 @@ public class CheckAvailabilityServlet extends HttpServlet {
 				setbasicPrice(ms.getPrice());
 
 				cinemaHall.append("<hr/>");
-
-				cinemaHall.append(getSeats(SEATS));
+				
+				
+				Ticket[] tickets = tDao.geAllTickets(movieSession);
+				cinemaHall.append(getSeats(tickets, tDao.getPrice(msDao.getMovieSessionBasePrice(movieSession), 1)));
 			
 				basicPrice = ms.getPrice();
 			request.setAttribute("cinemaHall", cinemaHall.toString());
@@ -123,55 +132,43 @@ public class CheckAvailabilityServlet extends HttpServlet {
 
 	
 
-	private String getSeats(int seats) {
+	private String getSeats( Ticket[] seats, double basePrice) {
 		StringBuilder seatsLine = new StringBuilder();
 		double priceIncrementRate = 1;
 		DecimalFormat df = new DecimalFormat("#.##");
 		df.setRoundingMode(RoundingMode.CEILING);
 		
-		seatsLine.append("<div id=\"screen-container\">"
-							+ "<div id=\"screen\"> SCREEN  </div>"
-							+ "</div>");
-			
 		
 		seatsLine.append("<div id=\"cinemaHall\" class=\"grid-container\">");
-		int seat = 0;
-		while(seats > seat) {
+		
+		for(int num = 0; num < seats.length; num++) {
 			
 				
-			if(seat==55 || seat==77)
-				seatsLine.append(getSeat(seat, Double.parseDouble(df.format(getBasicPrice() * priceIncrementRate)), false, true));
-			else
-				seatsLine.append(getSeat(seat, Double.parseDouble(df.format(getBasicPrice() * priceIncrementRate)), true, false));
+			if(seats[num]!=null) {
+				if(seats[num].getPurchaserId() > 0) {
+					seatsLine.append(getSeat(num, Double.parseDouble(df.format(basePrice * priceIncrementRate)), "danger", "disabled"));
+				} else {
+					if(seats[num].getSessionToken().equals(sessionToken)) {
+						seatsLine.append(getSeat(num, Double.parseDouble(df.format(basePrice * priceIncrementRate)), "warning", ""));
+					} else {
+						seatsLine.append(getSeat(num, Double.parseDouble(df.format(basePrice * priceIncrementRate)), "warning", "disabled"));
+					}
+				}
+			} else {
+					seatsLine.append(getSeat(num, Double.parseDouble(df.format(basePrice * priceIncrementRate)), "success", ""));
+			}
 			
-			seat++;
-			
-			if(seat % ROWS == 0) {
+			if(num % ROWS  == 0) {
 				priceIncrementRate += 0.049;
 			}
 		}
 		seatsLine.append("</div>");
-
 		return seatsLine.toString();
 	}
 
-	private String getSeat(int seatNumber, double price,  boolean available, boolean isPaid) {
-		String color = "danger";
-		String vacant = "false";
-		String paid = "false";
-		String disabled = "";
-		if(isPaid) {
-			paid = " true ";
-			disabled = " disabled ";
-		}
-		
-		if(available) {
-			color="success";
-			vacant = "true";
-		}
-		return " <div><span id=\"seat"+(seatNumber+1)+"\" ><button onclick=\"add2cart("+(seatNumber+1)+", "+price+", "+vacant+", "+paid+")\" class=\"btn btn-sm btn-"+color+"\"  "+disabled+">"+(seatNumber+1)+" <hr/> Price:<br/>"+price+"</button></span></div> ";
+	private String getSeat(int seatNumber, double price,  String color, String disabled) {
+		return " <div><span id=\"seat"+(seatNumber+1)+"\" ><button onclick=\"add2cart("+(seatNumber+1)+", "+price+")\" class=\"btn btn-sm btn-"+color+"\"  "+disabled+">"+(seatNumber+1)+" <hr/> Price:<br/>"+price+"</button></span></div> ";
 	}
-
 	
 
 	/**
