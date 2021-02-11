@@ -51,6 +51,8 @@ public class TicketGeneratorServlet extends HttpServlet {
 		int movieSession = Integer.parseInt(request.getParameter("movie_session"));
 		int seat  = Integer.parseInt(request.getParameter("seat"));
 		
+		
+		
 		if(msDao==null) {
 			msDao = new MovieSessionDAO();
 		}
@@ -132,7 +134,7 @@ public class TicketGeneratorServlet extends HttpServlet {
 	}
 	
 	private String getSeat(int seatNumber, double price,  String color, String disabled) {
-		return " <div><span id=\"seat"+(seatNumber+1)+"\" ><button onclick=\"  add2cart("+(seatNumber+1)+"); \" class=\"btn btn-sm btn-"+color+"\"  "+disabled+" />"+(seatNumber+1)+" <hr/> Price:<br/>"+price+"</button></span></div> ";
+		return " <div><span id=\"seat"+(seatNumber+1)+"\" ><button onclick=\"add2cart("+(seatNumber+1)+");\" class=\"btn btn-sm btn-"+color+"\"  "+disabled+" />"+(seatNumber+1)+" <hr/> Price:<br/>"+price+"</button></span></div> ";
 	}
 	
 	
@@ -140,11 +142,9 @@ public class TicketGeneratorServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-			processData(request, response);
-	
-	}
+//	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	//		processData(request, response);
+//	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 

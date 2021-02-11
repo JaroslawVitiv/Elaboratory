@@ -16,6 +16,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.5.2/bootbox.min.js"></script>
 <style>
 	.grid-container {
 		
@@ -150,7 +151,21 @@
 		      document.getElementById("ticketsCount").innerHTML = "0";
 		    }
 		  };
-		  xhttp.open("GET", "/cinema/purgeAllUnpaid?session_token=${session_token}&movie_session="+<%= request.getParameter("movie_session") %> , true);
+		  xhttp.open("GET", "/cinema/purgeAllUnpaid?session_token=${session_token}" , true);
+		  xhttp.send();
+		 
+	}
+	
+	function payInvoice() {
+		var xhttp = new XMLHttpRequest();
+		  xhttp.onreadystatechange = function() {
+		    if (this.readyState == 4 && this.status == 200) {
+		    	 refreshCinemaHall();
+		      document.getElementById("invoice").innerHTML = this.responseText;
+		      document.getElementById("ticketsCount").innerHTML = "0";
+		    }
+		  };
+		  xhttp.open("GET", "/cinema/payInvoice?session_token=${session_token}" , true);
 		  xhttp.send();
 		 
 	}
@@ -239,7 +254,7 @@
       <hr/>
       </div>
       <div class="modal-footer">
-      	<button type="button" class="btn btn-primary "  data-dismiss="modal"> Pay my order</button>
+      	<button type="button" class="btn btn-primary" onclick="payInvoice();"  data-dismiss="modal"> Pay my order</button>
         <button type="button" class="btn btn-secondary" onclick="closeModal();" data-dismiss="modal">No, thanks!</button>
          <button type="button" class="btn btn-danger" onclick="purgeAllUnpaid();" data-dismiss="modal">Remove all</button>
       </div>

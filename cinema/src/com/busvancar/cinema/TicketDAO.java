@@ -13,6 +13,7 @@ import java.util.List;
 public class TicketDAO {
 	private Connection jdbcConnection;
 	private final int SEATS = 96;
+	private double floatPrice = 0;
 	
     protected void connect() throws SQLException {
         if (jdbcConnection == null || jdbcConnection.isClosed()) {
@@ -300,6 +301,90 @@ public class TicketDAO {
          
         try( PreparedStatement statement = jdbcConnection.prepareStatement(sql)){
 	        statement.setString(1, sessionToken);
+	        
+	        statement.executeUpdate();
+	        statement.close(); 
+        } catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+        try {
+			disconnect();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	public boolean setUserId2pay(User user, String sessionToken) {
+		String sql = "UPDATE ticket SET purchaser_id = ? WHERE purchaser_id = 0 AND session_token = ?";
+        
+        try {
+			connect();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+         
+        try( PreparedStatement statement = jdbcConnection.prepareStatement(sql)){
+	        statement.setInt(1, user.getId());
+	        statement.setString(2, sessionToken);
+
+	         
+	        boolean rowDeleted = statement.executeUpdate() > 0;
+	        statement.close(); 
+	        return rowDeleted;
+        } catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+        try {
+			disconnect();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+        return false;  
+	
+	}
+
+	public double getTodaysSum(User user, String sessionToken) {
+		double total = 0;
+		String sqlQuery = "SELECT SUM(price) AS total FROM ticket WHERE purchaser_id = ? AND session_token = ? ";
+		try {
+			connect();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+   	 	
+   	 	try(PreparedStatement statement = jdbcConnection.prepareStatement(sqlQuery)){
+         	statement.setInt(1, user.getId());
+         	statement.setString(2, sessionToken);
+   	        try(ResultSet rs = statement.executeQuery()){
+   	        	if(rs.next()) {
+   	        		floatPrice  = (double) rs.getInt("total");
+					total =  floatPrice/100;
+   	        	}
+   	        }
+        }catch (SQLException e) {
+			e.printStackTrace();
+		}
+   	 	
+   	   try {
+			disconnect();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+   	   
+		return total;
+	}
+
+	public void clearAllUnpaid() {
+        String sql = "DELETE FROM ticket WHERE time < DATE_SUB( NOW(), INTERVAL 15 MINUTE ) AND purchaser_id = 0 ";
+        
+        try {
+			connect();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+         
+        try( PreparedStatement statement = jdbcConnection.prepareStatement(sql)){
 	        
 	        statement.executeUpdate();
 	        statement.close(); 

@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.math.RoundingMode;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -22,12 +21,10 @@ import javax.servlet.http.HttpSession;
 public class CheckAvailabilityServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private final int ROWS = 12;
-	private double basicPrice = 0;
 	private String sessionToken;
+	private int userId = 0;
 	
      
-	
-	
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -39,10 +36,11 @@ public class CheckAvailabilityServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void processData(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+		User user = null;
 		MovieSessionDAO msDao = new MovieSessionDAO();
 		TicketDAO tDao = new TicketDAO();
 		MovieSession ms = null;
+		tDao.clearAllUnpaid();
 		
 		HttpSession session = request.getSession();
 		if(session.getAttribute("session_token") == null) {
@@ -53,6 +51,12 @@ public class CheckAvailabilityServlet extends HttpServlet {
 		int movieSession = Integer.parseInt(request.getParameter("movie_session"));
 		response.setContentType("text/html");  
 		
+		if(session.getAttribute("user")!=null) {
+			user = (User) session.getAttribute("user");
+			userId = user.getId();
+		}
+		
+		
 		
 		StringBuilder cinemaHall = new StringBuilder();
 		String path;
@@ -61,7 +65,6 @@ public class CheckAvailabilityServlet extends HttpServlet {
 				path = "images" + File.separator +ms.getMoviePoster();
 				
 				cinemaHall.append("<div>");
-
 				cinemaHall.append("<img src=\"");
 				cinemaHall.append(path);
 				cinemaHall.append("\" width=\"30%\" />");
@@ -80,7 +83,7 @@ public class CheckAvailabilityServlet extends HttpServlet {
 				Ticket[] tickets = tDao.geAllTickets(movieSession);
 				cinemaHall.append(getSeats(tickets, msDao.getPrice(msDao.getMovieSessionBasePrice(movieSession), 1)));
 			
-				basicPrice = ms.getPrice();
+				ms.getPrice();
 				request.setAttribute("cinemaHall", cinemaHall.toString());
 				
 				int ticketsBookedUnpaid = tDao.getTicketCount(sessionToken);
@@ -92,12 +95,12 @@ public class CheckAvailabilityServlet extends HttpServlet {
 				request.setAttribute("bookedUnpaidList", bookedUnpaidList);
 				
 			StringBuilder logingBoard = new StringBuilder();
-			if(session.getAttribute("firstName")==null) {
+			if(user==null) {
 				logingBoard.append(" <a class=\"btn btn-lg btn-outline-info\" href=\"signin.jsp\">Sign in</a> "
 										+ " <a class=\"btn btn-lg btn-outline-info\" href=\"login.jsp\">Log in</a> ");
 			}else {
 				logingBoard.append("Hi, ");
-				logingBoard.append(session.getAttribute("firstName"));
+				logingBoard.append(user.getFirstName());
 				logingBoard.append("! <a href=\"logout\">Log out</a>");
 				logingBoard.append(" | <a href=\"addmovie.jsp\">Add a new Movie</a>");
 			}
@@ -143,16 +146,16 @@ public class CheckAvailabilityServlet extends HttpServlet {
 				
 			if(seats[num]!=null) {
 				if(seats[num].getPurchaserId() > 0) {
-					seatsLine.append(getSeat(num, Double.parseDouble(df.format(basePrice * priceIncrementRate)), "danger ", " disabled "));
+					seatsLine.append(getSeat(num, Double.parseDouble(df.format(basePrice * priceIncrementRate)), "danger ", " disabled ", userId ));
 				} else {
 					if(seats[num].getSessionToken().equals(sessionToken)) {
-						seatsLine.append(getSeat(num, Double.parseDouble(df.format(basePrice * priceIncrementRate)), "warning ", " "));
+						seatsLine.append(getSeat(num, Double.parseDouble(df.format(basePrice * priceIncrementRate)), "warning ", " ", userId));
 					} else {
-						seatsLine.append(getSeat(num, Double.parseDouble(df.format(basePrice * priceIncrementRate)), "warning ", " disabled "));
+						seatsLine.append(getSeat(num, Double.parseDouble(df.format(basePrice * priceIncrementRate)), "warning ", " disabled ", userId));
 					}
 				}
 			} else {
-					seatsLine.append(getSeat(num, Double.parseDouble(df.format(basePrice * priceIncrementRate)), "success ", " "));
+					seatsLine.append(getSeat(num, Double.parseDouble(df.format(basePrice * priceIncrementRate)), "success ", " ", userId));
 			}
 			
 			if((num+1) % ROWS  == 0) {
@@ -164,17 +167,15 @@ public class CheckAvailabilityServlet extends HttpServlet {
 		return seatsLine.toString();
 	}
 
-	private String getSeat(int seatNumber, double price,  String color, String disabled) {
-		return " <div><span id=\"seat"+(seatNumber+1)+"\" ><button  onclick=\"  add2cart("+(seatNumber+1)+");  \" class=\"btn btn-sm btn-"+color+"\"  "+disabled+">"+(seatNumber+1)+" <hr/> Price:<br/>"+price+"</button></span></div> ";
+	private String getSeat(int seatNumber, double price,  String color, String disabled, int userId) {
+		String alert = " bootbox.alert(\'<h2>In order to book the tickets, you need to LOGIN or SIGNUP!</h2>\'); ";
+		if(userId>0) {
+			alert = " add2cart("+(seatNumber+1)+"); ";
+		}
+		return " <div><span id=\"seat"+(seatNumber+1)+"\" ><button  onclick=\""+alert+"\" class=\"btn btn-sm btn-"+color+"\"  "+disabled+">"+(seatNumber+1)+" <hr/> Price:<br/>"+price+"</button></span></div> ";
 	}
 	
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
-	}
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		processData(request, response);

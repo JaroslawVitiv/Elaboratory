@@ -28,12 +28,13 @@ public class AdminServlet extends HttpServlet {
     }
 
     protected void processData(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException  {
-
-		PrintWriter out = response.getWriter();
+    	PrintWriter out = response.getWriter();
 		HttpSession session = request.getSession();
-		boolean admin = (boolean) session.getAttribute("admin");
 		
-		if(!admin) {
+		User user  =  (User) session.getAttribute("user");
+		
+		
+		if(user.getAdmin()<1) {
 			response.sendRedirect("/cinema");
 		}
 		
@@ -84,17 +85,19 @@ public class AdminServlet extends HttpServlet {
 			request.setAttribute("schedule", moviesHtml.toString());
 			
 			StringBuilder logingBoard = new StringBuilder();
-			if(session.getAttribute("firstName")==null) {
+			if(session.getAttribute("user")==null) {
 				logingBoard.append("<a href=\"signin.jsp\">Sign in</a> | <a href=\"login.jsp\">Log in</a>");
 			}else {
+				user = (User) session.getAttribute("user");
 				logingBoard.append("Hi, ");
-				logingBoard.append(session.getAttribute("firstName"));
+				logingBoard.append(user.getFirstName());
 				logingBoard.append("! <a href=\"logout\">Log out</a>");
 				logingBoard.append(" | <a href=\"addmovie.jsp\">Add a new Movie</a>");
 			}
 			
 			request.setAttribute("logingBoard", logingBoard.toString());
 			request.getRequestDispatcher("administration.jsp").forward(request,response);
+			
 			
 		} catch (SQLException | ServletException | IOException e) {
 				e.printStackTrace();

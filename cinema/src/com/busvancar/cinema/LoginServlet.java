@@ -32,17 +32,9 @@ public class LoginServlet extends HttpServlet {
 		
 		if(user.getFirstName()!=null){
 			HttpSession session = request.getSession();
-			session.setAttribute("firstName", user.getFirstName());
-			session.setAttribute("email", user.getEmail());
-
+			session.setAttribute("user", user);
+			
 			session.setMaxInactiveInterval(60*60);
-			if(user.getAdmin()>0) {
-				session.setAttribute("admin", true);
-			}else {
-				session.setAttribute("admin", false);
-			}
-			
-			
 			response.sendRedirect(request.getContextPath());
 			
 			

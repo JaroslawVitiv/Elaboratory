@@ -13,15 +13,14 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class TickerRemoverServlet
  */
-@WebServlet("/TickerRemoverServlet")
-public class TickerRemoverServlet extends HttpServlet {
+public class TicketRemoverServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private final int SEAT_IN_ROW = 12;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public TickerRemoverServlet() {
+    public TicketRemoverServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -62,9 +61,9 @@ public class TickerRemoverServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		processData(request, response);
-	}
+//	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+//		processData(request, response);
+//	}
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		processData(request, response);
 	}

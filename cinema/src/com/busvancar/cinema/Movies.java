@@ -30,7 +30,7 @@ public class Movies extends HttpServlet {
 
     ///getServletContext().getRealPath("")+ File.separator + UPLOAD_DIRECTORY + File.separator + fileName
     private void processData(HttpServletRequest request, HttpServletResponse response) {
-			
+			User user = null;
     		response.setContentType("text/html");  
     		MovieSessionDAO movieSessDao = new MovieSessionDAO();
     		List<MovieSession> schedule;
@@ -82,16 +82,18 @@ public class Movies extends HttpServlet {
 				request.setAttribute("schedule", moviesSessionHtml.toString());
 				
 				StringBuilder logingBoard = new StringBuilder();
-				if(session.getAttribute("firstName")==null) {
+				if(session.getAttribute("user")==null) {
 					logingBoard.append("<a href=\"signin.jsp\">Sign in</a> | <a href=\"login.jsp\">Log in</a>");
 				}else {
+					user = (User) session.getAttribute("user");
 					logingBoard.append("Hi, ");
-					logingBoard.append(session.getAttribute("firstName"));
+					logingBoard.append(user.getFirstName());
 					logingBoard.append("! <a href=\"logout\">Log out</a>");
 					logingBoard.append(" | <a href=\"changePassword.jsp\">Change password</a>");
 
-					boolean adminStatus = (boolean) session.getAttribute("admin");
-					if(adminStatus) {
+					
+					/////CONSIDER REDIRECT ADMINISTRATION
+					if(user.getAdmin()>0) {
 						logingBoard.append(" | <a href=\"administration\">Cinema Manager Board</a>");
 					}
 				}
@@ -114,8 +116,8 @@ public class Movies extends HttpServlet {
 	}
 
 	
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		processData(request, response);
-	}
+//	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+//		processData(request, response);
+//	}
 
 }

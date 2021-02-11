@@ -32,7 +32,7 @@ public class ChangePasswordServlet extends HttpServlet {
 	protected void processData(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		UserDAO uDao = new UserDAO();
 		PrintWriter out = response.getWriter();
-		
+		User user = null;
 		
 		
 		String password = request.getParameter("psw");
@@ -45,17 +45,20 @@ public class ChangePasswordServlet extends HttpServlet {
 		response.setCharacterEncoding("UTF-8");
 		
 		HttpSession session = request.getSession();
-		String emailAddr = (String) session.getAttribute("email");
+		if(session.getAttribute("user")!=null) {
+			user = (User) session.getAttribute("user");
+		}
+		
 		
 		RequestDispatcher rd = getServletContext().getRequestDispatcher("/changePassword.jsp");
 		
 		
-		if(emailAddr!=null) {
+		if(user.getEmail()!=null) {
 				if(!password.equals(confirmed) || password.isBlank()) {
 					out.println("<font color=red>Паролі не співпадають. try again...</font>");
 					rd.include(request, response);
 				} else {
-					if(uDao.updatePassword(emailAddr,  password)) {
+					if(uDao.updatePassword(user.getEmail(),  password)) {
 						response.sendRedirect("passwordChangeSuccess.jsp");
 					}else {
 						out.println("<font color=red>Unfortunately, the password was not updated</font>");

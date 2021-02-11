@@ -50,9 +50,10 @@ public class AddmovieServlet extends HttpServlet {
     	MovieDAO mDao = new MovieDAO();
 		PrintWriter out = response.getWriter();
 		HttpSession session = request.getSession();
-		boolean admin = (boolean) session.getAttribute("admin");
+		User user = (User) session.getAttribute("user");
+		int admin = user.getAdmin();
 		
-		if(!admin) {
+		if(admin<1) {
 			response.sendRedirect("/cinema");
 		}
 		request.setAttribute("genreOptions", "genreOptions + ex.getMessage()");

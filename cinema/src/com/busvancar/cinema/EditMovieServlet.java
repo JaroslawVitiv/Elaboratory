@@ -38,9 +38,9 @@ public class EditMovieServlet extends HttpServlet {
     	 PrintWriter out = response.getWriter();
     	 StringBuilder sessionList = new StringBuilder(); 
     	 HttpSession session = request.getSession();
-    	 boolean admin = (boolean) session.getAttribute("admin");
+    	 User user = (User) session.getAttribute("user");
  		
- 		if(!admin) {
+ 		if(user.getAdmin()<1) {
  			response.sendRedirect("/cinema");
  		}
          

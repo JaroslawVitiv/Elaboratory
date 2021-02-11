@@ -152,12 +152,12 @@
   </servlet-mapping>
   
     <servlet>
-      <servlet-name>TickerRemoverServlet</servlet-name>
-      <servlet-class>com.busvancar.cinema.TickerRemoverServlet</servlet-class>
+      <servlet-name>TicketRemoverServlet</servlet-name>
+      <servlet-class>com.busvancar.cinema.TicketRemoverServlet</servlet-class>
    </servlet>
     
   <servlet-mapping>
-    <servlet-name>TickerRemoverServlet</servlet-name>
+    <servlet-name>TicketRemoverServlet</servlet-name>
     <url-pattern>/ticketremover</url-pattern>
   </servlet-mapping>
   
@@ -181,6 +181,19 @@
     <url-pattern>/purgeAllUnpaid</url-pattern>
   </servlet-mapping>
   
+    <servlet>
+      <servlet-name>PayInvoiceServlet</servlet-name>
+      <servlet-class>com.busvancar.cinema.PayInvoiceServlet</servlet-class>
+   </servlet>
+    
+  <servlet-mapping>
+    <servlet-name>PayInvoiceServlet</servlet-name>
+    <url-pattern>/payInvoice</url-pattern>
+  </servlet-mapping>
+  
+  
+  
+  
    <filter>
     <filter-name>CharsetFilter</filter-name>
     <filter-class>com.busvancar.cinema.CharsetFilter</filter-class>
@@ -194,14 +207,18 @@
     <filter-name>CharsetFilter</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
-
   
-  <!--
+	<error-page>
+	    <error-code>500</error-code>
+	    <location>/error.jsp</location>
+	</error-page>
+  
+ 
     <error-page>
         <exception-type>java.lang.Exception</exception-type>
         <location>/error.jsp</location>
     </error-page>
-    -->
+  
     
  <jsp-config>
     <jsp-property-group>
