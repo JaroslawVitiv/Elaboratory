@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -35,6 +36,10 @@ public class Movies extends HttpServlet {
     		List<MovieSession> schedule;
     		StringBuilder moviesSessionHtml = new StringBuilder();
     		HttpSession session = request.getSession();
+    		if(session.getAttribute("session_token") == null) {
+    			session.setAttribute("session_token", UUID.randomUUID().toString());
+    		}
+
     		String path;
     		
 				try {

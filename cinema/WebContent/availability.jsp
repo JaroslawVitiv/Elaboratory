@@ -1,6 +1,12 @@
-<%@page import="com.busvancar.cinema.Movies"%> 
+<%@page import="com.busvancar.cinema.Movies" %> 
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" %>
+
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -64,24 +70,101 @@
 	
 	#cart {
 	   	 position: fixed;
-		 top:5%;
+		 bottom:3%;
 		 right:15%;
 		 z-index: 1;
 	}
 </style>
 
 <script>
-	var tickets = [];
-	var count = 0;
 	function add2cart(seat) {
 		var xhttp = new XMLHttpRequest();
 		  xhttp.onreadystatechange = function() {
 		    if (this.readyState == 4 && this.status == 200) {
 		      document.getElementById("cinemaHall").innerHTML = this.responseText;
+		      getTicketAmount();
 		    }
 		  };
 		  xhttp.open("GET", "/cinema/generator?seat="+seat+"&movie_session="+<%= request.getParameter("movie_session") %> , true);
 		  xhttp.send();
+		 
+	}
+	
+	
+	function getTicketAmount() {
+		var xhttp = new XMLHttpRequest();
+		  xhttp.onreadystatechange = function() {
+		    if (this.readyState == 4 && this.status == 200) {
+		      document.getElementById("ticketsCount").innerHTML = this.responseText;
+		    }
+		  };
+		xhttp.open("GET", "/cinema/ticketCounter?session_token=${session_token}" , true);
+		xhttp.send();		
+	}
+	
+	function getInvoice() {
+		var xhttp = new XMLHttpRequest();
+		  xhttp.onreadystatechange = function() {
+		    if (this.readyState == 4 && this.status == 200) {
+		      document.getElementById("invoice").innerHTML = this.responseText;
+		    }
+		  };
+		xhttp.open("GET", "/cinema/invoice?session_token=${session_token}" , true);
+		xhttp.send();		
+	}
+	
+	function removeTicket(ticketNumber) {
+		var xhttp = new XMLHttpRequest();
+		  xhttp.onreadystatechange = function() {
+		    if (this.readyState == 4 && this.status == 200) {
+		       document.getElementById("invoice").innerHTML = this.responseText;
+		       getTicketAmount();
+		       refreshCinemaHall();
+		    }
+		  };
+		xhttp.open("GET", "/cinema/ticketremover?ticket_id="+ticketNumber+"&session_token=${session_token}" , true);
+		xhttp.send();		
+	}
+	
+	
+	
+	function refreshCinemaHall() {
+		var xhttp = new XMLHttpRequest();
+		  xhttp.onreadystatechange = function() {
+		    if (this.readyState == 4 && this.status == 200) {
+		      document.getElementById("cinemaHall").innerHTML = this.responseText;
+		      
+		    }
+		  };
+		  xhttp.open("GET", "/cinema/cinemahall?movie_session="+<%= request.getParameter("movie_session") %> , true);
+		  xhttp.send();
+		 
+	}
+	
+	function purgeAllUnpaid() {
+		var xhttp = new XMLHttpRequest();
+		  xhttp.onreadystatechange = function() {
+		    if (this.readyState == 4 && this.status == 200) {
+		    	 refreshCinemaHall();
+		      document.getElementById("invoice").innerHTML = "You removed all chosen tickets";
+		      document.getElementById("ticketsCount").innerHTML = "0";
+		    }
+		  };
+		  xhttp.open("GET", "/cinema/purgeAllUnpaid?session_token=${session_token}&movie_session="+<%= request.getParameter("movie_session") %> , true);
+		  xhttp.send();
+		 
+	}
+	
+	function openModal(){
+		$(document).ready(function(){
+		    $('.modal').modal('show');
+		});
+	}
+	
+	function closeModal(){
+		$(document).ready(function(){
+		    $('.modal').modal('hide');
+		});
 	}
 </script>
 
@@ -104,20 +187,18 @@
 					VitivCinema
 			  </span>
 			</a>
-		
-
-	    	
-	        <%= request.getAttribute("logingBoard") %>
+			
+		<div>${logingBoard}</div>
+	        
 	 
 			<div id="cart">
-				<a class="btn btn-lg btn-outline-danger ">
+				<button class="btn btn-lg btn-outline-danger"  data-toggle="modal" data-target="#ticketsCartModal" onclick="openModal(); getInvoice();" >
 					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart3" viewBox="0 0 16 16">
  						 <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l.84 4.479 9.144-.459L13.89 4H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
 					</svg>
-					  my cart (<span id="ticketsCount" >0</span> tickets)
-					</a>
-			</div>
-			
+					    <span id="ticketsCount" >${bookedUnpaid} </span> tickets
+					</button>
+			</div>		
 		</div>
 	</nav>
 <hr/>
@@ -129,7 +210,6 @@
 </div>
 
 
-<div id="invoice">Invoice</div>
 <div> <h2>${message}</h2></div>
 
 		<div class="container-fluid">
@@ -140,10 +220,34 @@
 </div>
 
 
+<div class="container">
+	<!-- Button trigger modal -->
 
+<!-- Modal -->
+<div class="modal fade" id="ticketsCartModalLong" tabindex="-1" role="dialog" aria-labelledby="ticketsCartModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ticketsCartModalLongTitle">My tickets</h5>
+        <button type="button" data-dismiss="modal" onclick="closeModal();" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <div id="invoice">No tickets found</div>
+      
+      <hr/>
+      </div>
+      <div class="modal-footer">
+      	<button type="button" class="btn btn-primary "  data-dismiss="modal"> Pay my order</button>
+        <button type="button" class="btn btn-secondary" onclick="closeModal();" data-dismiss="modal">No, thanks!</button>
+         <button type="button" class="btn btn-danger" onclick="purgeAllUnpaid();" data-dismiss="modal">Remove all</button>
+      </div>
+    </div>
+  </div>
+</div>
 
-
-
+</div>
 
 
 </body>

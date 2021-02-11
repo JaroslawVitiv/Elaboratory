@@ -104,7 +104,6 @@ public class TicketDAO {
 	     	try {
 				connect();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
@@ -180,4 +179,139 @@ public class TicketDAO {
 	         
 	        return listAllTickets;
 	}
+
+	public int getTicketCount(String sessionToken) {
+		int total = 0;
+		String sqlQuery = "SELECT COUNT(ticket_id) AS total FROM ticket WHERE session_token = ? AND purchaser_id = 0 ";
+		try {
+			connect();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+   	 	
+   	 	try(PreparedStatement statement = jdbcConnection.prepareStatement(sqlQuery)){
+         	statement.setString(1, sessionToken);
+   	        try(ResultSet rs = statement.executeQuery()){
+   	        	if(rs.next())
+	         	   total = rs.getInt("total");
+   	        }
+        }catch (SQLException e) {
+			e.printStackTrace();
+		}
+   	   try {
+			disconnect();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		return total;
+	}
+
+	public List<Ticket> getBookedUnpaidTickets(String sessionToken) {
+		List<Ticket> bookedUnpaidList = new ArrayList<>();
+		double floatPrice = 0;
+	     String sqlQuery = "SELECT ticket.ticket_id, ticket.session_id, ticket.seat, ticket.price, ticket.purchaser_id, ticket.session_token, ticket.time, "
+	     		+ " session.movie_id, session.session_time, movie.title, movie.duration "
+	     		+ " FROM ticket "
+	     		+ " INNER JOIN session ON ticket.session_id = session.session_id "
+	     		+ " INNER JOIN movie ON movie.id = session.movie_id "
+	     		+ "  WHERE ticket.session_token = ? AND ticket.purchaser_id = 0 ORDER BY time ASC";
+	         Ticket ticket = null;
+	        try {
+				connect();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+	         
+	        try(PreparedStatement statement = jdbcConnection.prepareStatement(sqlQuery)) {
+	        	
+	        	statement.setString(1, sessionToken);
+
+	        	try(ResultSet rs = statement.executeQuery()){
+	    			
+					while(rs.next()) {
+						ticket = new Ticket();
+						ticket.setMovieTitle(rs.getString("movie.title"));
+						ticket.setMovieDuration(rs.getInt("movie.duration"));
+						ticket.setTicketId(rs.getInt("ticket.ticket_id"));
+						ticket.setSessionId(rs.getInt("ticket.session_id"));
+						ticket.setSeat(rs.getInt("ticket.seat"));
+						floatPrice = (double) rs.getInt("ticket.price");
+						ticket.setPrice(floatPrice/100);
+						ticket.setPurchaserId(rs.getInt("ticket.purchaser_id"));
+						ticket.setSessionToken(rs.getString("ticket.session_token"));
+						ticket.setTime(rs.getTimestamp("ticket.time"));
+						ticket.setMovieSessionTime(rs.getTimestamp("session.session_time"));
+						
+						bookedUnpaidList.add(ticket);
+					}
+	        	}
+	        	statement.close();
+	        }catch (SQLException e) {
+				e.printStackTrace();
+			}
+	    
+	        try {
+				disconnect();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+	         
+		return bookedUnpaidList;
+	}
+
+	public boolean removeFromInvoice(Ticket ticket) {
+		 String sql = "DELETE FROM ticket WHERE ticket_id = ? AND session_token = ?";
+         
+	        try {
+				connect();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+	         
+	        try( PreparedStatement statement = jdbcConnection.prepareStatement(sql)){
+		        statement.setInt(1, ticket.getTicketId());
+		        statement.setString(2, ticket.getSessionToken());
+
+		         
+		        boolean rowDeleted = statement.executeUpdate() > 0;
+		        statement.close(); 
+		        return rowDeleted;
+	        } catch (SQLException ex) {
+				ex.printStackTrace();
+			}
+	        try {
+				disconnect();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+	        return false;  
+		
+	}
+
+	public void purgeAllUnpaidTickets(String sessionToken) {
+		String sql = "DELETE FROM ticket WHERE purchaser_id = 0 AND session_token = ?";
+        
+        try {
+			connect();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+         
+        try( PreparedStatement statement = jdbcConnection.prepareStatement(sql)){
+	        statement.setString(1, sessionToken);
+	        
+	        statement.executeUpdate();
+	        statement.close(); 
+        } catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+        try {
+			disconnect();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
 }

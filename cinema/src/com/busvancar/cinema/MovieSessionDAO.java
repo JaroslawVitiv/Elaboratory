@@ -35,7 +35,7 @@ public class MovieSessionDAO {
     }
      
     public boolean insertMovieSession2db(MovieSession ms) throws SQLException {
-        String sql = "INSERT INTO session (movie_id, time, price) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO session (movie_id, session_time, price) VALUES (?, ?, ?)";
         connect();
          
         PreparedStatement statement = jdbcConnection.prepareStatement(sql);
@@ -57,7 +57,7 @@ public class MovieSessionDAO {
 		List<MovieSession> listAllMovieSessions = new ArrayList<>();
 		 MovieSession movieSession = null;
 		 double floatPrice;
-	     String sqlQuery = "SELECT * FROM session WHERE movie_id = ? ORDER BY time DESC";
+	     String sqlQuery = "SELECT * FROM session WHERE movie_id = ? ORDER BY session_time DESC";
 	         
 	        connect();
 	         
@@ -71,7 +71,7 @@ public class MovieSessionDAO {
 						movieSession = new MovieSession();
 						movieSession.setSessionId(rs.getInt("session_id"));
 						movieSession.setMovieId(rs.getInt("movie_id"));
-						movieSession.setDateTime(rs.getTimestamp("time"));
+						movieSession.setDateTime(rs.getTimestamp("session_time"));
 						floatPrice = (double) rs.getInt("price");
 						movieSession.setPrice(floatPrice/100);
 						
@@ -107,7 +107,7 @@ public class MovieSessionDAO {
 		double floatPrice;
         MovieSession movieSession = null;
         String sqlQuery = "SELECT movie.id, movie.title, movie.description_en, movie.description_uk, "
-				+ " movie.duration, genre.title, movie.poster, session.session_id, session.time, session.price FROM movie "
+				+ " movie.duration, genre.title, movie.poster, session.session_id, session.session_time, session.price FROM movie "
 				+ " INNER JOIN genre ON movie.genre = genre.genre_id "
 				+ " INNER JOIN session ON movie.id = session.movie_id;";
          
@@ -126,7 +126,7 @@ public class MovieSessionDAO {
 					movieSession.setMovieGenre(rs.getString("genre.title"));
 					movieSession.setMoviePoster(rs.getString("movie.poster"));
 					movieSession.setSessionId(rs.getInt("session.session_id"));
-					movieSession.setDateTime(rs.getTimestamp("session.time"));
+					movieSession.setDateTime(rs.getTimestamp("session.session_time"));
 					floatPrice = (double) rs.getInt("session.price");
 					movieSession.setPrice(floatPrice/100);
 					
@@ -148,7 +148,7 @@ public class MovieSessionDAO {
 		MovieSession movieSession = null;
 		double floatPrice;
 		   String sqlQuery = "SELECT movie.id, movie.title, movie.description_en, movie.description_uk, "
-		   		+ " movie.duration, genre.title, movie.poster, session.session_id, session.time, session.price FROM movie "
+		   		+ " movie.duration, genre.title, movie.poster, session.session_id, session.session_time, session.price FROM movie "
 		   		+ "	 INNER JOIN genre ON movie.genre = genre.genre_id "
 		   		+ "	 INNER JOIN session ON movie.id = session.movie_id WHERE session.session_id = ? ";
 		  
@@ -169,6 +169,7 @@ public class MovieSessionDAO {
 	   	            	movieSession.setMoviePoster(rs.getString("movie.poster"));
 	   	            	floatPrice = (double) rs.getInt("session.price");
 						movieSession.setPrice(floatPrice/100);
+						movieSession.setDateTime(rs.getTimestamp("session.session_time"));
 		   	        	
 			         	
 	   	            }

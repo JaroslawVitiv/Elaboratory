@@ -12,7 +12,10 @@ public class Ticket {
 	private String genre;
 	private int purchaserId;
 	private String sessionToken;
-	private Timestamp time; 
+	private Timestamp time;
+	private String movieTitle;
+	private int movieDuration;
+	private Timestamp movieSessionTime; 
 	
 
 
@@ -115,4 +118,33 @@ public class Ticket {
 	public void setTime(Timestamp time) {
 		this.time = time;
 	}
+	
+	public String getMovieTitle() {
+		return movieTitle;
+	}
+
+
+
+	public void setMovieTitle(String movieTitle) {
+		this.movieTitle = movieTitle;
+	}
+	
+	public int getMovieDuration() {
+		return movieDuration;
+	}
+
+	public void setMovieDuration(int movieDuration) {
+		this.movieDuration = movieDuration;
+	}
+
+	public Timestamp getMovieSessionTime() {
+		return movieSessionTime;
+	}
+
+
+	public void setMovieSessionTime(Timestamp movieSessionTime) {
+		this.movieSessionTime = movieSessionTime;
+	}
+	
+	
 }

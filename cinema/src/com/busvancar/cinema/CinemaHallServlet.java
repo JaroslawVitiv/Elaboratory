@@ -3,18 +3,11 @@ package com.busvancar.cinema;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.RoundingMode;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,17 +16,16 @@ import javax.servlet.http.HttpSession;
 /**
  * Servlet implementation class TicketGeneratorServlet
  */
-public class TicketGeneratorServlet extends HttpServlet {
+public class CinemaHallServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private final int ROWS = 12;
-	private final int SEATS = 96;
+	private final int SEATS_IN_ROW = 12;
 	private String sessionToken;
-	private int ticketsBookedUnpaid = 0;
 	private MovieSessionDAO msDao;
+       
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public TicketGeneratorServlet() {
+    public CinemaHallServlet() {
         super();
     }
 
@@ -44,27 +36,21 @@ public class TicketGeneratorServlet extends HttpServlet {
 	protected void processData(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		TicketDAO tDao = new TicketDAO();
 		
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm");
-		Timestamp time = new Timestamp(System.currentTimeMillis());
-		
-		Ticket ticket = new Ticket();
 		int movieSession = Integer.parseInt(request.getParameter("movie_session"));
-		int seat  = Integer.parseInt(request.getParameter("seat"));
-		
 		if(msDao==null) {
-			msDao = new MovieSessionDAO();
+		   msDao = new MovieSessionDAO();
 		}
-		MovieSession ms;
+	
 		
-		double price = 0;
 		int coins = 0;
 		try {
-			ms = msDao.getMovieSession(movieSession);
+			 MovieSession ms = msDao.getMovieSession(movieSession);
 			coins = (int)(ms.getPrice()*100);
-			price =  msDao.getPrice(coins, seat);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		
+		
 		
 		
 		HttpSession session = request.getSession();
@@ -73,30 +59,17 @@ public class TicketGeneratorServlet extends HttpServlet {
 		}
 		sessionToken = (String) session.getAttribute("session_token");
 		
-		ticket.setSeat(seat);
-		ticket.setSessionId(movieSession);
-		ticket.setPrice(price);
-		ticket.setSessionToken(sessionToken);
-		ticket.setTime(time);
-		ticket.setPurchaserId(0);
-		
 		PrintWriter out = response.getWriter();
 				
-		if(tDao.isCreated(ticket)) {
-			tDao.removeTicket(ticket);
-		} else {
-			tDao.createTicket(ticket);		
-		}
-		
-		
 		Ticket[] tickets = tDao.geAllTickets(movieSession);
 		
-		out.print(getSeats(tickets, msDao.getPrice(coins, 1)));
+		double basicPrice = msDao.getPrice(coins, 1);
+		
+		out.print(getSeats(tickets, basicPrice));
 		
 		
 	}
 	
-
 	private String getSeats(Ticket[] seats, double basePrice) {
 		StringBuilder seatsLine = new StringBuilder();
 		double priceIncrementRate = 1;
@@ -123,7 +96,7 @@ public class TicketGeneratorServlet extends HttpServlet {
 					seatsLine.append(getSeat(num, Double.parseDouble(df.format(basePrice * priceIncrementRate)), "success", ""));
 			}
 			
-			if((num+1) % ROWS  == 0) {
+			if((num+1) % SEATS_IN_ROW  == 0) {
 				priceIncrementRate += 0.049;
 			}
 		}

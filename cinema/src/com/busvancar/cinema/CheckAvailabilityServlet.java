@@ -2,10 +2,10 @@ package com.busvancar.cinema;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.math.RoundingMode;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -22,18 +22,9 @@ import javax.servlet.http.HttpSession;
 public class CheckAvailabilityServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private final int ROWS = 12;
-	private final int SEATS = 96;
-	private double basicPrice;
-	private double priceIncrementRate;
+	private double basicPrice = 0;
 	private String sessionToken;
 	
-	private double getBasicPrice(){
-		return basicPrice;
-	}
-	
-	private void setbasicPrice(double basicPrice) {
-		this.basicPrice =  basicPrice;
-	}
      
 	
 	
@@ -58,6 +49,7 @@ public class CheckAvailabilityServlet extends HttpServlet {
 			session.setAttribute("session_token", UUID.randomUUID().toString());
 		}
 		sessionToken = (String) session.getAttribute("session_token");
+		
 		int movieSession = Integer.parseInt(request.getParameter("movie_session"));
 		response.setContentType("text/html");  
 		
@@ -68,7 +60,7 @@ public class CheckAvailabilityServlet extends HttpServlet {
 				ms = msDao.getMovieSession(movieSession);
 				path = "images" + File.separator +ms.getMoviePoster();
 				
-				cinemaHall.append("<div >");
+				cinemaHall.append("<div>");
 
 				cinemaHall.append("<img src=\"");
 				cinemaHall.append(path);
@@ -80,11 +72,8 @@ public class CheckAvailabilityServlet extends HttpServlet {
 				
 				cinemaHall.append("<h3>Duration: <b>"+ms.getMovieDuration()+"</b> minutes</h3>");
 				cinemaHall.append("<h4>Genre: <b>"+ms.getMovieGenre()+"</b> </h4>");
+				cinemaHall.append("<h3>Date&Time: <b>"+String.format("%te.%1$tm.%1$tY (%1$TH:%1$TM)", ms.getDateTime())+"</b> </h4>");
 				cinemaHall.append("</div>");
-
-
-				setbasicPrice(ms.getPrice());
-
 				cinemaHall.append("<hr/>");
 				
 				
@@ -92,8 +81,16 @@ public class CheckAvailabilityServlet extends HttpServlet {
 				cinemaHall.append(getSeats(tickets, msDao.getPrice(msDao.getMovieSessionBasePrice(movieSession), 1)));
 			
 				basicPrice = ms.getPrice();
-			request.setAttribute("cinemaHall", cinemaHall.toString());
-			
+				request.setAttribute("cinemaHall", cinemaHall.toString());
+				
+				int ticketsBookedUnpaid = tDao.getTicketCount(sessionToken);
+				
+				request.setAttribute("bookedUnpaid", ticketsBookedUnpaid);
+				
+				List<Ticket> bookedUnpaidList = tDao.getBookedUnpaidTickets(sessionToken);
+				
+				request.setAttribute("bookedUnpaidList", bookedUnpaidList);
+				
 			StringBuilder logingBoard = new StringBuilder();
 			if(session.getAttribute("firstName")==null) {
 				logingBoard.append(" <a class=\"btn btn-lg btn-outline-info\" href=\"signin.jsp\">Sign in</a> "
@@ -162,12 +159,13 @@ public class CheckAvailabilityServlet extends HttpServlet {
 				priceIncrementRate += 0.049;
 			}
 		}
+	
 		seatsLine.append("</div></div>");
 		return seatsLine.toString();
 	}
 
 	private String getSeat(int seatNumber, double price,  String color, String disabled) {
-		return " <div><span id=\"seat"+(seatNumber+1)+"\" ><button  onclick=\"add2cart("+(seatNumber+1)+")\" class=\"btn btn-sm btn-"+color+"\"  "+disabled+">"+(seatNumber+1)+" <hr/> Price:<br/>"+price+"</button></span></div> ";
+		return " <div><span id=\"seat"+(seatNumber+1)+"\" ><button  onclick=\"  add2cart("+(seatNumber+1)+");  \" class=\"btn btn-sm btn-"+color+"\"  "+disabled+">"+(seatNumber+1)+" <hr/> Price:<br/>"+price+"</button></span></div> ";
 	}
 	
 

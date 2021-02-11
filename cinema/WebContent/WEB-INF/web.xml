@@ -118,6 +118,16 @@
     <url-pattern>/availability</url-pattern>
   </servlet-mapping>
   
+     <servlet>
+      <servlet-name>TicketCounterServlet</servlet-name>
+      <servlet-class>com.busvancar.cinema.TicketCounterServlet</servlet-class>
+   </servlet>
+    
+  <servlet-mapping>
+    <servlet-name>TicketCounterServlet</servlet-name>
+    <url-pattern>/ticketCounter</url-pattern>
+  </servlet-mapping>
+  
   
     
    <servlet>
@@ -130,6 +140,46 @@
     <url-pattern>/generator</url-pattern>
   </servlet-mapping>
   
+  
+    <servlet>
+      <servlet-name>InvoiceServlet</servlet-name>
+      <servlet-class>com.busvancar.cinema.InvoiceServlet</servlet-class>
+   </servlet>
+    
+  <servlet-mapping>
+    <servlet-name>InvoiceServlet</servlet-name>
+    <url-pattern>/invoice</url-pattern>
+  </servlet-mapping>
+  
+    <servlet>
+      <servlet-name>TickerRemoverServlet</servlet-name>
+      <servlet-class>com.busvancar.cinema.TickerRemoverServlet</servlet-class>
+   </servlet>
+    
+  <servlet-mapping>
+    <servlet-name>TickerRemoverServlet</servlet-name>
+    <url-pattern>/ticketremover</url-pattern>
+  </servlet-mapping>
+  
+   <servlet>
+      <servlet-name>CinemaHallServlet</servlet-name>
+      <servlet-class>com.busvancar.cinema.CinemaHallServlet</servlet-class>
+   </servlet>
+    
+  <servlet-mapping>
+    <servlet-name>CinemaHallServlet</servlet-name>
+    <url-pattern>/cinemahall</url-pattern>
+  </servlet-mapping>
+  
+   <servlet>
+      <servlet-name>PurgeAllUnpaidTickets</servlet-name>
+      <servlet-class>com.busvancar.cinema.PurgeAllUnpaidTickets</servlet-class>
+   </servlet>
+    
+  <servlet-mapping>
+    <servlet-name>PurgeAllUnpaidTickets</servlet-name>
+    <url-pattern>/purgeAllUnpaid</url-pattern>
+  </servlet-mapping>
   
    <filter>
     <filter-name>CharsetFilter</filter-name>
@@ -159,5 +209,7 @@
         <page-encoding>UTF-8</page-encoding>
     </jsp-property-group> 
  </jsp-config>
+ 
+ 
     
 </web-app>
