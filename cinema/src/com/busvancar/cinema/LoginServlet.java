@@ -41,7 +41,7 @@ public class LoginServlet extends HttpServlet {
 		}else{
 			response.setCharacterEncoding("UTF-8");
 			RequestDispatcher rd = getServletContext().getRequestDispatcher("/login.jsp");
-			out.println("<font color=red>Either email address name or password is wrong.  Щось не те</font>");
+			out.println("<div id=\"loginError\">Either email address name or password is wrong.  Щось не те</div>");
 			rd.include(request, response);
 		}
 

@@ -13,11 +13,7 @@ public class MovieSessionDAO {
     private Connection jdbcConnection;
 	private final int ROWS = 12;
 	
-	public  MovieSessionDAO() {
-    	System.out.println("New Movie Session DAO was created...");
-    }
-     
-    protected void connect() throws SQLException {
+	protected void connect() throws SQLException {
         if (jdbcConnection == null || jdbcConnection.isClosed()) {
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver");

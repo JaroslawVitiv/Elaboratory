@@ -18,13 +18,6 @@ public class Ticket {
 	private Timestamp movieSessionTime; 
 	
 
-
-	public Ticket() {
-		System.out.print("New ticket was created...");
-	}
-
-
-
 	public int getTicketId() {
 		return ticketId;
 	}

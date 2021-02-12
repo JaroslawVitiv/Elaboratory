@@ -62,7 +62,6 @@ public class TicketDAO {
 	     	try {
 				connect();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			

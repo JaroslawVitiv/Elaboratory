@@ -57,6 +57,7 @@
     <url-pattern>/change-password</url-pattern>
   </servlet-mapping>
   
+ 
   <servlet>
       <servlet-name>AdminServlet</servlet-name>
       <servlet-class>com.busvancar.cinema.AdminServlet</servlet-class>
@@ -66,6 +67,7 @@
     <servlet-name>AdminServlet</servlet-name>
     <url-pattern>/administration</url-pattern>
   </servlet-mapping>
+  
   
     <servlet>
       <servlet-name>AddmovieServlet</servlet-name>
@@ -191,8 +193,7 @@
     <url-pattern>/payInvoice</url-pattern>
   </servlet-mapping>
   
-  
-  
+ 
   
    <filter>
     <filter-name>CharsetFilter</filter-name>

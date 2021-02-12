@@ -62,6 +62,9 @@ public class CheckAvailabilityServlet extends HttpServlet {
 		String path;
 		try {
 				ms = msDao.getMovieSession(movieSession);
+				if(ms.getMovieTitle()==null)  {
+					response.sendRedirect("/cinema");
+				}
 				path = "images" + File.separator +ms.getMoviePoster();
 				
 				cinemaHall.append("<div>");
