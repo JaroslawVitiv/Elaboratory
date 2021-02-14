@@ -14,12 +14,6 @@ public class Movie {
 	private double price;
 
 
-	public Movie() {
-		System.out.print("New movie was created...");
-	}
-	
-	
-
 	public void setId(int id) {
 		this.id = id;
 	}

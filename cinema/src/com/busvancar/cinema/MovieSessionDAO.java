@@ -98,38 +98,51 @@ public class MovieSessionDAO {
 	        return rowRemoved;
 	   }
 
-	public List<MovieSession> getSchedule() throws SQLException {
+	
+	
+	
+	public List<MovieSession> getSchedule(int sortBy, int ascDesc, int genreIndex) throws SQLException {
+		String[] ascendingDescending = {"DESC", "ASC"};
+		String[] sortingBy = {"session.session_time", "session.price", "session.available"};
+		String genreRequest = "";
+		
+		if(genreIndex > 0 && genreIndex < Genre.genres_en_GB.length) {
+			genreRequest = " movie.genre = '"+genreIndex+"' AND ";
+		}
 		List<MovieSession> schedule = new ArrayList<>();
 		double floatPrice;
         MovieSession movieSession = null;
         String sqlQuery = "SELECT movie.id, movie.title, movie.description_en, movie.description_uk, "
-				+ " movie.duration, genre.title, movie.poster, session.session_id, session.session_time, session.price FROM movie "
-				+ " INNER JOIN genre ON movie.genre = genre.genre_id "
-				+ " INNER JOIN session ON movie.id = session.movie_id;";
+				+ " movie.duration, movie.genre, movie.poster, session.session_id, session.session_time, session.price, session.prepaid, session.available FROM movie "
+				+ " INNER JOIN session ON movie.id = session.movie_id  "
+				+ " WHERE "+genreRequest+" session.session_time BETWEEN NOW() AND DATE_ADD(NOW(), INTERVAL 1 WEEK)  ORDER BY  "+sortingBy[sortBy]+"  "+ascendingDescending[ascDesc]+" ; ";
          
         connect();
          
         try(PreparedStatement statement = jdbcConnection.prepareStatement(sqlQuery);
-        	ResultSet rs = statement.executeQuery();){
-    			
-				while(rs.next()) {
+        		ResultSet rs = statement.executeQuery();){
+   	  			
+        	  while(rs.next()) {
 					movieSession = new MovieSession();
 					movieSession.setMovieId(rs.getInt("movie.id"));
 					movieSession.setMovieTitle(rs.getString("movie.title"));
 					movieSession.setMovieDescriptionEn(rs.getString("movie.description_en"));
 					movieSession.setMovieDescriptionUa(rs.getString("movie.description_uk"));
 					movieSession.setMovieDuration(rs.getInt("movie.duration"));
-					movieSession.setMovieGenre(rs.getString("genre.title"));
+					movieSession.setMovieGenre(Genre.genres_en_GB[rs.getInt("movie.genre")]);
+					movieSession.setMovieGenreUa(Genre.genres_uk_UA[rs.getInt("movie.genre")]);
 					movieSession.setMoviePoster(rs.getString("movie.poster"));
 					movieSession.setSessionId(rs.getInt("session.session_id"));
 					movieSession.setDateTime(rs.getTimestamp("session.session_time"));
 					floatPrice = (double) rs.getInt("session.price");
 					movieSession.setPrice(floatPrice/100);
-					
-					
+					movieSession.setPrepaidSeats(rs.getInt("session.prepaid"));
+					movieSession.setAvailableSeats(rs.getInt("session.available"));
+
 					schedule.add(movieSession);
 				}
-			
+   	        
+        	
         	statement.close();
         }catch (SQLException e) {
 			e.printStackTrace();
@@ -144,8 +157,7 @@ public class MovieSessionDAO {
 		MovieSession movieSession = null;
 		double floatPrice;
 		   String sqlQuery = "SELECT movie.id, movie.title, movie.description_en, movie.description_uk, "
-		   		+ " movie.duration, genre.title, movie.poster, session.session_id, session.session_time, session.price FROM movie "
-		   		+ "	 INNER JOIN genre ON movie.genre = genre.genre_id "
+		   		+ " movie.duration, movie.genre, movie.poster, session.session_id, session.session_time, session.price FROM movie "
 		   		+ "	 INNER JOIN session ON movie.id = session.movie_id WHERE session.session_id = ? ";
 		  
 	       
@@ -161,7 +173,8 @@ public class MovieSessionDAO {
 	   	            	movieSession.setMovieDescriptionEn(rs.getString("movie.description_en"));
 	   	            	movieSession.setMovieDescriptionUa(rs.getString("movie.description_uk"));
 	   	            	movieSession.setMovieDuration(rs.getInt("movie.duration"));
-	   	            	movieSession.setMovieGenre(rs.getString("genre.title"));
+	   	            	movieSession.setMovieGenre(Genre.genres_en_GB[rs.getInt("movie.genre")]);
+	   	            	movieSession.setMovieGenreUa(Genre.genres_uk_UA[rs.getInt("movie.genre")]);
 	   	            	movieSession.setMoviePoster(rs.getString("movie.poster"));
 	   	            	floatPrice = (double) rs.getInt("session.price");
 						movieSession.setPrice(floatPrice/100);
@@ -217,5 +230,7 @@ public class MovieSessionDAO {
 		
 		return Double.parseDouble(df.format(movieSessionBasePrice * priceIncrementRate / 100));
 	}
+
+	
 
  }

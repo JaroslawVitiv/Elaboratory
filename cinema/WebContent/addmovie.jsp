@@ -1,12 +1,26 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"    pageEncoding="UTF-8"%>
-<%@ page import="com.busvancar.cinema.MovieDAO" %>
+<%@page import="com.busvancar.cinema.Movies"%> 
+<%@page import="com.busvancar.cinema.User"%> 
+<%@ page import = "com.busvancar.cinema.Genre"%>
 
- <%	String redirect="";
- String firstName = request.getParameter("firstName"); 
- if(session.isNew()){
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+ <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+
+<%@ page import = "java.io.*, java.util.*" %>
+<%@ page import = "javax.servlet.*,javax.servlet.http.*, java.util.ResourceBundle "%>
+
+ <%	
+ String redirect="";
+ User user = (User) session.getAttribute("user"); 
+ if(user.getAdmin()<1 || user == null){
 		redirect = "<script language=\"javascript\" type=\"text/javascript\">window.location=\"/cinema\" </script>";
 }
- String genreOptions = new MovieDAO().getGenreOptions();
+ Locale locale = new Locale((String) session.getAttribute("l10n"));
+
+ String genreOptionsUa = Genre.getGenreSelectOptions(Genre.genres_uk_UA);
+ String genreOptionsEn = Genre.getGenreSelectOptions(Genre.genres_en_GB);
+
  
   %>
 <!DOCTYPE html>
@@ -31,7 +45,14 @@
 <input placeholder="Duration in minutes" type="number" name="duration" id="duration" min="0" value="0"/>
 <br/>
 <select name="genre" id="genre">
-<%= genreOptions %>
+
+					<c:if test = "${l10n == 'uk_UA'}">
+	      		    	 <% out.print(genreOptionsUa); %>
+
+	      			</c:if>  
+	  				<c:if test = "${l10n == 'en_GB'}">
+	  				  	 <% out.print(genreOptionsEn); %>
+	      			</c:if>
 </select>
 <br/>
 <input type="text" placeholder="00.00" name="price" id="price"  required/>

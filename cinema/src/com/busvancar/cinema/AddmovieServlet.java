@@ -46,16 +46,18 @@ public class AddmovieServlet extends HttpServlet {
 
    
     protected void processData(HttpServletRequest request, HttpServletResponse response)    throws ServletException, IOException {
-    	Movie movie = new Movie();
-    	MovieDAO mDao = new MovieDAO();
-		PrintWriter out = response.getWriter();
-		HttpSession session = request.getSession();
+    	HttpSession session = request.getSession();
 		User user = (User) session.getAttribute("user");
 		int admin = user.getAdmin();
 		
 		if(admin<1) {
 			response.sendRedirect("/cinema");
 		}
+		
+		Movie movie = new Movie();
+    	MovieDAO mDao = new MovieDAO();
+		PrintWriter out = response.getWriter();
+		
 		request.setAttribute("genreOptions", "genreOptions + ex.getMessage()");
       
         if (!ServletFileUpload.isMultipartContent(request)) {

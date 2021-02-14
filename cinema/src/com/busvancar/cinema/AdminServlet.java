@@ -33,10 +33,7 @@ public class AdminServlet extends HttpServlet {
 		
 		User user  =  (User) session.getAttribute("user");
 		
-		
-		if(user.getAdmin()<1) {
-			response.sendRedirect("/cinema");
-		}
+			
 		
 		response.setContentType("text/html");  
 		MovieDAO movieDao = new MovieDAO();
@@ -87,7 +84,10 @@ public class AdminServlet extends HttpServlet {
 			StringBuilder logingBoard = new StringBuilder();
 			if(session.getAttribute("user")==null) {
 				logingBoard.append("<a href=\"signin.jsp\">Sign in</a> | <a href=\"login.jsp\">Log in</a>");
-			}else {
+			} else {
+				if(user.getAdmin()<1) {
+					response.sendRedirect("/cinema");
+				}
 				user = (User) session.getAttribute("user");
 				logingBoard.append("Hi, ");
 				logingBoard.append(user.getFirstName());

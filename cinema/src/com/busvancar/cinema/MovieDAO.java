@@ -52,8 +52,7 @@ public class MovieDAO {
         List<Movie> listMovies = new ArrayList<>();
         Movie movie = null;
         String sqlQuery = "SELECT movie.id, movie.title, movie.description_en, movie.description_uk, "
-				+ " movie.duration, genre.title, movie.poster, movie.default_price FROM movie "
-				+ "INNER JOIN genre ON movie.genre = genre.genre_id ;";
+				+ " movie.duration, movie.genre, movie.poster, movie.default_price FROM movie ;";
          
         connect();
          
@@ -67,7 +66,7 @@ public class MovieDAO {
 					movie.setDescriptionEn(rs.getString("movie.description_en"));
 					movie.setDescriptionUa(rs.getString("movie.description_uk"));
 					movie.setDuration(rs.getInt("movie.duration"));
-					movie.setGenre(rs.getString("genre.title"));
+					movie.setGenre(Genre.genres_en_GB[rs.getInt("movie.genre")]);
 					movie.setPoster(rs.getString("movie.poster"));
 					movie.setPrice(rs.getDouble("movie.default_price"));
 					
@@ -87,8 +86,7 @@ public class MovieDAO {
     public Movie getMovie(int movieNumber) throws SQLException  {
 		Movie movie = null;
 		   String sqlQuery = "SELECT movie.title, movie.description_en, movie.description_uk, "
-					+ " movie.duration, genre.title, movie.poster, movie.default_price FROM movie "
-					+ " INNER JOIN genre ON movie.genre = genre.genre_id WHERE movie.id = ? ";
+					+ " movie.duration, movie.genre, movie.poster, movie.default_price FROM movie ";
 		  
 	       
 	        connect();
@@ -103,12 +101,10 @@ public class MovieDAO {
 						movie.setDescriptionEn(rs.getString("movie.description_en"));
 						movie.setDescriptionUa(rs.getString("movie.description_uk"));
 						movie.setDuration(rs.getInt("movie.duration"));
-						movie.setGenre(rs.getString("genre.title"));
+						movie.setGenre(Genre.genres_en_GB[rs.getInt("movie.genre")]);
 						movie.setPoster(rs.getString("movie.poster"));
 						movie.setPrice(rs.getDouble("movie.default_price"));
-		   	        	
-			         	
-	   	            }
+		   	        }
 	   	       }
 	   	        statement.close();
 	        }catch (SQLException e) {
@@ -120,38 +116,6 @@ public class MovieDAO {
 	        disconnect();
 	        return movie;
 	}
-    
-    public String getGenreOptions() throws SQLException {
-    	StringBuilder genreOptions = new StringBuilder();
-    	String sqlQuery = "SELECT * FROM genre ";
-
-        connect();
-         
-        try(PreparedStatement statement = jdbcConnection.prepareStatement(sqlQuery)){
-
-        	try(ResultSet rs = statement.executeQuery()){
-        		genreOptions.append("<option value=\"0\">Genre</option>");
-   	            while(rs.next()) {
-   	            	genreOptions.append("<option value=\"");
-   	            	genreOptions.append(rs.getString("genre_id"));
-   	            	genreOptions.append("\">");
-   	            	genreOptions.append(rs.getString("title"));
-   	            	genreOptions.append("</option>");
-   	            }
-   	       }
-   	        statement.close();
-        }catch (SQLException e) {
-			e.printStackTrace();
-		}
-   	
-         
-        
-        disconnect();
-    	
-    	return genreOptions.toString();
-    }
-
-	    
     
 	
 }

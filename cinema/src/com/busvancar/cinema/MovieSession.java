@@ -13,6 +13,11 @@ public class MovieSession {
 	private String movieDescriptionUa;
 	private int movieDuration;
 	private String movieGenre;
+	private String movieGenreUa;
+	private int prepaidSeats;
+	private int availableSeats;
+	
+
 	
 	
 	public int getSessionId() {
@@ -68,15 +73,6 @@ public class MovieSession {
 		this.movieDescriptionUa = movieDescriptionUa;
 	}
 	
-	public String getMovieGenre() {
-		return movieGenre;
-	}
-	
-	public void setMovieGenre(String movieGenre) {
-		this.movieGenre = movieGenre;
-	}
-	
-	
 	public int getMovieDuration() {
 		return movieDuration;
 	}
@@ -85,5 +81,38 @@ public class MovieSession {
 		this.movieDuration =  movieDuration;
 	}
 	
+	public int getPrepaidSeats() {
+		return prepaidSeats;
+	}
+	
+	
+	public void setPrepaidSeats(int prepaidSeats) {
+		this.prepaidSeats = prepaidSeats;		
+	}
+	
+	public int getAvailableSeats() {
+		return availableSeats;
+	}
+	
+	
+	public void setAvailableSeats(int availableSeats) {
+		this.availableSeats = availableSeats;		
+	}
+	
+	public String getMovieGenre() {
+		return movieGenre;
+	}
+	
+	public void setMovieGenre(String movieGenre) {
+		this.movieGenre = movieGenre;
+	}
+	
+	public String getMovieGenreUa() {
+		return movieGenreUa;
+	}
+	
+	public void setMovieGenreUa(String movieGenreUa) {
+		this.movieGenreUa = movieGenreUa;
+	}
 	
 }
