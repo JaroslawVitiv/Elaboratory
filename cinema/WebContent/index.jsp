@@ -4,13 +4,13 @@
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
-<%@ page import = "java.io.*, java.util.*" %>
+<%@ page import = "java.io.*, java.util.*, java.time.*" %>
 <%@ page import = "javax.servlet.*,javax.servlet.http.*, java.util.ResourceBundle "%>
 <%@ page import = "com.busvancar.cinema.Genre"%>
 <%
 String genreDropdownMenu_en_GB = Genre.getGenreOptions(Genre.genres_en_GB);
 String genreDropdownMenu_uk_UA = Genre.getGenreOptions(Genre.genres_uk_UA);
-
+LocalDate currentdate = LocalDate.now();
 
 Locale locale = new Locale((String) session.getAttribute("l10n"));
 ResourceBundle rb = ResourceBundle.getBundle("l10n_"+session.getAttribute("l10n"), locale);
@@ -56,7 +56,20 @@ String availableSeats = rb.getString("availableSeats");
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.5.2/bootbox.min.js"></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia">
-  
+
+ <script type="text/javascript">
+ 	function searching(){
+ 		var xhttp = new XMLHttpRequest();
+		  xhttp.onreadystatechange = function() {
+		    if (this.readyState == 4 && this.status == 200) {
+		      document.getElementById("grid").innerHTML = this.responseText;
+		      getTicketAmount();
+		    }
+		  };
+		  xhttp.open("GET", "/cinema/search?request="+document.getElementById("search").value, true);
+		  xhttp.send();
+ 	}
+ </script>
      
 <style>
   .movie {
@@ -125,6 +138,63 @@ String availableSeats = rb.getString("availableSeats");
 	}
 	
 	
+	
+	
+.center-block {
+    float: none;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.input-group .icon-addon .form-control {
+    border-radius: 0;
+}
+
+.icon-addon {
+    position: relative;
+    color: #555;
+    display: block;
+}
+
+.icon-addon:after,
+.icon-addon:before {
+    display: table;
+    content: " ";
+}
+
+.icon-addon:after {
+    clear: both;
+}
+
+.icon-addon.addon-md .glyphicon,
+.icon-addon .glyphicon, 
+.icon-addon.addon-md .fa,
+.icon-addon .fa {
+    position: absolute;
+    z-index: 2;
+    left: 10px;
+    font-size: 14px;
+    width: 20px;
+    margin-left: -2.5px;
+    text-align: center;
+    padding: 5px 0;
+    top: 1px
+}
+
+.icon-addon.addon-md .form-control,
+.icon-addon .form-control {
+    padding-left: 30px;
+    float: left;
+    font-weight: normal;
+}
+
+
+.icon-addon .form-control:focus + .glyphicon,
+.icon-addon:hover .glyphicon,
+.icon-addon .form-control:focus + .fa,
+.icon-addon:hover .fa {
+    color: #2580db;
+}
 </style>
 
 </head>
@@ -167,16 +237,18 @@ String availableSeats = rb.getString("availableSeats");
 		     		
 		     		
 		     		
-		      <form class="form-inline">
-    			 <span><input class="form-control" type="search" placeholder="Enter movie title" aria-label="Search"></span>
-   				 <span>
-   				 	 <button class="btn btn-md btn-outline-info" type="submit">
-   				 		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
- 							 <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-						</svg> 
-					</button>
-				</span>
- 			 </form>		
+		      <form class="form-inline" action="/cinema">
+		      	 <div class="form-group">
+	                <div class="icon-addon addon-md">
+	                    <input type="search" placeholder="Enter movie title" class="form-control" name="search" id="search" onkeyup="searching();" >
+	                    <label for="search" class="glyphicon glyphicon-search" rel="tooltip" title="search">
+	                    	<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+ 								 <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+							</svg> 
+	                    </label>
+	                </div>
+            	</div>
+		 	 </form>		
 		     		
 		     		
 		     		
@@ -307,7 +379,7 @@ String availableSeats = rb.getString("availableSeats");
 
 <div>
 	<form class="form-inline" action="/cinema">
-	  <span><input type="date" id="date" class="form-control"  value="${currentdate}" min="${currentdate}" name="date"   /></span>
+	  <span><input type="date" id="date" class="form-control"  value="${chosendate}" min="<%  out.print(currentdate); %>" name="date"   /></span>
 	  <span><input type="submit" class="btn btn-md btn-outline-info"  value="OK"></span>
 	</form>
 </div>
@@ -325,7 +397,7 @@ String availableSeats = rb.getString("availableSeats");
 
 <hr/>
 
-	<div class="grid">
+	<div class="grid" id="grid">
 		<c:forEach var="movie" items="${schedule}">
  			<div class="movie">
 				<div>

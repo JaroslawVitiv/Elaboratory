@@ -15,8 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.catalina.tribes.util.Arrays;
-
 
 /**
  * Servlet implementation class Movies
@@ -47,8 +45,11 @@ public class Movies extends HttpServlet {
     			 genres = Genre.getGenreList(Genre.genres_en_GB);
     		 }
     		 
-    		 LocalDate currentdate = LocalDate.now();
-    		 request.setAttribute("currentdate", currentdate);
+    		 LocalDate chosendate = LocalDate.now();
+    		 if(request.getParameter("date") != null) {
+    			 chosendate = LocalDate.parse(request.getParameter("date"));
+    		}
+    		 request.setAttribute("chosendate", chosendate);
     	    
     		 
     		 if(session.getAttribute("sortBy") == null || "0".equals(request.getParameter("sortBy"))) {
@@ -87,8 +88,8 @@ public class Movies extends HttpServlet {
     				genreCategoryIndex = (int) session.getAttribute("genre");
     			}
     			
-				schedule = movieSessDao.getSchedule(sortBy, ascDesc, genreCategoryIndex);
-				
+				schedule = movieSessDao.getSchedule(sortBy, ascDesc, genreCategoryIndex, chosendate);
+			
 				
 				if( genreCategoryIndex > -1 && genreCategoryIndex < Genre.genres_en_GB.length) {
 					if("en_GB".equals(session.getAttribute("l10n"))) {
