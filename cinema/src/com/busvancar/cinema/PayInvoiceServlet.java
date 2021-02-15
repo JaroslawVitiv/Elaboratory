@@ -23,7 +23,6 @@ public class PayInvoiceServlet extends HttpServlet {
      */
     public PayInvoiceServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -48,9 +47,7 @@ public class PayInvoiceServlet extends HttpServlet {
 		}else {
 			out.print("<h3 style=\"color:red\">Sorry, the payment is not through. Your payment is declined...:(</h3>");
 		}
-    	
-    
-    	
+    		
     }
     
     

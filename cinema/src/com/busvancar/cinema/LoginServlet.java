@@ -3,8 +3,11 @@ package com.busvancar.cinema;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -34,11 +37,17 @@ public class LoginServlet extends HttpServlet {
 			HttpSession session = request.getSession();
 			session.setAttribute("user", user);
 			
+			//ServletContext sc = this.getServletContext();
+			//synchronized(this) {
+				//ArrayList<User> users = (ArrayList<User>) sc.getAttribute("users");
+				//users.add(user);
+				//sc.setAttribute("users", users);
+		//	}
 			session.setMaxInactiveInterval(60*60);
 			response.sendRedirect(request.getContextPath());
 			
 			
-		}else{
+		} else{
 			response.setCharacterEncoding("UTF-8");
 			RequestDispatcher rd = getServletContext().getRequestDispatcher("/login.jsp");
 			out.println("<div id=\"loginError\">Either email address name or password is wrong.  Щось не те</div>");

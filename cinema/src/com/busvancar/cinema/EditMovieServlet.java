@@ -26,11 +26,12 @@ public class EditMovieServlet extends HttpServlet {
     
     
     protected void processData(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	 Movie movie = null;
-    	 MovieSessionDAO msDao = null;
+    	 Movie movie;
+    	 MovieSessionDAO msDao;
     	 MovieDAO mDao;
     	 List<MovieSession> msdList;
     	 String timeStamp;
+    	 
     	 
 			
     	 response.setContentType("text/html");
@@ -43,14 +44,10 @@ public class EditMovieServlet extends HttpServlet {
  		if(user.getAdmin()<1) {
  			response.sendRedirect("/cinema");
  		}
+    	 
          
          int movieNumber = Integer.parseInt(request.getParameter("m"));
-     
-         
-        
-        
- 
-			try {
+         	try {
 				mDao = new MovieDAO();
 				movie = mDao.getMovie(movieNumber);
 				out.print(movieNumber);

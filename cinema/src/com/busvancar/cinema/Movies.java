@@ -9,6 +9,7 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.UUID;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -25,6 +26,9 @@ public class Movies extends HttpServlet {
 	
 	//getServletContext().getRealPath("")+ File.separator + UPLOAD_DIRECTORY + File.separator + fileName
     private void processData(HttpServletRequest request, HttpServletResponse response) {
+    		int page = 1;
+    		
+    			
 			User user = null;
 			List<String> genres = new ArrayList<String>();
 			response.setContentType("text/html");  
@@ -66,7 +70,7 @@ public class Movies extends HttpServlet {
       		 }
     		
     		 if(session.getAttribute("ascDesc") == null || "0".equals(request.getParameter("ascDesc"))) {
-     			session.setAttribute("ascDesc", 0);
+     			session.setAttribute("ascDesc", 1);
      		 }
      		 
      		 if("1".equals(request.getParameter("ascDesc"))) {
@@ -77,6 +81,11 @@ public class Movies extends HttpServlet {
     		 
     		 
     		try {
+    			
+				
+				
+				
+				
     			
     			int sortBy = (int) session.getAttribute("sortBy");
     			int ascDesc =  (int) session.getAttribute("ascDesc");
@@ -90,6 +99,12 @@ public class Movies extends HttpServlet {
     			
 				schedule = movieSessDao.getSchedule(sortBy, ascDesc, genreCategoryIndex, chosendate);
 			
+				if(request.getParameter("page") != null && Integer.parseInt(request.getParameter("page")) > 0) {
+	    			page = Integer.parseInt(request.getParameter("page"));
+	    			schedule =  movieSessDao.getSchedule(page);
+	    		}
+				request.setAttribute("pagination", getPagination(page));
+				
 				
 				if( genreCategoryIndex > -1 && genreCategoryIndex < Genre.genres_en_GB.length) {
 					if("en_GB".equals(session.getAttribute("l10n"))) {
@@ -117,11 +132,15 @@ public class Movies extends HttpServlet {
 				}
 				request.setAttribute("user", user);
 				
+				
 				if(user!=null &&  user.getAdmin()>0) {
 					response.sendRedirect(request.getContextPath() + "/administration");
 				} else {	
 					request.getRequestDispatcher("index.jsp").forward(request,response);
 				}
+				
+				
+				
 				
 			} catch (SQLException | ServletException | IOException e) {
 					e.printStackTrace();
@@ -130,6 +149,47 @@ public class Movies extends HttpServlet {
     }
 
 	
+
+
+	private String getPagination(int page) {
+		int p;
+		if(page<2) {
+			p=1;
+		} else if(page>9) {
+			p=10;
+		} else {
+			p=page;
+		}
+		
+		
+		StringBuilder res = new StringBuilder("	<nav aria-label=\"Page navigation example\" id=\"pagination\"> "
+				+ "  <ul class=\"pagination\">");
+		
+		if(p>0) {	
+			res.append("<li class=\"page-item\"><a class=\"page-link\" href=\"/cinema/?page="+(p-1)+"\">Previous</a></li>");
+		} else {
+			res.append("<li class=\"page-item\"><a class=\"page-link\" disabled> Previous </a></li>");
+		}
+		
+		for(int week = 1; week < 11; week++) {
+			if(p!=week) {
+				res.append("<li class=\"page-item\"><a class=\"page-link\" href=\"/cinema/?page="+week+"\">"+week+"</a></li>");
+			} else {
+				res.append("<li class=\"page-item\"><a class=\"page-link\" disabled>"+week+"</a></li>");
+			}
+		}
+		
+		if(p<10) {
+			res.append(" <li class=\"page-item\"><a class=\"page-link\" href=\"/cinema/?page="+(p+1)+"\" >Next</a></li>");
+		} else {
+			res.append(" <li class=\"page-item\"><a class=\"page-link\" disabled >Next</a></li>");
+		}
+		res.append(" </ul></nav>");
+	
+		return res.toString();
+	}
+
+
 
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -43,6 +44,7 @@ public class TicketGeneratorServlet extends HttpServlet {
 	 */
 	protected void processData(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		TicketDAO tDao = new TicketDAO();
+		int availableSeats = 0;
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm");
 		Timestamp time = new Timestamp(System.currentTimeMillis());
@@ -60,14 +62,15 @@ public class TicketGeneratorServlet extends HttpServlet {
 		
 		double price = 0;
 		int coins = 0;
-		try {
-			ms = msDao.getMovieSession(movieSession);
-			coins = (int)(ms.getPrice()*100);
-			price =  msDao.getPrice(coins, seat);
-		} catch (SQLException e) {
-			e.printStackTrace();
+		synchronized(this){
+			try {
+				ms = msDao.getMovieSession(movieSession);
+				coins = (int)(ms.getPrice()*100);
+				price =  msDao.getPrice(coins, seat);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
-		
 		
 		HttpSession session = request.getSession();
 		if(session.getAttribute("session_token") == null) {
@@ -90,8 +93,19 @@ public class TicketGeneratorServlet extends HttpServlet {
 			tDao.createTicket(ticket);		
 		}
 		
+		availableSeats = SEATS - tDao.getBookedSeats(movieSession);
+		tDao.updateMovieSessionAvailableSeats(movieSession, availableSeats);
 		
-		Ticket[] tickets = tDao.geAllTickets(movieSession);
+		//////WARNING EXPERIMENTS WITH LISTENER111
+		ServletContext sc = this.getServletContext();
+		//////WARNING EXPERIMENTS WITH LISTENER111
+		
+		Ticket[] tickets = tDao.getAllTickets(movieSession);
+		
+		//////WARING EXPERIMENTS WITH LISTENER111
+		sc.setAttribute("tickets", tickets);
+		//////WARING EXPERIMENTS WITH LISTENER111
+		
 		
 		out.print(getSeats(tickets, msDao.getPrice(coins, 1)));
 		
@@ -137,18 +151,8 @@ public class TicketGeneratorServlet extends HttpServlet {
 		return " <div><span id=\"seat"+(seatNumber+1)+"\" ><button onclick=\"add2cart("+(seatNumber+1)+");\" class=\"btn btn-sm btn-"+color+"\"  "+disabled+" />"+(seatNumber+1)+" <hr/> Price:<br/>"+price+"</button></span></div> ";
 	}
 	
-	
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-//	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	//		processData(request, response);
-//	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-			processData(request, response);
-	
+		processData(request, response);
 	}
 }

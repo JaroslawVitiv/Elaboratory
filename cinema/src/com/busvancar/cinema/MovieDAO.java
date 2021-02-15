@@ -51,8 +51,7 @@ public class MovieDAO {
     public List<Movie> listAllMovies() throws SQLException {
         List<Movie> listMovies = new ArrayList<>();
         Movie movie = null;
-        String sqlQuery = "SELECT movie.id, movie.title, movie.description_en, movie.description_uk, "
-				+ " movie.duration, movie.genre, movie.poster, movie.default_price FROM movie ;";
+        String sqlQuery = "SELECT * FROM movie ";
          
         connect();
          
@@ -61,14 +60,14 @@ public class MovieDAO {
     			
 				while(rs.next()) {
 					movie = new Movie();
-					movie.setId(rs.getInt("movie.id"));
-					movie.setTitle(rs.getString("movie.title"));
-					movie.setDescriptionEn(rs.getString("movie.description_en"));
-					movie.setDescriptionUa(rs.getString("movie.description_uk"));
-					movie.setDuration(rs.getInt("movie.duration"));
-					movie.setGenre(Genre.genres_en_GB[rs.getInt("movie.genre")]);
-					movie.setPoster(rs.getString("movie.poster"));
-					movie.setPrice(rs.getDouble("movie.default_price"));
+					movie.setId(rs.getInt("id"));
+					movie.setTitle(rs.getString("title"));
+					movie.setDescriptionEn(rs.getString("description_en"));
+					movie.setDescriptionUa(rs.getString("description_uk"));
+					movie.setDuration(rs.getInt("duration"));
+					movie.setGenre(Genre.genres_en_GB[rs.getInt("genre")]);
+					movie.setPoster(rs.getString("poster"));
+					movie.setPrice(rs.getDouble("default_price"));
 					
 					listMovies.add(movie);
 				}
@@ -85,8 +84,7 @@ public class MovieDAO {
     
     public Movie getMovie(int movieNumber) throws SQLException  {
 		Movie movie = null;
-		   String sqlQuery = "SELECT movie.title, movie.description_en, movie.description_uk, "
-					+ " movie.duration, movie.genre, movie.poster, movie.default_price FROM movie ";
+		   String sqlQuery = "SELECT * FROM movie WHERE id = ? ";
 		  
 	       
 	        connect();
@@ -97,13 +95,14 @@ public class MovieDAO {
 	   	            movie = new Movie();
 	   	            if(rs.next()) {
 	   	            	movie.setId(movieNumber);
-		   	        	movie.setTitle(rs.getString("movie.title"));
-						movie.setDescriptionEn(rs.getString("movie.description_en"));
-						movie.setDescriptionUa(rs.getString("movie.description_uk"));
-						movie.setDuration(rs.getInt("movie.duration"));
-						movie.setGenre(Genre.genres_en_GB[rs.getInt("movie.genre")]);
-						movie.setPoster(rs.getString("movie.poster"));
-						movie.setPrice(rs.getDouble("movie.default_price"));
+		   	        	movie.setTitle(rs.getString("title"));
+						movie.setDescriptionEn(rs.getString("description_en"));
+						movie.setDescriptionUa(rs.getString("description_uk"));
+						movie.setDuration(rs.getInt("duration"));
+						movie.setGenre(Genre.genres_en_GB[rs.getInt("genre")]);
+						movie.setGenreUa(Genre.genres_en_GB[rs.getInt("genre")]);
+						movie.setPoster(rs.getString("poster"));
+						movie.setPrice(rs.getDouble("default_price"));
 		   	        }
 	   	       }
 	   	        statement.close();

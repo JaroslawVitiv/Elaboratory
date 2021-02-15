@@ -2,7 +2,9 @@
 package com.busvancar.cinema;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
@@ -25,6 +27,13 @@ public class LogoutServlet extends HttpServlet {
     	if(session != null){
     		session.invalidate();
     	}
+    	
+    //	ServletContext sc = this.getServletContext();
+	//	synchronized(this) {
+	//		ArrayList<User> users = (ArrayList<User>) sc.getAttribute("users");
+	//		users.remove(0);
+	//		sc.setAttribute("users", users);
+	//	}
     	response.sendRedirect(request.getContextPath());
     }
 

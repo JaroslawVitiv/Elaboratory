@@ -33,7 +33,7 @@ public class SearchServlet extends HttpServlet {
 	 */
     protected void processData(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	HttpSession session = request.getSession();
-    	SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy (hh:mm)");  
+    	SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy (HH:mm)");  
     	
     	
     	Locale locale = new Locale((String) session.getAttribute("l10n"));

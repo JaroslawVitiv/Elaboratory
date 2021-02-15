@@ -134,7 +134,7 @@ public class TicketDAO {
 	       return false;
 	}
 
-	public Ticket[] geAllTickets(int movieSession) {
+	public Ticket[] getAllTickets(int movieSession) {
 		Ticket[] listAllTickets = new Ticket[SEATS];
 		 Ticket ticket = null;
 		 double floatPrice;
@@ -142,9 +142,8 @@ public class TicketDAO {
 	         
 	        try {
 				connect();
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+			} catch (SQLException ex) {
+				ex.printStackTrace();
 			}
 	         
 	        try(PreparedStatement statement = jdbcConnection.prepareStatement(sqlQuery)) {
@@ -396,6 +395,64 @@ public class TicketDAO {
 			e.printStackTrace();
 		}
 		
+	}
+
+	
+	//UPDATE table_name SET column1 = value1, column2 = value2 WHERE condition
+	public void updateMovieSessionAvailableSeats(int movieSession, int availableSeats) {
+		 String sql = "UPDATE session SET available = ?  WHERE session_id = ? ";
+	        
+	        try {
+				connect();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+	         
+	        try( PreparedStatement statement = jdbcConnection.prepareStatement(sql)){
+	        	statement.setInt(1, availableSeats);
+	        	statement.setInt(2, movieSession);
+	        	
+		        statement.executeUpdate();
+		        statement.close(); 
+	        } catch (SQLException ex) {
+				ex.printStackTrace();
+			}
+	        try {
+				disconnect();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		
+	}
+
+	public int getBookedSeats(int movieSession) {
+		int bookedSeats = 0;
+		String sqlQuery = "SELECT COUNT(ticket_id) AS avSeats FROM ticket WHERE session_id = ? ";
+		try {
+			connect();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+   	 	
+   	 	try(PreparedStatement statement = jdbcConnection.prepareStatement(sqlQuery)){
+         	statement.setInt(1, movieSession);
+         	
+   	        try(ResultSet rs = statement.executeQuery()){
+   	        	if(rs.next()) {
+   	        		bookedSeats  = rs.getInt("avSeats");
+				}
+   	        }
+        }catch (SQLException e) {
+			e.printStackTrace();
+		}
+   	 	
+   	   try {
+			disconnect();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+   	   
+		return bookedSeats;
 	}
 
 }

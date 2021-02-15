@@ -1,4 +1,5 @@
 <%@page import="com.busvancar.cinema.Movies"%> 
+<%@page import="com.busvancar.cinema.User"%> 
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -38,9 +39,14 @@ String asc = rb.getString("asc");
 String desc = rb.getString("desc");
 String available = rb.getString("available");
 String availableSeats = rb.getString("availableSeats");
+String enterMovieTitle = rb.getString("enterMovieTitle");
 
 
-
+ServletContext sc = this.getServletContext();
+int currentUsers = 1;
+if(sc.getAttribute("currentUsers")!=null){
+ 	 currentUsers = (Integer)sc.getAttribute("currentUsers");
+}
 %>
 
 <!DOCTYPE html>
@@ -240,7 +246,7 @@ String availableSeats = rb.getString("availableSeats");
 		      <form class="form-inline" action="/cinema">
 		      	 <div class="form-group">
 	                <div class="icon-addon addon-md">
-	                    <input type="search" placeholder="Enter movie title" class="form-control" name="search" id="search" onkeyup="searching();" >
+	                    <input type="search" placeholder="<% out.print(enterMovieTitle); %>" class="form-control" name="search" id="search" onkeyup="searching();" >
 	                    <label for="search" class="glyphicon glyphicon-search" rel="tooltip" title="search">
 	                    	<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
  								 <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
@@ -384,6 +390,14 @@ String availableSeats = rb.getString("availableSeats");
 	</form>
 </div>
 
+<div>(<% out.print(currentUsers); %>)<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
+  <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
+</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
+  <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
+  <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
+</svg></div>
+
 
 
 
@@ -413,7 +427,7 @@ String availableSeats = rb.getString("availableSeats");
   				   		<c:out value="${movie.movieDescriptionEn}"/>
       		  		</c:if>
 					 </div>
-
+					<div><hr/></div>
 					<div> <%  out.print(duration); %>: <b> <c:out value="${movie.movieDuration}"/></b>  <%  out.print(mins); %></div>
 					<div><%  out.print(genre); %> :
 						<c:if test = "${l10n == 'uk_UA'}">
@@ -435,9 +449,14 @@ String availableSeats = rb.getString("availableSeats");
 			</div>
 			
 		</c:forEach>
-	</div>
+</div>		
 		
-		<div class="message">${message}</div>
+		 ${pagination}
+		
+
+
+
+<div class="message">${message}</div>
 </div>
 </body>
 </html>

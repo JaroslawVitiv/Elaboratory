@@ -14,7 +14,6 @@ public class MovieSession {
 	private int movieDuration;
 	private String movieGenre;
 	private String movieGenreUa;
-	private int prepaidSeats;
 	private int availableSeats;
 	
 
@@ -81,14 +80,7 @@ public class MovieSession {
 		this.movieDuration =  movieDuration;
 	}
 	
-	public int getPrepaidSeats() {
-		return prepaidSeats;
-	}
 	
-	
-	public void setPrepaidSeats(int prepaidSeats) {
-		this.prepaidSeats = prepaidSeats;		
-	}
 	
 	public int getAvailableSeats() {
 		return availableSeats;

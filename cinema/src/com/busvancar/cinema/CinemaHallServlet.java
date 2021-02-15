@@ -61,7 +61,7 @@ public class CinemaHallServlet extends HttpServlet {
 		
 		PrintWriter out = response.getWriter();
 				
-		Ticket[] tickets = tDao.geAllTickets(movieSession);
+		Ticket[] tickets = tDao.getAllTickets(movieSession);
 		
 		double basicPrice = msDao.getPrice(coins, 1);
 		

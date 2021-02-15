@@ -6,8 +6,13 @@
 <%@ page import = "javax.servlet.*,javax.servlet.http.*, java.util.ResourceBundle "%>
 
 <%
-Locale locale = new Locale((String) session.getAttribute("l10n"));
-ResourceBundle rb = ResourceBundle.getBundle("l10n_"+session.getAttribute("l10n"), locale);
+String l10n = "uk_UA"; 
+
+if(session.getAttribute("l10n")!=null){
+	l10n = (String) session.getAttribute("l10n");
+}
+Locale locale = new Locale(l10n);
+ResourceBundle rb = ResourceBundle.getBundle("l10n_"+l10n, locale);
 String login = rb.getString("login");
 String mailPswPlease = rb.getString("mailPswPlease");
 String emailAddress = rb.getString("emailAddress");
@@ -139,7 +144,7 @@ a:hover {
      <input type="submit" class="signupbtn" value="<% out.print(login); %>" />
 
     <div class="clearfix">
-      <a type="button" class="cancelbtn" href="/cinema/?language=<% out.print(session.getAttribute("l10n")); %>"><% out.print(homePage); %></a>
+      <a type="button" class="cancelbtn" href="/cinema"><% out.print(homePage); %></a>
       <a type="button" class="signupbtn" href="signin.jsp" ><% out.print(signin); %></a>
     </div>
     

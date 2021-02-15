@@ -9,6 +9,7 @@ public class Movie {
 	private String descriptionEn;
 	private int duration;
 	private String genre;
+	private String genreUa;
 	private int genre_id;
 	private String poster;
 	private double price;
@@ -68,6 +69,14 @@ public class Movie {
 	
 	public String getGenre() {
 		return genre;
+	}
+	
+	public void setGenreUa(String genreUa) {
+		this.genreUa = genreUa;
+	}
+	
+	public String getGenreUa() {
+		return genreUa;
 	}
 	
 	public void setPoster(String poster) {

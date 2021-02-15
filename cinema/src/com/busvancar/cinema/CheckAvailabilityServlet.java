@@ -83,7 +83,7 @@ public class CheckAvailabilityServlet extends HttpServlet {
 				cinemaHall.append("<hr/>");
 				
 				
-				Ticket[] tickets = tDao.geAllTickets(movieSession);
+				Ticket[] tickets = tDao.getAllTickets(movieSession);
 				cinemaHall.append(getSeats(tickets, msDao.getPrice(msDao.getMovieSessionBasePrice(movieSession), 1)));
 			
 				ms.getPrice();
@@ -105,7 +105,7 @@ public class CheckAvailabilityServlet extends HttpServlet {
 				logingBoard.append("Hi, ");
 				logingBoard.append(user.getFirstName());
 				logingBoard.append("! <a href=\"logout\">Log out</a>");
-				logingBoard.append(" | <a href=\"addmovie.jsp\">Add a new Movie</a>");
+				logingBoard.append(" | <a href=\"addmovie.jsp\">My Account</a>");
 			}
 			
 			request.setAttribute("logingBoard", logingBoard.toString());
