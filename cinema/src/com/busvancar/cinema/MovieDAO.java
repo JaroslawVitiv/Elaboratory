@@ -67,7 +67,7 @@ public class MovieDAO {
 					movie.setDuration(rs.getInt("duration"));
 					movie.setGenre(Genre.genres_en_GB[rs.getInt("genre")]);
 					movie.setPoster(rs.getString("poster"));
-					movie.setPrice(rs.getDouble("default_price"));
+					movie.setPrice(rs.getDouble("default_price")/100);
 					
 					listMovies.add(movie);
 				}
@@ -114,6 +114,20 @@ public class MovieDAO {
 	        
 	        disconnect();
 	        return movie;
+	}
+
+	public boolean removeMovie(Movie movie) throws SQLException {
+		 String sql = "DELETE FROM movie WHERE id = ? ";
+	        connect();
+	         
+	        PreparedStatement statement = jdbcConnection.prepareStatement(sql);
+	        statement.setInt(1, movie.getId());
+	         
+	        boolean rowRemoved = statement.executeUpdate() > 0;
+	        statement.close();
+	        disconnect();
+	        return rowRemoved;
+
 	}
     
 	

@@ -22,19 +22,20 @@ import javax.servlet.http.HttpSession;
  */
 public class Movies extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private String previousWeek;
+	private String thisWeek;
+	private String nextWeek;
 	
-	
-	//getServletContext().getRealPath("")+ File.separator + UPLOAD_DIRECTORY + File.separator + fileName
     private void processData(HttpServletRequest request, HttpServletResponse response) {
     		int page = 1;
+    		HttpSession session = request.getSession();
     		
-    			
 			User user = null;
 			List<String> genres = new ArrayList<String>();
 			response.setContentType("text/html");  
     		MovieSessionDAO movieSessDao = new MovieSessionDAO();
     		List<MovieSession> schedule;
-    		HttpSession session = request.getSession();
+    		
     		if(session.getAttribute("session_token") == null) {
     			session.setAttribute("session_token", UUID.randomUUID().toString());
     		}
@@ -69,23 +70,18 @@ public class Movies extends HttpServlet {
       			session.setAttribute("genre",  0);
       		 }
     		
-    		 if(session.getAttribute("ascDesc") == null || "0".equals(request.getParameter("ascDesc"))) {
+    		 if(session.getAttribute("ascDesc") == null || "1".equals(request.getParameter("ascDesc"))) {
      			session.setAttribute("ascDesc", 1);
      		 }
      		 
-     		 if("1".equals(request.getParameter("ascDesc"))) {
-     			 session.setAttribute("ascDesc", 1); 
+     		 if("0".equals(request.getParameter("ascDesc"))) {
+     			 session.setAttribute("ascDesc", 0); 
      		 }
      		 
      		 
     		 
     		 
     		try {
-    			
-				
-				
-				
-				
     			
     			int sortBy = (int) session.getAttribute("sortBy");
     			int ascDesc =  (int) session.getAttribute("ascDesc");
@@ -103,7 +99,8 @@ public class Movies extends HttpServlet {
 	    			page = Integer.parseInt(request.getParameter("page"));
 	    			schedule =  movieSessDao.getSchedule(page);
 	    		}
-				request.setAttribute("pagination", getPagination(page));
+				
+				request.setAttribute("pagination", getPagination(page, request));
 				
 				
 				if( genreCategoryIndex > -1 && genreCategoryIndex < Genre.genres_en_GB.length) {
@@ -148,10 +145,8 @@ public class Movies extends HttpServlet {
 			
     }
 
-	
 
-
-	private String getPagination(int page) {
+	private String getPagination(int page, HttpServletRequest request) {
 		int p;
 		if(page<2) {
 			p=1;
@@ -162,31 +157,27 @@ public class Movies extends HttpServlet {
 		}
 		
 		
-		StringBuilder res = new StringBuilder("	<nav aria-label=\"Page navigation example\" id=\"pagination\"> "
-				+ "  <ul class=\"pagination\">");
-		
 		if(p>0) {	
-			res.append("<li class=\"page-item\"><a class=\"page-link\" href=\"/cinema/?page="+(p-1)+"\">Previous</a></li>");
+		    request.setAttribute("pWeek", " href=\"/cinema/?page="+(p-1)+"\" ");
 		} else {
-			res.append("<li class=\"page-item\"><a class=\"page-link\" disabled> Previous </a></li>");
+			request.setAttribute("pWeek", " disabled ");
 		}
+		
 		
 		for(int week = 1; week < 11; week++) {
 			if(p!=week) {
-				res.append("<li class=\"page-item\"><a class=\"page-link\" href=\"/cinema/?page="+week+"\">"+week+"</a></li>");
+				request.setAttribute("page"+week, "page-link");
 			} else {
-				res.append("<li class=\"page-item\"><a class=\"page-link\" disabled>"+week+"</a></li>");
+				request.setAttribute("page"+week, "btn btn-danger");
 			}
 		}
 		
 		if(p<10) {
-			res.append(" <li class=\"page-item\"><a class=\"page-link\" href=\"/cinema/?page="+(p+1)+"\" >Next</a></li>");
+		    request.setAttribute("nWeek", " href=\"/cinema/?page="+(p+1)+"\" ");
 		} else {
-			res.append(" <li class=\"page-item\"><a class=\"page-link\" disabled >Next</a></li>");
+			request.setAttribute("nWeek", " disabled ");
 		}
-		res.append(" </ul></nav>");
-	
-		return res.toString();
+		return "";
 	}
 
 

@@ -14,6 +14,10 @@ String emailAddress = rb.getString("emailAddress");
 String password = rb.getString("password");
 String homePage = rb.getString("homePage");
 String signin = rb.getString("signin");
+String pleaseSignUp = rb.getString("pleaseSignUp");
+String firstName = rb.getString("firstName");
+String lastName = rb.getString("lastName");
+
 
 %>
 <!DOCTYPE html>
@@ -125,17 +129,17 @@ a:hover {
 <body>
 <div class="container" >
 
-	<div>Просимо зареєструватись / Please Sign in</div>
+	<div><% out.print(pleaseSignUp); %> </div>
 	<hr/>
 	<div>
 		<form method="post" action="signin">
-			<input type="text" placeholder="First name" name="firstName" id="firstName" required/>
+			<input type="text" placeholder="<% out.print(firstName); %>" name="firstName" id="firstName" required/>
 			<br/>
-			<input type="text"  placeholder="Second name" name="lastName" id="lastName" required/>
+			<input type="text"  placeholder="<% out.print(lastName); %>" name="lastName" id="lastName" required/>
 			<br/>
-			<input type="email"  placeholder="Email address" name="email" id="email" required/>
+			<input type="email"  placeholder="<% out.print(emailAddress); %>" name="email" id="email" required/>
 			<br/>
-			<input type="password"  placeholder="Password" name="psw" id="psw" required/>
+			<input type="password"  placeholder="<% out.print(password); %>" name="psw" id="psw" required/>
 			<br/>
 			<input type="submit"  value="OK"/>
 			<br/>
@@ -143,7 +147,7 @@ a:hover {
 		</form>
 		<div>
             <a type="button" class="cancelbtn" href="/cinema/?language=<% out.print(session.getAttribute("l10n")); %>"><% out.print(homePage); %></a>
-            <a type="button" class="signupbtn" href="signin.jsp" ><% out.print(login); %></a>
+            <a type="button" class="signupbtn" href="login.jsp" ><% out.print(login); %></a>
 		</div>
 	</div>
 </div>

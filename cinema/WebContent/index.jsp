@@ -40,6 +40,10 @@ String desc = rb.getString("desc");
 String available = rb.getString("available");
 String availableSeats = rb.getString("availableSeats");
 String enterMovieTitle = rb.getString("enterMovieTitle");
+String thisWeek = rb.getString("thisWeek");
+String nextWeek = rb.getString("nextWeek");
+String previousWeek = rb.getString("previousWeek");
+
 
 
 ServletContext sc = this.getServletContext();
@@ -65,6 +69,7 @@ if(sc.getAttribute("currentUsers")!=null){
 
  <script type="text/javascript">
  	function searching(){
+ 		if(document.getElementById("search").value.length > 2){
  		var xhttp = new XMLHttpRequest();
 		  xhttp.onreadystatechange = function() {
 		    if (this.readyState == 4 && this.status == 200) {
@@ -74,6 +79,7 @@ if(sc.getAttribute("currentUsers")!=null){
 		  };
 		  xhttp.open("GET", "/cinema/search?request="+document.getElementById("search").value, true);
 		  xhttp.send();
+ 		}
  	}
  </script>
      
@@ -205,7 +211,7 @@ if(sc.getAttribute("currentUsers")!=null){
 
 </head>
 
-<body onload="setTodaysDate();">
+<body>
 
 <div class="container">
 	<nav  class="navbar fixed-top navbar-light navbar-expand-lg" style="background-color: #e3f2fd;">
@@ -263,7 +269,7 @@ if(sc.getAttribute("currentUsers")!=null){
       		
 
 <div class="dropdown">
-  <a type="button" class="btn btn-md btn-outline-info  dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+  <a type="button" class="btn btn-md btn-outline-info  dropdown-toggle"  id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
     
 					<c:if test = "${l10n == 'uk_UA'}">
 	      		    	 Українська
@@ -411,7 +417,8 @@ if(sc.getAttribute("currentUsers")!=null){
 
 <hr/>
 
-	<div class="grid" id="grid">
+	<div id="grid">
+	  <div class="grid" >
 		<c:forEach var="movie" items="${schedule}">
  			<div class="movie">
 				<div>
@@ -449,14 +456,37 @@ if(sc.getAttribute("currentUsers")!=null){
 			</div>
 			
 		</c:forEach>
-</div>		
+	</div>
+	
+		<div class="container">
+			${pagination}
+			<div>
+			   <nav aria-label="Page navigation example" id="pagination">
+				   <ul class="pagination">
+				   		<li class="page-item"><a class="page-link" ${pWeek} ><< <% out.print(previousWeek); %></a></li>
+				   		<li class="page-item"><a class="${page1}" href="/cinema/?page=1"><% out.print(thisWeek); %></a></li>
+				   		<li class="page-item"><a class="${page2}" href="/cinema/?page=2">+1</a></li>  
+				   		<li class="page-item"><a class="${page3}" href="/cinema/?page=3">+2</a></li>   
+				   		<li class="page-item"><a class="${page4}" href="/cinema/?page=4">+3</a></li>  
+				   		<li class="page-item"><a class="${page5}" href="/cinema/?page=5">+4</a></li> 
+				   		<li class="page-item"><a class="${page6}" href="/cinema/?page=6">+5</a></li>  
+				   		<li class="page-item"><a class="${page7}" href="/cinema/?page=7">+6</a></li> 
+				   		<li class="page-item"><a class="${page8}" href="/cinema/?page=8">+7</a></li>  
+				   		<li class="page-item"><a class="${page9}" href="/cinema/?page=9">+8</a></li> 	
+				   		<li class="page-item"><a class="${page10}" href="/cinema/?page=10">+9</a></li> 		
+				   		<li class="page-item"><a class="page-link" ${nWeek}><% out.print(nextWeek); %> >></a></li> 		
+				   		
+				   		 		
+				   </ul>
+				</nav>
+			</div>	
+			
+			<div class="message">${message}</div>
 		
-		 ${pagination}
-		
+		</div>
+</div>	
 
 
-
-<div class="message">${message}</div>
 </div>
 </body>
 </html>

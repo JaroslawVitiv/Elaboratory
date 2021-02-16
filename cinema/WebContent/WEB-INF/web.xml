@@ -130,9 +130,7 @@
     <url-pattern>/ticketCounter</url-pattern>
   </servlet-mapping>
   
-  
-    
-   <servlet>
+    <servlet>
       <servlet-name>TicketGeneratorServlet</servlet-name>
       <servlet-class>com.busvancar.cinema.TicketGeneratorServlet</servlet-class>
    </servlet>
@@ -202,6 +200,27 @@
   <servlet-mapping>
     <servlet-name>SearchServlet</servlet-name>
     <url-pattern>/search</url-pattern>
+  </servlet-mapping>
+  
+   <servlet>
+      <servlet-name>UserAccountServlet</servlet-name>
+      <servlet-class>com.busvancar.cinema.UserAccountServlet</servlet-class>
+   </servlet>
+    
+  <servlet-mapping>
+    <servlet-name>UserAccountServlet</servlet-name>
+    <url-pattern>/account</url-pattern>
+  </servlet-mapping>
+  
+  
+    <servlet>
+      <servlet-name>RemoveMovieServlet</servlet-name>
+      <servlet-class>com.busvancar.cinema.RemoveMovieServlet</servlet-class>
+   </servlet>
+    
+  <servlet-mapping>
+    <servlet-name>RemoveMovieServlet</servlet-name>
+    <url-pattern>/remove</url-pattern>
   </servlet-mapping>
  
   

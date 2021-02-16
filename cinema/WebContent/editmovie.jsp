@@ -7,7 +7,7 @@
 </head>
 <body>
 <div>
-<div> Editing movie / Редагування фільму: ${title} (N ${movie_id}) | <a href="/cinema">Home Page</a></div>
+<div> Editing movie / Редагування фільму: ${title} (N ${movie_id}) | <a href="/administration">Home Page</a></div>
 <hr/>
 
 <div><img src="/cinema/images/${poster}" width="200px" /></div>
