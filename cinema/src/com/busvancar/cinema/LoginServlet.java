@@ -3,8 +3,11 @@ package com.busvancar.cinema;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -24,6 +27,13 @@ public class LoginServlet extends HttpServlet {
 
 	protected void processData(HttpServletRequest request,
 		HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession();
+		
+		
+		Locale locale = new Locale((String) session.getAttribute("l10n"));
+		ResourceBundle rb = ResourceBundle.getBundle("l10n_"+session.getAttribute("l10n"), locale);
+		String eitherPasswordEmalWrong = rb.getString("eitherPasswordEmalWrong");
+		
 		PrintWriter out= response.getWriter();
 		UserDAO uDao = new UserDAO();
 		
@@ -34,15 +44,9 @@ public class LoginServlet extends HttpServlet {
 		
 		
 		if(user.getFirstName()!=null){
-			HttpSession session = request.getSession();
-			session.setAttribute("user", user);
 			
-			//ServletContext sc = this.getServletContext();
-			//synchronized(this) {
-				//ArrayList<User> users = (ArrayList<User>) sc.getAttribute("users");
-				//users.add(user);
-				//sc.setAttribute("users", users);
-		//	}
+			session.setAttribute("user", user);
+		
 			session.setMaxInactiveInterval(60*60);
 			response.sendRedirect(request.getContextPath());
 			
@@ -50,7 +54,7 @@ public class LoginServlet extends HttpServlet {
 		} else{
 			response.setCharacterEncoding("UTF-8");
 			RequestDispatcher rd = getServletContext().getRequestDispatcher("/login.jsp");
-			out.println("<div id=\"loginError\">Either email address name or password is wrong.  Щось не те</div>");
+			out.println("<div id=\"loginError\">"+eitherPasswordEmalWrong+"</div>");
 			rd.include(request, response);
 		}
 

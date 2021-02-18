@@ -82,7 +82,7 @@ public class MovieDAO {
         return listMovies;
     }
     
-    public Movie getMovie(int movieNumber) throws SQLException  {
+    public Movie getMovie(int movieId) throws SQLException  {
 		Movie movie = null;
 		   String sqlQuery = "SELECT * FROM movie WHERE id = ? ";
 		  
@@ -90,19 +90,20 @@ public class MovieDAO {
 	        connect();
 	         
 	        try(PreparedStatement statement = jdbcConnection.prepareStatement(sqlQuery)){
-	         	statement.setInt(1, movieNumber);
+	         	statement.setInt(1, movieId);
 	   	        try(ResultSet rs = statement.executeQuery()){
 	   	            movie = new Movie();
 	   	            if(rs.next()) {
-	   	            	movie.setId(movieNumber);
+	   	            	movie.setId(movieId);
 		   	        	movie.setTitle(rs.getString("title"));
 						movie.setDescriptionEn(rs.getString("description_en"));
 						movie.setDescriptionUa(rs.getString("description_uk"));
 						movie.setDuration(rs.getInt("duration"));
 						movie.setGenre(Genre.genres_en_GB[rs.getInt("genre")]);
-						movie.setGenreUa(Genre.genres_en_GB[rs.getInt("genre")]);
+						movie.setGenreUa(Genre.genres_uk_UA[rs.getInt("genre")]);
+						movie.setGenreId(rs.getInt("genre"));
 						movie.setPoster(rs.getString("poster"));
-						movie.setPrice(rs.getDouble("default_price"));
+						movie.setPrice(rs.getDouble("default_price")/100);
 		   	        }
 	   	       }
 	   	        statement.close();
@@ -129,6 +130,40 @@ public class MovieDAO {
 	        return rowRemoved;
 
 	}
-    
+
+	public boolean updatePoster(Movie movie) throws SQLException {
+		 String sql = "UPDATE movie SET poster = ? WHERE id = ? ";
+	        connect();
+	         
+	        PreparedStatement statement = jdbcConnection.prepareStatement(sql);
+	        statement.setString(1, movie.getPoster());
+	        statement.setInt(2, movie.getId());
+	      
+	        boolean rowUpdated = statement.executeUpdate() > 0;
+	        statement.close();
+	        disconnect();
+	        return rowUpdated;
+	}
+
+	public boolean update(Movie movie) throws SQLException {
+		 String sql = "UPDATE movie SET title = ? , description_en = ?, description_uk = ?, duration = ?, genre = ?, default_price = ?"
+		 		+ " WHERE id = ? ";
+	       	connect();
+			 PreparedStatement statement = jdbcConnection.prepareStatement(sql);
+				statement.setString(1, movie.getTitle());
+				statement.setString(2, movie.getDescriptionEn());
+				statement.setString(3, movie.getDescriptionUa());
+				statement.setInt(4, movie.getDuration());
+				statement.setInt(5, movie.getGenreId());
+				int coins = (int) (movie.getPrice()*100);
+				statement.setInt(6, coins);
+				statement.setInt(7, movie.getId());
+				
+				boolean rowUpdated = statement.executeUpdate() > 0;
+				statement.close();
+				disconnect();
+			return rowUpdated;
+	}
+
 	
 }

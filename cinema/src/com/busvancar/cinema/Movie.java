@@ -10,7 +10,7 @@ public class Movie {
 	private int duration;
 	private String genre;
 	private String genreUa;
-	private int genre_id;
+	private int genreId;
 	private String poster;
 	private double price;
 
@@ -23,12 +23,12 @@ public class Movie {
 		return id;
 	}
 	
-	public void setGenreId(int genre_id) {
-		this.genre_id = genre_id;
+	public void setGenreId(int genreId) {
+		this.genreId = genreId;
 	}
 	
 	public int getGenreId() {
-		return genre_id;
+		return genreId;
 	}
 	
 	public void setTitle(String title) {

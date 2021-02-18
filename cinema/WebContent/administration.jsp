@@ -45,6 +45,8 @@
  String nextWeek = rb.getString("nextWeek");
  String previousWeek = rb.getString("previousWeek");
  String statistics =  rb.getString("statistics");
+ String addAnewMovie =  rb.getString("addAnewMovie");
+
  
  ServletContext sc = this.getServletContext();
  int currentUsers = 1;
@@ -195,7 +197,7 @@ function declineRemove(id){
 				</form>
 			</div>
 			
-			<span><a class="btn btn-md btn-outline-info" href="addmovie.jsp">Add a new Movie</a></span>
+			<span><a class="btn btn-md btn-outline-info" href="addmovie.jsp"><% out.print(addAnewMovie); %></a></span>
 		     		
 		     		
 		      		

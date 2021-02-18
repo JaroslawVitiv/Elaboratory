@@ -108,7 +108,7 @@ public class MovieSessionDAO {
 		String genre = "";
 		String time = " session.session_time BETWEEN NOW() AND DATE_ADD(NOW(), INTERVAL 1 WEEK) ";
 		if(chosendate.isAfter(LocalDate.now())) {
-			time = " session.session_time BETWEEN '"+chosendate+"' AND DATE_ADD('"+chosendate+"', INTERVAL 1 DAY) ";
+			time = " session.session_time BETWEEN '"+chosendate+"' AND DATE_ADD('"+chosendate+"', INTERVAL 1 WEEK) ";
 		}
 		
 		if(genreIndex > 0 && genreIndex < Genre.genres_en_GB.length) {
@@ -289,7 +289,7 @@ public class MovieSessionDAO {
 	public List<MovieSession> getSchedule(int page) throws SQLException {
 		String time;
 		if(page>1) {
-			time = " session.session_time BETWEEN DATE_ADD(NOW(), INTERVAL "+(page)+" WEEK) AND DATE_ADD(NOW(), INTERVAL "+(page+1)+" WEEK) ";
+			time = " session.session_time BETWEEN DATE_ADD(NOW(), INTERVAL "+(page-1)+" WEEK) AND DATE_ADD(NOW(), INTERVAL "+(page)+" WEEK) ";
 		} else {
 			time = " session.session_time BETWEEN NOW() AND DATE_ADD(NOW(), INTERVAL 1 WEEK) ";
 		}
@@ -334,5 +334,71 @@ public class MovieSessionDAO {
         disconnect();
          
 		return schedule;
+	}
+	
+	
+	
+	public int getViews(Movie movie) {
+		   String sqlQuery = "SELECT COUNT(*) AS total FROM ticket INNER JOIN session ON ticket.session_id = session.session_id WHERE session.movie_id = ? ";
+		   int total = 0;
+	       
+	        try {
+				connect();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+	         
+	        try(PreparedStatement statement = jdbcConnection.prepareStatement(sqlQuery)){
+	         	statement.setInt(1, movie.getId());
+	   	        try(ResultSet rs = statement.executeQuery()){
+	   	            if(rs.next()) {
+	   	                total = rs.getInt("total");
+	   	            }
+	   	       }
+	   	        statement.close();
+	        }catch (SQLException e) {
+				e.printStackTrace();
+			}
+	   	    
+	        try {
+				disconnect();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	        return total;
+	}
+
+	public double getIncome(Movie movie) {
+		String sqlQuery = "SELECT SUM(ticket.price) AS total FROM ticket INNER JOIN session ON ticket.session_id = session.session_id WHERE session.movie_id = ? ";
+		    double total = 0;
+	       
+	        try {
+				connect();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+	         
+	        try(PreparedStatement statement = jdbcConnection.prepareStatement(sqlQuery)){
+	         	statement.setInt(1, movie.getId());
+	   	        try(ResultSet rs = statement.executeQuery()){
+	   	            if(rs.next()) {
+	   	                total = rs.getInt("total");
+	   	            }
+	   	       }
+	   	        statement.close();
+	        }catch (SQLException e) {
+				e.printStackTrace();
+			}
+	   	    
+	        try {
+				disconnect();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	        return total/100;
 	}
  }

@@ -3,6 +3,7 @@ package com.busvancar.cinema;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -16,6 +17,8 @@ import javax.servlet.http.HttpSession;
  */
 public class EditMovieServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
+	 private final int SEATS = 96;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -26,69 +29,54 @@ public class EditMovieServlet extends HttpServlet {
     
     
     protected void processData(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	 Movie movie;
-    	 MovieSessionDAO msDao;
-    	 MovieDAO mDao;
+    	 Movie movie = new Movie();
+         MovieDAO mDao = new MovieDAO();
     	 List<MovieSession> msdList;
-    	 String timeStamp;
+    	 MovieSessionDAO msDao = new MovieSessionDAO();
+         DecimalFormat df = new DecimalFormat("###.##");
     	 
-    	 
-			
+		
     	 response.setContentType("text/html");
     	 
     	 PrintWriter out = response.getWriter();
     	 StringBuilder sessionList = new StringBuilder(); 
     	 HttpSession session = request.getSession();
     	 User user = (User) session.getAttribute("user");
- 		
+ 		int admin = (int)user.getAdmin();
  		if(user.getAdmin()<1) {
  			response.sendRedirect("/cinema");
  		}
-    	 
+ 		
+ 		int movieId = Integer.parseInt(request.getParameter("m"));
+ 		
+ 		movie.setId(movieId);
+ 		int views = msDao.getViews(movie);
+ 		double income = msDao.getIncome(movie);
+ 		double cinemaHallOccupationRate = 0;
+		try {
+			cinemaHallOccupationRate = ((double) views / (msDao.getAllMovieSessions(movie).size() * SEATS)) * 100;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} 
+		
+ 		request.setAttribute("views", views);
+ 		request.setAttribute("income", income);
+ 		request.setAttribute("cinemaHallOccupationRate", df.format(cinemaHallOccupationRate));
+ 		
+ 		 
          
-         int movieNumber = Integer.parseInt(request.getParameter("m"));
          	try {
 				mDao = new MovieDAO();
-				movie = mDao.getMovie(movieNumber);
-				out.print(movieNumber);
+				movie = mDao.getMovie(movie.getId());
 				
 				if(movie!=null) {
 					
 					msDao = new MovieSessionDAO();
 					msdList = msDao.getAllMovieSessions(movie);
 				
+					request.setAttribute("listOfAllSessions", msdList);
+					request.setAttribute("movie", movie);
 					
-
-					
-					for(MovieSession ms : msdList) {
-						sessionList.append("<div> Date: ");
-						sessionList.append(String.format("%te %1$tB, %1$tY (%1$TH:%1$TM)", ms.getDateTime()));
-						sessionList.append("</div>");
-						sessionList.append("<div> Price: ");
-						sessionList.append(ms.getPrice());
-						sessionList.append(" uah");
-						sessionList.append("<form method=\"post\" action=\"removesession\">"
-								+ "<input type=\"hidden\" value=\""+ms.getSessionId()+"\" name=\"sessionId\"  />"
-								+ "<input type=\"hidden\" value=\""+ms.getMovieId()+"\" name=\"movieId\"  />"
-								+ "<input value=\"Remove\" type=\"submit\" />"
-								+ "</form>");
-
-						sessionList.append("<hr/>");
-						sessionList.append("</div>");
-					}
-					
-					request.setAttribute("listOfAllSessions", sessionList.toString());
-					
-					request.setAttribute("movie_id", movieNumber);
-					request.setAttribute("poster", movie.getPoster());
-					request.setAttribute("title", movie.getTitle());
-					request.setAttribute("descriptionEn",movie.getDescriptionEn());
-					request.setAttribute("descriptionUa",movie.getDescriptionUa());
-					request.setAttribute("genre" ,movie.getGenre());
-					request.setAttribute("duration", movie.getDuration());
-					request.setAttribute("price", (movie.getPrice()/100));
-					
-				
 					request.getRequestDispatcher("editmovie.jsp").forward(request,response);
 				} else {
 					out.print("Error: Movie is not found");

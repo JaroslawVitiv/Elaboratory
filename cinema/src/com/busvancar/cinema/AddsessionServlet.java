@@ -42,7 +42,7 @@ public class AddsessionServlet extends HttpServlet {
 		Timestamp timestamp = null;
 
 		try{
-		    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+		    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		    Date parsedDate = sdf.parse(dateTime);
 		    timestamp = new Timestamp(parsedDate.getTime());
 		    mSession.setDateTime(timestamp);

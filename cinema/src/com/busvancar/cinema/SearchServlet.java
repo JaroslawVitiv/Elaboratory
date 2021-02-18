@@ -80,12 +80,13 @@ public class SearchServlet extends HttpServlet {
     
     	
     	if(schedule.size()>0) {
+    		out.print("<div class=\"grid\">");
 	    	for(MovieSession ms : schedule) {
-	    		out.print("<div class=\"grid\">");
+	    		
 	    		out.print("   <div class=\"movie\">");
-	    		out.print("     <div>  <img src=\"images/"+ ms.getMoviePoster() +"\"  width=\"250px\" /> 	</div>");
-				out.print("     <div class=\"description\">");
-				out.print("		  <h1> "+title+": "+ms.getMovieTitle()+"</h1>");
+			    out.print("     <div>  <img src=\"images/"+ ms.getMoviePoster() +"\"  width=\"250px\" /> 	</div>");
+			    out.print("     <div class=\"description\">");
+				out.print("		<h1> "+title+": "+ms.getMovieTitle()+"</h1>");
 			    out.print("<div>"+description+": ");
 				if("uk_UA".equals(session.getAttribute("l10n"))) {
 					out.print(ms.getMovieDescriptionUa());
@@ -100,19 +101,18 @@ public class SearchServlet extends HttpServlet {
 					} else {
 						out.print(ms.getMovieGenre());
 					}
-				    out.print("</div>");
+			    out.print("</div>");
 			    out.print("		      <div>"+datetime+": <b>"+formatter.format(ms.getDateTime())+"</b></div>");
 			    out.print("		      <div>"+price+": "+ms.getPrice()+" $$ </div>");
 			    out.print("		      <div>"+available+": "+ms.getAvailableSeats()+" "+availableSeats+" </div>");
-						
 			    out.print("           <hr/>");
-						
 			    out.print(" 	      <div> <a class=\"btn btn-outline-danger\" href=\"availability?movie_session="+ ms.getSessionId()+"\"/> "+checkavailability+" </a></div>");
-			    out.print("	    </div>");
+			    out.print("        </div>");  
 			    out.print("	    <hr/>");
-			    out.print("  </div>");
-			    out.print("</div>");
+			    out.print("  </div>");  
 	    	}
+	       out.print("</div>");  
+
     	} else {
     		out.print("<div style=\"font-size:50px; font-family: cursive; text-align:center; color:maroon;\">Sorry, but no results found. Try another option...");
     	}

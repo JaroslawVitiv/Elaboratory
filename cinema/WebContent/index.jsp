@@ -47,7 +47,7 @@ String previousWeek = rb.getString("previousWeek");
 
 
 ServletContext sc = this.getServletContext();
-int currentUsers = 1;
+int currentUsers = 0;
 if(sc.getAttribute("currentUsers")!=null){
  	 currentUsers = (Integer)sc.getAttribute("currentUsers");
 }
@@ -96,10 +96,10 @@ if(sc.getAttribute("currentUsers")!=null){
    .description {
  	 	display: flex;
  	   flex-direction: row;
- 	    padding: 20px;
+ 	    padding: 10px;
  	   flex-wrap: wrap;
  	   justify-content: space-start;
- 	   margin:20px;
+ 	   margin:10px;
  	   flex-direction: column; 
   }
   #logo{
@@ -132,6 +132,8 @@ if(sc.getAttribute("currentUsers")!=null){
   		padding: 10px;
 	}
 	
+	
+	
 	.form-inline{
 		display:flex;
 		flex-direction: row; 
@@ -151,12 +153,7 @@ if(sc.getAttribute("currentUsers")!=null){
 	
 	
 	
-	
-.center-block {
-    float: none;
-    margin-left: auto;
-    margin-right: auto;
-}
+
 
 .input-group .icon-addon .form-control {
     border-radius: 0;
@@ -412,13 +409,15 @@ if(sc.getAttribute("currentUsers")!=null){
         
 	        </div>
 	</nav>
+	
+	
+	
 <br/>
 <br/>
-
 <hr/>
 
 	<div id="grid">
-	  <div class="grid" >
+	  <div  class="grid">
 		<c:forEach var="movie" items="${schedule}">
  			<div class="movie">
 				<div>
@@ -434,7 +433,6 @@ if(sc.getAttribute("currentUsers")!=null){
   				   		<c:out value="${movie.movieDescriptionEn}"/>
       		  		</c:if>
 					 </div>
-					<div><hr/></div>
 					<div> <%  out.print(duration); %>: <b> <c:out value="${movie.movieDuration}"/></b>  <%  out.print(mins); %></div>
 					<div><%  out.print(genre); %> :
 						<c:if test = "${l10n == 'uk_UA'}">
@@ -453,14 +451,12 @@ if(sc.getAttribute("currentUsers")!=null){
 					<div> <a class="btn btn-outline-danger" href="availability?movie_session=<c:out value="${movie.sessionId}"/>"><%  out.print(checkavailability); %></a></div>
 				</div>
 				<hr/>
-			</div>
-			
+			</div>	
 		</c:forEach>
 	</div>
 	
-		<div class="container">
-			${pagination}
-			<div>
+		      <br/>
+			  ${pagination}
 			   <nav aria-label="Page navigation example" id="pagination">
 				   <ul class="pagination">
 				   		<li class="page-item"><a class="page-link" ${pWeek} ><< <% out.print(previousWeek); %></a></li>
@@ -479,14 +475,9 @@ if(sc.getAttribute("currentUsers")!=null){
 				   		 		
 				   </ul>
 				</nav>
-			</div>	
 			
-			<div class="message">${message}</div>
-		
-		</div>
-</div>	
-
-
+				<div class="message">${message}</div>
+		</div>	
 </div>
 </body>
 </html>

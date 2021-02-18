@@ -157,7 +157,7 @@ public class Movies extends HttpServlet {
 		}
 		
 		
-		if(p>0) {	
+		if(p>1) {	
 		    request.setAttribute("pWeek", " href=\"/cinema/?page="+(p-1)+"\" ");
 		} else {
 			request.setAttribute("pWeek", " disabled ");

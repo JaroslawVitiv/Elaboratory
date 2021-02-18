@@ -222,6 +222,26 @@
     <servlet-name>RemoveMovieServlet</servlet-name>
     <url-pattern>/remove</url-pattern>
   </servlet-mapping>
+  
+   <servlet>
+      <servlet-name>UpdatePicServlet</servlet-name>
+      <servlet-class>com.busvancar.cinema.UpdatePicServlet</servlet-class>
+   </servlet>
+    
+  <servlet-mapping>
+    <servlet-name>UpdatePicServlet</servlet-name>
+    <url-pattern>/updatepicture</url-pattern>
+  </servlet-mapping>
+  
+   <servlet>
+      <servlet-name>UpdateMovieServlet</servlet-name>
+      <servlet-class>com.busvancar.cinema.UpdateMovieServlet</servlet-class>
+   </servlet>
+    
+  <servlet-mapping>
+    <servlet-name>UpdateMovieServlet</servlet-name>
+    <url-pattern>/updatemovie</url-pattern>
+  </servlet-mapping>
  
   
    <filter>
