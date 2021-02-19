@@ -2,18 +2,19 @@ package com.busvancar.cinema;
 
 import java.math.RoundingMode;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.text.DecimalFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TicketDAO {
+	private static final int SEATS_IN_ROW = 12;
 	private Connection jdbcConnection;
 	private final int SEATS = 96;
-	private double floatPrice = 0;
 	
     protected void connect() throws SQLException {
         if (jdbcConnection == null || jdbcConnection.isClosed()) {
@@ -356,7 +357,7 @@ public class TicketDAO {
          	statement.setString(2, sessionToken);
    	        try(ResultSet rs = statement.executeQuery()){
    	        	if(rs.next()) {
-   	        		floatPrice  = (double) rs.getInt("total");
+   	        		double floatPrice = (double) rs.getInt("total");
 					total =  floatPrice/100;
    	        	}
    	        }
@@ -455,4 +456,207 @@ public class TicketDAO {
 		return bookedSeats;
 	}
 
+	public List<Ticket> getAllTickets(User user) {
+		List<Ticket> allUsersTickets = new ArrayList<>();
+		Ticket ticket;
+		String sqlQuery = " SELECT ticket.ticket_id, ticket.session_id, ticket.seat, ticket.price, ticket.purchaser_id, ticket.session_token, ticket.time, "
+				+ "	session.movie_id, session.session_time, movie.title, movie.duration FROM ticket   "
+				+ " INNER JOIN session ON ticket.session_id = session.session_id "
+	     		+ " INNER JOIN movie ON movie.id = session.movie_id "
+				+ "   WHERE purchaser_id = ? ORDER BY time ASC";
+         
+	    try {
+	    	connect();
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+	         
+	    try(PreparedStatement statement = jdbcConnection.prepareStatement(sqlQuery)) {
+	        	
+	       	statement.setInt(1, user.getId());
+
+	       	try(ResultSet rs = statement.executeQuery()){
+	    			
+				while(rs.next()) {
+					ticket = new Ticket();
+					ticket.setMovieTitle(rs.getString("movie.title"));
+					ticket.setMovieDuration(rs.getInt("movie.duration"));
+					ticket.setTicketId(rs.getInt("ticket.ticket_id"));
+					ticket.setSessionId(rs.getInt("ticket.session_id"));
+					ticket.setSeat(rs.getInt("ticket.seat"));
+					double floatPrice = (double) rs.getInt("ticket.price");
+					ticket.setPrice(floatPrice/100);
+					ticket.setPurchaserId(rs.getInt("ticket.purchaser_id"));
+					ticket.setSessionToken(rs.getString("ticket.session_token"));
+					ticket.setTime(rs.getTimestamp("ticket.time"));
+					ticket.setMovieSessionTime(rs.getTimestamp("session.session_time"));
+					int row = (((ticket.getSeat()-((ticket.getSeat()-1) % SEATS_IN_ROW))/SEATS_IN_ROW)+1);
+					ticket.setRow(row);
+						
+					allUsersTickets.add(ticket);
+				}
+	       	}
+	       	statement.close();
+	    }catch (SQLException e) {
+			e.printStackTrace();
+		}
+	    
+	    try {
+			disconnect();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	 	return allUsersTickets;
+	}
+
+	public Ticket getTicket(int ticketId, String sessionToken) {
+		Ticket ticket = new Ticket();
+		String sqlQuery = " SELECT ticket.ticket_id, ticket.session_id, ticket.seat, ticket.price, ticket.purchaser_id, ticket.session_token, ticket.time, "
+				+ "	session.movie_id, session.session_time, movie.title, movie.duration FROM ticket   "
+				+ " INNER JOIN session ON ticket.session_id = session.session_id "
+	     		+ " INNER JOIN movie ON movie.id = session.movie_id "
+				+ "   WHERE ticket.ticket_id = ? AND ticket.session_token = ? ";
+         
+	    try {
+	    	connect();
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+	         
+	    try(PreparedStatement statement = jdbcConnection.prepareStatement(sqlQuery)) {
+	        	
+	       	statement.setInt(1, ticketId);
+	       	statement.setString(2, sessionToken);
+
+
+	       	try(ResultSet rs = statement.executeQuery()){
+	    			
+				if(rs.next()) {
+					ticket.setMovieTitle(rs.getString("movie.title"));
+					ticket.setMovieDuration(rs.getInt("movie.duration"));
+					ticket.setTicketId(rs.getInt("ticket.ticket_id"));
+					ticket.setSessionId(rs.getInt("ticket.session_id"));
+					ticket.setSeat(rs.getInt("ticket.seat"));
+					double floatPrice = (double) rs.getInt("ticket.price");
+					ticket.setPrice(floatPrice/100);
+					ticket.setPurchaserId(rs.getInt("ticket.purchaser_id"));
+					ticket.setSessionToken(rs.getString("ticket.session_token"));
+					ticket.setTime(rs.getTimestamp("ticket.time"));
+					ticket.setMovieSessionTime(rs.getTimestamp("session.session_time"));
+					int row = (((ticket.getSeat()-((ticket.getSeat()-1) % SEATS_IN_ROW))/SEATS_IN_ROW)+1);
+					ticket.setRow(row);
+						
+				}
+	       	}
+	       	statement.close();
+	    }catch (SQLException e) {
+			e.printStackTrace();
+		}
+	    
+	    try {
+			disconnect();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return ticket;
+	}
+
+	public double getIncomes(LocalDate start, LocalDate end) {
+		double total = 0;
+		double floatPrice = 0;
+		String sqlQuery = "SELECT SUM(price) AS total FROM ticket WHERE time BETWEEN ? AND DATE_ADD(? , INTERVAL 1 DAY)  ";
+		try {
+			connect();
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+   	 	
+   	 	try(PreparedStatement statement = jdbcConnection.prepareStatement(sqlQuery)){
+         	statement.setDate(1, Date.valueOf(start));
+         	statement.setDate(2, Date.valueOf(end));
+   	        
+         	try(ResultSet rs = statement.executeQuery()){
+   	        	if(rs.next()) {
+   	        		floatPrice = (double) rs.getInt("total");
+					total =  floatPrice/100;
+   	        	}
+   	        }
+        }catch (SQLException e) {
+			e.printStackTrace();
+		}
+   	 	
+   	   try {
+			disconnect();
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+   	   
+		return total;
+	}
+
+	public int getTicketsBought(LocalDate start, LocalDate end) {
+		int total = 0;
+		String sqlQuery = "SELECT COUNT(price) AS total FROM ticket WHERE time BETWEEN ? AND DATE_ADD(? , INTERVAL 1 DAY)  ";
+		try {
+			connect();
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+   	 	
+   	 	try(PreparedStatement statement = jdbcConnection.prepareStatement(sqlQuery)){
+         	statement.setDate(1, Date.valueOf(start));
+         	statement.setDate(2, Date.valueOf(end));
+   	        
+         	try(ResultSet rs = statement.executeQuery()){
+   	        	if(rs.next()) {
+   	        		total = rs.getInt("total");
+   	        	}
+   	        }
+        }catch (SQLException e) {
+			e.printStackTrace();
+		}
+   	 	
+   	   try {
+			disconnect();
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+   	   
+		return total;
+	}
+
+	public double getAveTicketPrice(LocalDate start, LocalDate end) {
+		double total = 0;
+		double floatPrice = 0;
+		String sqlQuery = "SELECT AVG(price) AS total FROM ticket WHERE time BETWEEN ? AND DATE_ADD(? , INTERVAL 1 DAY)  ";
+		try {
+			connect();
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+   	 	
+   	 	try(PreparedStatement statement = jdbcConnection.prepareStatement(sqlQuery)){
+         	statement.setDate(1, Date.valueOf(start));
+         	statement.setDate(2, Date.valueOf(end));
+   	        
+         	try(ResultSet rs = statement.executeQuery()){
+   	        	if(rs.next()) {
+   	        		floatPrice = (double) rs.getInt("total");
+					total =  floatPrice/100;
+   	        	}
+   	        }
+        }catch (SQLException e) {
+			e.printStackTrace();
+		}
+   	 	
+   	   try {
+			disconnect();
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+   	   
+		return total;
+	}
+	
 }

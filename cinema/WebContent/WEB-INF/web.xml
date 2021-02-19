@@ -242,7 +242,19 @@
     <servlet-name>UpdateMovieServlet</servlet-name>
     <url-pattern>/updatemovie</url-pattern>
   </servlet-mapping>
- 
+
+
+ <servlet>
+      <servlet-name>PdfTicketServlet</servlet-name>
+      <servlet-class>com.busvancar.cinema.PdfTicketServlet</servlet-class>
+   </servlet>
+    
+  <servlet-mapping>
+    <servlet-name>PdfTicketServlet</servlet-name>
+    <url-pattern>/cinematicket</url-pattern>
+  </servlet-mapping>
+
+  
   
    <filter>
     <filter-name>CharsetFilter</filter-name>

@@ -3,9 +3,13 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -31,7 +35,7 @@ public class UserDAO {
     }
      
     public User findUser(String email, String password) {
-    	User user = User.createUser();
+    	User user = new User();
     	 String sqlQuery = "SELECT * FROM user WHERE email = ? AND password = ?";
     	try {
 			connect();
@@ -156,6 +160,44 @@ public class UserDAO {
 	    			e.printStackTrace();
 	    		}
 	        return false;
+	}
+
+	public List<User> getTopKeyCustomers(int limit, LocalDate start, LocalDate end) throws SQLException {
+		List<User> topKeyCustomers = new ArrayList<>();
+		User user = null;
+		int coins = 0;
+		double revenue;
+		 String sqlQuery = "SELECT ticket.time, user.first_name, user.last_name, SUM(ticket.price) AS totalRevenue FROM user INNER JOIN ticket ON user.id = ticket.purchaser_id  WHERE ticket.time BETWEEN ? AND DATE_ADD(? , INTERVAL 1 DAY)  GROUP BY ticket.purchaser_id  ORDER BY SUM(ticket.price) DESC  LIMIT ?";
+	        connect();
+	         
+	        try(PreparedStatement statement = jdbcConnection.prepareStatement(sqlQuery)) {
+	        	
+	        	
+	        	statement.setDate(1, Date.valueOf(start));
+	         	statement.setDate(2, Date.valueOf(end));
+	         	statement.setInt(3, limit);
+	         	
+	        	try(ResultSet rs = statement.executeQuery()){
+	    			
+					while(rs.next()) {
+						user = new User();
+						user.setFirstName(rs.getString("user.first_name"));
+						user.setLastName(rs.getString("user.last_name"));
+						coins = rs.getInt("totalRevenue");
+						revenue = (double) coins/100;
+						user.setRevenue(revenue);
+						
+						
+						topKeyCustomers.add(user);
+					}
+	        	}
+	        	statement.close();
+	        }catch (SQLException e) {
+				e.printStackTrace();
+			}
+	    
+	        disconnect();
+		return topKeyCustomers;
 	}
      
   

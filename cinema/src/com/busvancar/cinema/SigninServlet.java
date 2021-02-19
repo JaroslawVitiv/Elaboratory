@@ -31,23 +31,8 @@ public class SigninServlet extends HttpServlet {
 	protected void processData(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		UserDAO uDao = new UserDAO();
 		PrintWriter out = response.getWriter();
-		/*
 		
-		out.print("Registration of ");
-		
-		out.print(request.getParameter("firstName"));
-		out.print("<br/>");
-		out.print(request.getParameter("lastName"));
-		out.print("<br/>");
-		out.print(request.getParameter("email"));
-		out.print("<br/>");
-		out.print(uDao.getMd5(request.getParameter("email")));
-		out.print("<br/>");
-		out.print(request.getParameter("email"));
-		out.print("<br/>");
-		out.print(uDao.isValid(request.getParameter("email")));
-		*/
-		User user = User.createUser();
+		User user = new User();
 		
 		user.setFirstName(request.getParameter("firstName"));
 		user.setLastName(request.getParameter("lastName"));

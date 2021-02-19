@@ -1,11 +1,13 @@
 package com.busvancar.cinema;
 
 public class User {
-	int id;
-	String firstName;
-	String lastName;
-	String email;
-	String password;
+	private int id;
+	private String firstName;
+	private String lastName;
+	private String email;
+	private String password;
+	private int admin;
+	private double revenue;
 	
 	public int getId() {
 		return id;
@@ -55,15 +57,11 @@ public class User {
 		this.password = password;
 	}
 
-	int admin;
-	
-	public static User createUser() {
-		return new User();
+	public void setRevenue(double revenue) {
+		this.revenue = revenue;
 	}
 	
-	private User() {
-		System.out.println("New user is created");
+	public double getRevenue() {
+		return revenue;
 	}
-
-	
 }

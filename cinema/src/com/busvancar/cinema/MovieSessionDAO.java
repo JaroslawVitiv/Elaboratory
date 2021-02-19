@@ -2,6 +2,7 @@ package com.busvancar.cinema;
 
 import java.math.RoundingMode;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -400,5 +401,36 @@ public class MovieSessionDAO {
 				e.printStackTrace();
 			}
 	        return total/100;
+	}
+
+	public int getMovieSessions(LocalDate start, LocalDate end) {
+		int total = 0;
+		String sqlQuery = "SELECT COUNT(price) AS total FROM session WHERE session_time BETWEEN ? AND DATE_ADD(? , INTERVAL 1 DAY)  ";
+		try {
+			connect();
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+   	 	
+   	 	try(PreparedStatement statement = jdbcConnection.prepareStatement(sqlQuery)){
+         	statement.setDate(1, Date.valueOf(start));
+         	statement.setDate(2, Date.valueOf(end));
+   	        
+         	try(ResultSet rs = statement.executeQuery()){
+   	        	if(rs.next()) {
+   	        		total = rs.getInt("total");
+   	        	}
+   	        }
+        }catch (SQLException e) {
+			e.printStackTrace();
+		}
+   	 	
+   	   try {
+			disconnect();
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+   	   
+		return total;
 	}
  }

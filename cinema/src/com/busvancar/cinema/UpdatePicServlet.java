@@ -88,8 +88,6 @@ public class UpdatePicServlet extends HttpServlet {
         ServletFileUpload upload = new ServletFileUpload(factory);
         
         upload.setFileSizeMax(MAX_FILE_SIZE);
-   
-  
         upload.setSizeMax(MAX_REQUEST_SIZE);
 
         String uploadPath = getServletContext().getRealPath("")  + UPLOAD_DIRECTORY;

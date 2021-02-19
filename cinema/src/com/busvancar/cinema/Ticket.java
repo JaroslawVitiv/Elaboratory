@@ -15,7 +15,8 @@ public class Ticket {
 	private Timestamp time;
 	private String movieTitle;
 	private int movieDuration;
-	private Timestamp movieSessionTime; 
+	private Timestamp movieSessionTime;
+	private int row; 
 	
 
 	public int getTicketId() {
@@ -137,6 +138,14 @@ public class Ticket {
 
 	public void setMovieSessionTime(Timestamp movieSessionTime) {
 		this.movieSessionTime = movieSessionTime;
+	}
+
+	public int getRow() {
+		return row;
+	}
+
+	public void setRow(int row) {
+		this.row = row;
 	}
 	
 	
