@@ -4,6 +4,8 @@ package com.busvancar.cinema;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -33,7 +35,11 @@ public class ChangePasswordServlet extends HttpServlet {
 		UserDAO uDao = new UserDAO();
 		PrintWriter out = response.getWriter();
 		User user = null;
-		
+		HttpSession session = request.getSession();
+		 Locale locale = new Locale((String) session.getAttribute("l10n"));
+		 ResourceBundle rb = ResourceBundle.getBundle("l10n_"+session.getAttribute("l10n"), locale);
+		 String passwordsDontCoincide = rb.getString("passwordsDontCoincide");
+		 String passwordIsOK = rb.getString("passwordIsOK");
 		
 		String password = request.getParameter("psw");
 		String confirmed = request.getParameter("repPsw");
@@ -44,7 +50,7 @@ public class ChangePasswordServlet extends HttpServlet {
 		
 		response.setCharacterEncoding("UTF-8");
 		
-		HttpSession session = request.getSession();
+		
 		if(session.getAttribute("user")!=null) {
 			user = (User) session.getAttribute("user");
 		}
@@ -55,11 +61,13 @@ public class ChangePasswordServlet extends HttpServlet {
 		
 		if(user.getEmail()!=null) {
 				if(!password.equals(confirmed) || password.isBlank()) {
-					out.println("<font color=red>Паролі не співпадають. try again...</font>");
+					out.println("<div style=\"text-align:center\"><font color=red>"+passwordsDontCoincide+"</font></div>");
 					rd.include(request, response);
 				} else {
 					if(uDao.updatePassword(user.getEmail(),  password)) {
-						response.sendRedirect("passwordChangeSuccess.jsp");
+						request.setAttribute("message", "<div><font color=maroon>"+passwordIsOK+"</font></div>");
+						rd = getServletContext().getRequestDispatcher("/messenger.jsp");
+						rd.include(request, response);
 					}else {
 						out.println("<font color=red>Unfortunately, the password was not updated</font>");
 						rd.include(request, response);

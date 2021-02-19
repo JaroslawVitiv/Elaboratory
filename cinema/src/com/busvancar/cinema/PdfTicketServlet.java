@@ -1,13 +1,11 @@
 package com.busvancar.cinema;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,6 +19,8 @@ import com.itextpdf.text.Font;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Font.FontFamily;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfWriter;
 
 /**
@@ -38,24 +38,10 @@ public class PdfTicketServlet extends HttpServlet {
     }
 
 	/**
+	 * @throws DocumentException 
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void processData(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	HttpSession session = request.getSession();
-		String genreDropdownMenu_en_GB = Genre.getGenreOptions(Genre.genres_en_GB);
-		String genreDropdownMenu_uk_UA = Genre.getGenreOptions(Genre.genres_uk_UA);
-		LocalDate currentdate = LocalDate.now();
-
-		Locale locale = new Locale((String) session.getAttribute("l10n"));
-		ResourceBundle rb = ResourceBundle.getBundle("l10n_"+session.getAttribute("l10n"), locale);
-		String seat = rb.getString("seat");
-		String row = rb.getString("row");
-		String movieTitle = rb.getString("movieTitle");
-		String duration =  rb.getString("duration");
-		String datetime  = rb.getString("datetime");
-		String price =  rb.getString("price");
-		String mins = rb.getString("mins");
-		String ticketTr = rb.getString("ticket");
 		
 			int ticketId = Integer.parseInt(request.getParameter("ticketId"));
 			String sessionToken = request.getParameter("sessionToken");
@@ -64,18 +50,17 @@ public class PdfTicketServlet extends HttpServlet {
 			//get the output stream for writing binary data in the response.
 			ServletOutputStream os = response.getOutputStream();
 			//set the response content type to PDF
-			response.setContentType("application/pdf"); 
+			response.setContentType("application/pdf charset=UTF-8"); 
 			
 			//create a new document
 			Document doc = new Document();
 			
 			//create some special styles and font sizes
 			Font bfBold18 = new Font(FontFamily.TIMES_ROMAN, 18, Font.BOLD, new BaseColor(0, 0, 0)); 
-			Font bf12 = new Font(FontFamily.TIMES_ROMAN, 12); 
-			
-			
-			try{
-			
+			Font bf12 = new Font(FontFamily.TIMES_ROMAN, 12);
+
+			try {
+				
 				//create an instance of the PdfWriter using the output stream
 				PdfWriter.getInstance(doc, os); 
 				
@@ -104,6 +89,19 @@ public class PdfTicketServlet extends HttpServlet {
 				paragraph.add(anchor);
 				//add the paragraph to the document
 				doc.add(paragraph);
+				
+				request.setCharacterEncoding("UTF-8");
+				String language = request.getParameter("l10n");
+		    	Locale locale = new Locale(language);
+				ResourceBundle rb = ResourceBundle.getBundle("l10n_"+language, locale);
+				String seat = rb.getString("seat");
+				String row = rb.getString("row");
+				String movieTitle = rb.getString("movieTitle");
+				String duration =  rb.getString("duration");
+				String datetime  = rb.getString("datetime");
+				String price =  rb.getString("price");
+				String mins = rb.getString("mins");
+				String ticketTr = rb.getString("ticket");
 				
 				//add some detail information about the country
 				doc.add( new Paragraph("-------------------------------------------", bf12));

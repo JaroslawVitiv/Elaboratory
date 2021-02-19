@@ -658,5 +658,37 @@ public class TicketDAO {
    	   
 		return total;
 	}
+
+	public User getUser(Ticket ticket) {
+		User user = new User();
+		String sqlQuery = "SELECT user.first_name, user.last_name, user.email FROM ticket INNER JOIN user ON ticket.purchaser_id = user.id WHERE ticket.ticket_id = ?  ";
+		try {
+			connect();
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+   	 	
+   	 	try(PreparedStatement statement = jdbcConnection.prepareStatement(sqlQuery)){
+         	statement.setInt(1, ticket.getTicketId());
+   	        
+         	try(ResultSet rs = statement.executeQuery()){
+   	        	if(rs.next()) {
+   	        		user.setFirstName(rs.getString("user.first_name"));
+   	        		user.setLastName(rs.getString("user.last_name"));
+   	        		user.setEmail(rs.getString("user.email"));
+
+   	        	}
+   	        }
+        }catch (SQLException e) {
+			e.printStackTrace();
+		}
+   	 	
+   	   try {
+			disconnect();
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+		return user;
+	}
 	
 }

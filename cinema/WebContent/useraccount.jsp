@@ -23,12 +23,7 @@ String duration = rb.getString("duration");
 String mins = rb.getString("mins");
 String row = rb.getString("row");
 String seat = rb.getString("seat");
-
-
-
-
-
-
+String send2email = rb.getString("send2email");
 %>
 <!DOCTYPE html>
 <html>
@@ -40,6 +35,7 @@ String seat = rb.getString("seat");
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.5.2/bootbox.min.js"></script>
+
 <style>
   .movie {
  	 display: flex;
@@ -108,7 +104,21 @@ String seat = rb.getString("seat");
 		color:maroon
 	}
 </style>
-
+<script>
+function sendEmail(ticketId) {
+	
+	var xhttp = new XMLHttpRequest();
+	  xhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        bootbox.alert(this.responseText);
+	      $("#ticket"+ticketId).hide();
+	    }
+	  };
+	 xhttp.open("GET", "/cinema/ticketSender?ticketId="+ticketId, true);
+	 xhttp.send();
+	 $("#ticket"+ticketId).hide();
+}
+</script>
 </head>
 <body>
 	<div class="container">
@@ -150,14 +160,14 @@ String seat = rb.getString("seat");
 					<div><% out.print(datetime); %>: <b><fmt:formatDate value="${ticket.time}" pattern="dd.MM.yyyy (HH:mm)" /></b> | <% out.print(duration); %>: <b>${ticket.movieDuration}</b> <% out.print(mins); %></div>
 					<div> <% out.print(row); %>: <b>${ticket.row}</b> | <% out.print(seat); %>: <b><c:out value="${ticket.seat}"/></b></div>
 					<div style="text-align: right; padding:10px;"><p>
-					<a class="btn btn-danger btn-sm" href="cinematicket?ticketId=${ticket.ticketId}&sessionToken=${ticket.sessionToken}"><% out.print(download); %> .pdf</a></p></div>
-					
+					<a class="btn btn-danger btn-sm" href="cinematicket?ticketId=${ticket.ticketId}&sessionToken=${ticket.sessionToken}&l10n=<% out.print(session.getAttribute("l10n")); %>" ><% out.print(download); %> .pdf</a></p>
+					<p><button id="ticket${ticket.ticketId}" class="btn btn-warning btn-sm" onclick="sendEmail(${ticket.ticketId});" ><% out.print(send2email); %></button></p></div>
 				</div>
 			</div>
 			
 		</c:forEach>
 	</div>
-	
+
 	
 </div>
 </body>

@@ -120,7 +120,6 @@ if(sc.getAttribute("currentUsers")!=null){
 		 font-family: "Sofia", sans-serif;
 	}
 	.languages{
-	
 		font-size:20px;
 		font-family: "Sofia", sans-serif;
 		text-align:right;
@@ -131,9 +130,6 @@ if(sc.getAttribute("currentUsers")!=null){
 	 	grid-template-columns: auto auto  ;
   		padding: 10px;
 	}
-	
-	
-	
 	.form-inline{
 		display:flex;
 		flex-direction: row; 

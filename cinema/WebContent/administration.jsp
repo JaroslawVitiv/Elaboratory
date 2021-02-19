@@ -46,6 +46,11 @@
  String previousWeek = rb.getString("previousWeek");
  String statistics =  rb.getString("statistics");
  String addAnewMovie =  rb.getString("addAnewMovie");
+ String incomeTr = rb.getString("incomeTr");
+ String ticketsBoughtTr = rb.getString("ticketsBoughtTr");  
+ String visitingRateTr = rb.getString("visitingRateTr");
+ String averageTicketPriceTr = rb.getString("averageTicketPriceTr");
+ String topKeyCustomers = rb.getString("topKeyCustomers");
 
  
  ServletContext sc = this.getServletContext();
@@ -248,18 +253,15 @@ function declineRemove(id){
 <div >
 	<h3><% out.print(statistics); %>: (${period}) </h3><hr/>
 	<div class="statistics">
-		<div><b>Incomes</b>: ${incomes} $$ <hr></div>
-		<div><b>Tickets bought</b>:  ${ticketsBought} <hr></div> 
-		<div><b>Visiting rate</b>: ${visitingRate}% <hr></div> 
-		<div><b>Average ticket price</b>: ${aveTicketPrice} $</div>
+		<div><b><% out.print(incomeTr); %></b>: ${incomes} $$ <hr></div>
+		<div><b><% out.print(ticketsBoughtTr); %></b>:  ${ticketsBought} <hr></div> 
+		<div><b><% out.print(visitingRateTr); %></b>: ${visitingRate}% <hr></div> 
+		<div><b><% out.print(averageTicketPriceTr); %></b>: ${aveTicketPrice} $</div>
 		<div style="text-align:left">
-			<div><b>Top 5 key customers</b>:<hr></div>
+			<div><b><% out.print(topKeyCustomers); %></b>:<hr></div>
 			<c:forEach var="customer" items="${top5keyCustomers}">
 				<div>${customer.firstName} ${customer.lastName} (${customer.revenue} $$)</div>
 			</c:forEach>
-			
-			
-		
 			<hr>
 		</div>
 	</div>

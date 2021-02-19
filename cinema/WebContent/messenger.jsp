@@ -68,7 +68,7 @@ if(sc.getAttribute("currentUsers")!=null){
 <body>
 			<div class="message">
 				<div>${message}</div>
-				<div><a href="administration"><% out.print(continue2admin);%></a></div>
+				<div><a href="/cinema"><% out.print(continue2admin);%></a></div>
 			</div>
 </body>
 </html>

@@ -129,26 +129,22 @@ a:hover {
 </head>
 <body>
 <div class="container" >
-		
-		
-
-
-<h1><% out.print(login); %></h1>
-    <p><% out.print(mailPswPlease); %></p>
-    <hr>
-<form accept-charset="UTF-8" action="login" method="post" style="border:1px solid #ccc">
-		<input placeholder="<% out.print(mailPswPlease); %>" type="email" name="email" id="email">
-		<br>
-		<input  placeholder="<% out.print(password); %>"  type="password" name="psw" id="psw" >
-		<br>
-     <input type="submit" class="signupbtn" value="<% out.print(login); %>" />
-
-    <div class="clearfix">
-      <a type="button" class="cancelbtn" href="/cinema"><% out.print(homePage); %></a>
-      <a type="button" class="signupbtn" href="signin.jsp" ><% out.print(signin); %></a>
-    </div>
-    
- </form>   
+	<h1><% out.print(login); %></h1>
+	    <p><% out.print(mailPswPlease); %></p>
+	    <hr>
+	<form accept-charset="UTF-8" action="login" method="post" style="border:1px solid #ccc">
+			<input placeholder="<% out.print(mailPswPlease); %>" type="email" name="email" id="email">
+			<br>
+			<input  placeholder="<% out.print(password); %>"  type="password" name="psw" id="psw" >
+			<br>
+	     <input type="submit" class="signupbtn" value="<% out.print(login); %>" />
+	
+	    <div class="clearfix">
+	      <a type="button" class="cancelbtn" href="/cinema"><% out.print(homePage); %></a>
+	      <a type="button" class="signupbtn" href="signin.jsp" ><% out.print(signin); %></a>
+	    </div>
+	    
+	 </form>   
 </div>
 </body>
 

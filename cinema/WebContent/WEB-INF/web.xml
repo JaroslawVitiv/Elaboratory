@@ -253,6 +253,16 @@
     <servlet-name>PdfTicketServlet</servlet-name>
     <url-pattern>/cinematicket</url-pattern>
   </servlet-mapping>
+  
+  <servlet>
+      <servlet-name>TicketEmailSendingServlet</servlet-name>
+      <servlet-class>com.busvancar.cinema.TicketEmailSendingServlet</servlet-class>
+   </servlet>
+    
+  <servlet-mapping>
+    <servlet-name>TicketEmailSendingServlet</servlet-name>
+    <url-pattern>/ticketSender</url-pattern>
+  </servlet-mapping>
 
   
   
