@@ -40,6 +40,7 @@ public class ChangePasswordServlet extends HttpServlet {
 		 ResourceBundle rb = ResourceBundle.getBundle("l10n_"+session.getAttribute("l10n"), locale);
 		 String passwordsDontCoincide = rb.getString("passwordsDontCoincide");
 		 String passwordIsOK = rb.getString("passwordIsOK");
+		 String unfortunatelyPasswordNotUpdated = rb.getString("unfortunatelyPasswordNotUpdated");
 		
 		String password = request.getParameter("psw");
 		String confirmed = request.getParameter("repPsw");
@@ -69,7 +70,7 @@ public class ChangePasswordServlet extends HttpServlet {
 						rd = getServletContext().getRequestDispatcher("/messenger.jsp");
 						rd.include(request, response);
 					}else {
-						out.println("<font color=red>Unfortunately, the password was not updated</font>");
+						out.println("<font color=red>"+unfortunatelyPasswordNotUpdated+"</font>");
 						rd.include(request, response);
 					} 
 					
@@ -79,12 +80,11 @@ public class ChangePasswordServlet extends HttpServlet {
 			response.sendRedirect("login.jsp");
 		}
 	}
-
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		processData(request, response);
 
 	}
-
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		processData(request, response);

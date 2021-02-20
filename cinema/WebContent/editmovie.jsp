@@ -41,10 +41,6 @@ String close = rb.getString("close");
 String sessionPrice = rb.getString("sessionPrice");
 
 
-
-
-
-
 ServletContext sc = this.getServletContext();
 int currentUsers = 1;
 if(sc.getAttribute("currentUsers")!=null){

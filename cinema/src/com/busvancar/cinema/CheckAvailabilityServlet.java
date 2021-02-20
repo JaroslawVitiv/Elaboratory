@@ -25,7 +25,7 @@ public class CheckAvailabilityServlet extends HttpServlet {
 	private final int ROWS = 12;
 	private String sessionToken;
 	private int userId = 0;
-	public String message = "In order to book the tickets, you need to LOGIN or SIGNUP!";
+	public String message = "";
      
     /**
      * @see HttpServlet#HttpServlet()
@@ -46,7 +46,7 @@ public class CheckAvailabilityServlet extends HttpServlet {
 		String genre =  rb.getString("genre");
 		String datetime  = rb.getString("datetime");
 		String mins = rb.getString("mins");
-		
+		message = rb.getString("inOrder2bookTicketsLOGINorSIGNUP");
 		User user = null;
 		MovieSessionDAO msDao = new MovieSessionDAO();
 		TicketDAO tDao = new TicketDAO();

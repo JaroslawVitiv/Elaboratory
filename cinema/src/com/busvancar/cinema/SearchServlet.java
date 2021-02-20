@@ -48,6 +48,7 @@ public class SearchServlet extends HttpServlet {
     	String mins = rb.getString("mins");
     	String available = rb.getString("available");
     	String availableSeats = rb.getString("availableSeats");
+    	String sorryNoResultsFoundTryAnotherOption = rb.getString("sorryNoResultsFoundTryAnotherOption");
     	
     	PrintWriter out = response.getWriter();
     	List<MovieSession> schedule = new ArrayList<>();
@@ -114,7 +115,7 @@ public class SearchServlet extends HttpServlet {
 	       out.print("</div>");  
 
     	} else {
-    		out.print("<div style=\"font-size:50px; font-family: cursive; text-align:center; color:maroon;\">Sorry, but no results found. Try another option...");
+    		out.print("<div style=\"font-size:50px; font-family: cursive; text-align:center; color:maroon;\">"+sorryNoResultsFoundTryAnotherOption+"...");
     	}
     }
     

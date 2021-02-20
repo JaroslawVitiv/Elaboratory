@@ -2,6 +2,8 @@ package com.busvancar.cinema;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.UUID;
 
 import javax.servlet.ServletException;
@@ -30,6 +32,13 @@ public class PayInvoiceServlet extends HttpServlet {
 	 */
     protected void processData(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {	
     	HttpSession session = request.getSession();
+
+		Locale locale = new Locale((String) session.getAttribute("l10n"));
+		ResourceBundle rb = ResourceBundle.getBundle("l10n_"+session.getAttribute("l10n"), locale);
+		String thankx4buyingTickets =  rb.getString("thankx4buyingTickets");
+		String youPaidUs =  rb.getString("youPaidUs");
+		String sorryPaymentIsNotThrough = rb.getString("sorryPaymentIsNotThrough");
+    	
 		if(session.getAttribute("session_token") == null) {
 			session.setAttribute("session_token", UUID.randomUUID().toString());
 		}
@@ -42,10 +51,10 @@ public class PayInvoiceServlet extends HttpServlet {
 		double total = 0;
 		if(tDao.setUserId2pay(user, sessionToken)) {
 			total = tDao.getTodaysSum(user, sessionToken);
-			out.print("<h3 style=\"color:green\">Thank you for buying tickets of our VitivCinema</h3>");
-			out.print("<h4 style=\"color:green\">You paid us "+total+" $$ </h4>");
+			out.print("<h3 style=\"color:green\">"+thankx4buyingTickets+" VitivCinema</h3>");
+			out.print("<h4 style=\"color:green\">"+youPaidUs+" "+total+" $$ </h4>");
 		}else {
-			out.print("<h3 style=\"color:red\">Sorry, the payment is not through. Your payment is declined...:(</h3>");
+			out.print("<h3 style=\"color:red\">"+sorryPaymentIsNotThrough+"...:(</h3>");
 		}
     		
     }
@@ -55,11 +64,5 @@ public class PayInvoiceServlet extends HttpServlet {
 		processData(request, response);
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-//	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//		processData(request, response);
-//	}
 
 }

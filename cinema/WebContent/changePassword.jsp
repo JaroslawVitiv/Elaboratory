@@ -19,6 +19,9 @@ String emailAddress = rb.getString("emailAddress");
 String password = rb.getString("password");
 String homePage = rb.getString("homePage");
 String signin = rb.getString("signin");
+String enterNewPassword = rb.getString("enterNewPassword");
+String repeatPassword = rb.getString("repeatPassword");
+
 
 %>
 <!DOCTYPE html>
@@ -133,9 +136,9 @@ a:hover {
 	    <p><% out.print(mailPswPlease); %></p>
 	    <hr>
 	    <form accept-charset="UTF-8" action="change-password" method="post" style="border:1px solid #ccc">
-			<input placeholder="Enter new password" type="password" name="psw" id="psw">
+			<input placeholder="<% out.print(enterNewPassword); %>" type="password" name="psw" id="psw">
 			<br>
-			<input  placeholder="Repeat the password"  type="password" name="repPsw" id="repPsw">
+			<input  placeholder="<% out.print(repeatPassword); %>"  type="password" name="repPsw" id="repPsw">
 			<br>
 	     
 	

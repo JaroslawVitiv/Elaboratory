@@ -37,9 +37,6 @@ public class RemoveMovieServlet extends HttpServlet {
 		ResourceBundle rb = ResourceBundle.getBundle("l10n_"+session.getAttribute("l10n"), locale);
 		String movieRemovied = rb.getString("movieRemovied");
 		String movieNotRemovied = rb.getString("movieNotRemovied");
-		String continue2admin = rb.getString("continue2admin");
-		
-		PrintWriter out = response.getWriter();
 		Movie movie = new Movie();
 		MovieDAO mDao = new MovieDAO();
 		int movieId = Integer.parseInt(request.getParameter("m"));

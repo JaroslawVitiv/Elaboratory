@@ -39,11 +39,10 @@ public class EditMovieServlet extends HttpServlet {
     	 response.setContentType("text/html");
     	 
     	 PrintWriter out = response.getWriter();
-    	 StringBuilder sessionList = new StringBuilder(); 
     	 HttpSession session = request.getSession();
     	 User user = (User) session.getAttribute("user");
  		int admin = (int)user.getAdmin();
- 		if(user.getAdmin()<1) {
+ 		if(admin  < 1) {
  			response.sendRedirect("/cinema");
  		}
  		
@@ -86,8 +85,6 @@ public class EditMovieServlet extends HttpServlet {
 			} catch (SQLException ex) {
 				ex.printStackTrace();
 			}
-	     
-			
 			
 	}
     

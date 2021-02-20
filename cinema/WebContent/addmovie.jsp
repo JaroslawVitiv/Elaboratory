@@ -35,11 +35,6 @@
  String addPoster = rb.getString("addPoster");
 
 
-
-
-
-
-
  ServletContext sc = this.getServletContext();
  int currentUsers = 1;
  if(sc.getAttribute("currentUsers")!=null){

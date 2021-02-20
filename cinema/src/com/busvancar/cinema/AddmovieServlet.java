@@ -9,6 +9,8 @@ import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -47,6 +49,11 @@ public class AddmovieServlet extends HttpServlet {
    
     protected void processData(HttpServletRequest request, HttpServletResponse response)    throws ServletException, IOException {
     	HttpSession session = request.getSession();
+
+		Locale locale = new Locale((String) session.getAttribute("l10n"));
+		ResourceBundle rb = ResourceBundle.getBundle("l10n_"+session.getAttribute("l10n"), locale);
+		String movieHasBeenAddedSuccessfully =  rb.getString("movieHasBeenAddedSuccessfully");
+		String uploadWithExtensions =  rb.getString("uploadWithExtensions");
 		User user = (User) session.getAttribute("user");
 		int admin = user.getAdmin();
 		
@@ -62,7 +69,7 @@ public class AddmovieServlet extends HttpServlet {
       
         if (!ServletFileUpload.isMultipartContent(request)) {
             PrintWriter writer = response.getWriter();
-            writer.println("Error: Form must has enctype=multipart/form-data.");
+            writer.println("Error: Form must have enctype=multipart/form-data.");
             writer.flush();
             return;
         }
@@ -82,7 +89,7 @@ public class AddmovieServlet extends HttpServlet {
 
         upload.setSizeMax(MAX_REQUEST_SIZE);
 
-        String uploadPath = getServletContext().getRealPath("")+ File.separator + UPLOAD_DIRECTORY;
+        String uploadPath = getServletContext().getRealPath("")+File.separator + UPLOAD_DIRECTORY;
 
         File uploadDir = new File(uploadPath);
         if (!uploadDir.exists()) {
@@ -110,9 +117,9 @@ public class AddmovieServlet extends HttpServlet {
 	                        
 	                        // saves the file on disk
 	                        item.write(storeFile);
-	                        request.setAttribute("message",  "<div style=\"color:green\">The movie has been added successfully</div>");
+	                        request.setAttribute("message",  "<div style=\"color:green\">"+movieHasBeenAddedSuccessfully+"</div>");
                         } else {
-                        	request.setAttribute("message",  "<div style=\"color:red\">Upload files with '.jpg', '.jpeg', '.png' or '.gif' extension</div>");
+                        	request.setAttribute("message",  "<div style=\"color:red\">"+uploadWithExtensions+"</div>");
                         }
                     } else {
                     	switch(item.getFieldName()) {

@@ -66,8 +66,7 @@ public class UserAccountServlet extends HttpServlet {
 		
 		
 		request.setAttribute("userOutput", allUserstickets);
-		 
-		 request.getRequestDispatcher("useraccount.jsp").forward(request,response);
+	    request.getRequestDispatcher("useraccount.jsp").forward(request,response);
 	}
 
 	/**

@@ -68,7 +68,6 @@ public class AdminServlet extends HttpServlet {
 				end = temp;
 			} 
 			
-			
 			request.setAttribute("start", start);
 			request.setAttribute("end", end);
 			String period = start.format(formatter)+" - "+end.format(formatter);

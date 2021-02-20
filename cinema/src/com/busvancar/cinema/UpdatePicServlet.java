@@ -14,6 +14,8 @@ import java.nio.file.Path;
 import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletException;
@@ -53,6 +55,10 @@ public class UpdatePicServlet extends HttpServlet {
    
     protected void processData(HttpServletRequest request, HttpServletResponse response)    throws ServletException, IOException {
     	HttpSession session = request.getSession();
+    	 Locale locale = new Locale((String) session.getAttribute("l10n"));
+		 ResourceBundle rb = ResourceBundle.getBundle("l10n_"+session.getAttribute("l10n"), locale);
+		 String movieAddedSuccessfully = rb.getString("movieAddedSuccessfully"); 
+		 String uploadWithExtensions = rb.getString("uploadWithExtensions");
 		User user = (User) session.getAttribute("user");
 		PrintWriter out = response.getWriter();
 		
@@ -73,7 +79,7 @@ public class UpdatePicServlet extends HttpServlet {
 		request.setAttribute("genreOptions", "genreOptions + ex.getMessage()");
    
         if (!ServletFileUpload.isMultipartContent(request)) {
-            out.println("Error: Form must has enctype=multipart/form-data.");
+            out.println("Error: Form must have enctype=multipart/form-data.");
             out.flush();
             return;
         }
@@ -119,9 +125,9 @@ public class UpdatePicServlet extends HttpServlet {
 	                        movie.setPoster(fileName);
 	                        item.write(storeFile);
 	                        
-	                        request.setAttribute("message",  "<div style=\"color:green\">The movie has been added successfully</div>");
+	                        request.setAttribute("message",  "<div style=\"color:green\">"+movieAddedSuccessfully+"</div>");
                         } else {
-                        	request.setAttribute("message",  "<div style=\"color:red\">Upload files with '.jpg', '.jpeg', '.png' or '.gif' extension</div>");
+                        	request.setAttribute("message",  "<div style=\"color:red\">"+uploadWithExtensions+"</div>");
                         }
                         
                         out.print(item);

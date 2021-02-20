@@ -131,7 +131,7 @@ a:hover {
 <div class="container" >
 	<h1><% out.print(login); %></h1>
 	    <p><% out.print(mailPswPlease); %></p>
-	    <hr>
+	    <hr/>
 	<form accept-charset="UTF-8" action="login" method="post" style="border:1px solid #ccc">
 			<input placeholder="<% out.print(mailPswPlease); %>" type="email" name="email" id="email">
 			<br>
@@ -144,7 +144,7 @@ a:hover {
 	      <a type="button" class="signupbtn" href="signin.jsp" ><% out.print(signin); %></a>
 	    </div>
 	    
-	 </form>   
+	</form>   
 </div>
 </body>
 

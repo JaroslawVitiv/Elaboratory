@@ -46,8 +46,11 @@ String thisWeek = rb.getString("thisWeek");
 String nextWeek = rb.getString("nextWeek");
 String previousWeek = rb.getString("previousWeek");
 String ofTickets = rb.getString("ofTickets");
-
-
+String myTickets = rb.getString("myTickets");
+String noTicketsFound = rb.getString("noTicketsFound");
+String payMyOrder = rb.getString("payMyOrder");
+String noThanx = rb.getString("noThanx");
+String removeAll = rb.getString("removeAll");
 
 ServletContext sc = this.getServletContext();
 int currentUsers = 0;
@@ -322,20 +325,20 @@ if(sc.getAttribute("currentUsers")!=null){
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="ticketsCartModalLongTitle">My tickets</h5>
+        <h5 class="modal-title" id="ticketsCartModalLongTitle"><% out.print(myTickets); %></h5>
         <button type="button" data-dismiss="modal" onclick="closeModal();" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-      <div id="invoice">No tickets found</div>
+      <div id="invoice"><% out.print(noTicketsFound); %></div>
       
       <hr/>
       </div>
       <div class="modal-footer">
-      	<button type="button" class="btn btn-primary" onclick="payInvoice();"  data-dismiss="modal"> Pay my order</button>
-        <button type="button" class="btn btn-secondary" onclick="closeModal();" data-dismiss="modal">No, thanks!</button>
-         <button type="button" class="btn btn-danger" onclick="purgeAllUnpaid();" data-dismiss="modal">Remove all</button>
+      	<button type="button" class="btn btn-primary" onclick="payInvoice();"  data-dismiss="modal"> <% out.print(payMyOrder); %></button>
+        <button type="button" class="btn btn-secondary" onclick="closeModal();" data-dismiss="modal"><% out.print(noThanx); %>!</button>
+         <button type="button" class="btn btn-danger" onclick="purgeAllUnpaid();" data-dismiss="modal"><% out.print(removeAll); %></button>
       </div>
     </div>
   </div>

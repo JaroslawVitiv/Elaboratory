@@ -44,13 +44,9 @@ public class LoginServlet extends HttpServlet {
 		
 		
 		if(user.getFirstName()!=null){
-			
 			session.setAttribute("user", user);
-		
 			session.setMaxInactiveInterval(60*60);
 			response.sendRedirect(request.getContextPath());
-			
-			
 		} else{
 			response.setCharacterEncoding("UTF-8");
 			RequestDispatcher rd = getServletContext().getRequestDispatcher("/login.jsp");

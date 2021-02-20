@@ -51,7 +51,11 @@
  String visitingRateTr = rb.getString("visitingRateTr");
  String averageTicketPriceTr = rb.getString("averageTicketPriceTr");
  String topKeyCustomers = rb.getString("topKeyCustomers");
-
+ String edit = rb.getString("edit");
+ String remove = rb.getString("remove"); 
+ String yes = rb.getString("yes");
+ String no = rb.getString("no");
+ String areYouSure = rb.getString("areYouSure");
  
  ServletContext sc = this.getServletContext();
  int currentUsers = 1;
@@ -94,12 +98,12 @@ function declineRemove(id){
   }
   
    .description {
- 	 	display: flex;
+ 	   display: flex;
  	   flex-direction: row;
- 	    padding: 20px;
- 	   flex-wrap: wrap;
+ 	   padding: 10px;
+ 	   flex-wrap: nowrap;
  	   justify-content: space-start;
- 	   margin:20px;
+ 	   margin:10px;
  	   flex-direction: column; 
   }
   #logo{
@@ -129,7 +133,7 @@ function declineRemove(id){
 	.grid{
 	 	display: grid;
 	 	grid-template-columns: auto auto  ;
-  		padding: 10px;
+  		padding: 5px;
 	}
 	
 	.form-inline{
@@ -312,10 +316,15 @@ function declineRemove(id){
 					<hr/>
 					
 					<div> 
-						<a class="btn btn-md btn-outline-danger" href="edit?m=${movie.id}" />Edit</a>
-						 | <a id="remove${movie.id}" onclick="ask2remove(${movie.id})" class="btn btn-md btn-outline-danger" />Remove</a>
-						 <span id="confirmRemove${movie.id}" style="display:none;" > <br/> Are you sure? <a href="remove?m=${movie.id}"  class="btn btn-md btn-outline-danger" />Yes</a>  
-						 <button class="btn btn-md btn-danger" onclick="declineRemove(${movie.id});">No</button> </span>
+						<a class="btn btn-md btn-outline-danger" href="edit?m=${movie.id}" /><% out.print(edit); %></a>
+						 | <a id="remove${movie.id}" onclick="ask2remove(${movie.id})" class="btn btn-md btn-outline-danger" /><% out.print(remove); %></a>
+						 <span id="confirmRemove${movie.id}" style="display:none;" >
+						  <br/> 
+						 	 <% out.print(areYouSure); %>? 
+						  <a href="remove?m=${movie.id}"  class="btn btn-md btn-outline-danger" />
+						  	<% out.print(yes); %>
+						  	</a>  
+						 <button class="btn btn-md btn-danger" onclick="declineRemove(${movie.id});"><% out.print(no); %></button> </span>
 					</div>
 				</div>
 				<hr/>
@@ -324,18 +333,5 @@ function declineRemove(id){
 		</c:forEach>
 	</div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
 </body>
 </html>

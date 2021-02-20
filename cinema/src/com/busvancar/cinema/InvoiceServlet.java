@@ -3,12 +3,15 @@ package com.busvancar.cinema;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * Servlet implementation class InvoiceServlet
@@ -30,6 +33,11 @@ public class InvoiceServlet extends HttpServlet {
 	protected void processData(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		PrintWriter out = response.getWriter();
 		String sessionToken =  request.getParameter("session_token");
+		HttpSession session = request.getSession();
+
+		Locale locale = new Locale((String) session.getAttribute("l10n"));
+		ResourceBundle rb = ResourceBundle.getBundle("l10n_"+session.getAttribute("l10n"), locale);
+		String youHaveChosenNoTickets =  rb.getString("youHaveChosenNoTickets");
 		
 		TicketDAO tDao = new TicketDAO();
 		List<Ticket> bookedUnpaidList = tDao.getBookedUnpaidTickets(sessionToken);
@@ -48,7 +56,7 @@ public class InvoiceServlet extends HttpServlet {
 		}
 		
 		if(bookedUnpaidList.size()<1) {
-			out.print("You have chosen no tickets");
+			out.print(youHaveChosenNoTickets);
 		}
 	}
 

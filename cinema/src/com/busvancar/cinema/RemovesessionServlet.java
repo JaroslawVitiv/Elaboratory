@@ -3,16 +3,14 @@ package com.busvancar.cinema;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * Servlet implementation class RemovesessionServlet
@@ -28,6 +26,19 @@ public class RemovesessionServlet extends HttpServlet {
     }
 
     private void processData(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    	HttpSession session = request.getSession();
+
+		Locale locale = new Locale((String) session.getAttribute("l10n"));
+		ResourceBundle rb = ResourceBundle.getBundle("l10n_"+session.getAttribute("l10n"), locale);
+		String wasSuccessfullyRemoved =  rb.getString("wasSuccessfullyRemoved");
+		String stillExistsNotProperlyRemoved =  rb.getString("stillExistsNotProperlyRemoved");
+		String continue2admin =  rb.getString("continue2admin");
+		String movieSessionRemoval = rb.getString("movieSessionRemoval");
+		String sessionTr = rb.getString("session");
+		String fromMovie = rb.getString("fromMovie");
+
+		
+		
 		PrintWriter out = response.getWriter();
 		
 		MovieSession mSession = new MovieSession();
@@ -36,17 +47,17 @@ public class RemovesessionServlet extends HttpServlet {
 		mSession.setMovieId(Integer.parseInt(request.getParameter("movieId")));
 
 	
-		out.print("<div>Movie Session removal</div><hr/>");
+		out.print("<div>"+movieSessionRemoval+"</div><hr/>");
 		try {
-			out.print("<div>Session N:"+mSession.getSessionId()+"</div>");
-			out.print("<div>From Movie N: "+mSession.getMovieId()+"</div>");
+			out.print("<div>"+sessionTr+" N:"+mSession.getSessionId()+"</div>");
+			out.print("<div>"+fromMovie+" N: "+mSession.getMovieId()+"</div>");
 			
 			if(msDao.removeMovieSession(mSession)) {
-				out.print("<div style=\"color:green\">...was successfully removed</div>");
+				out.print("<div style=\"color:green\">..."+wasSuccessfullyRemoved+"</div>");
 			} else {
-				out.print("<div style=\"color:red\">...still exists and was not properly removed!</div>");
+				out.print("<div style=\"color:red\">..."+stillExistsNotProperlyRemoved+"!</div>");
 			}
-			out.print("<div><a href=\"edit?m="+mSession.getMovieId()+"\">Continue...</div>");
+			out.print("<div><a href=\"edit?m="+mSession.getMovieId()+"\">"+continue2admin+"...</div>");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

@@ -73,11 +73,6 @@ public class PdfTicketServlet extends HttpServlet {
 				doc.setPageSize(PageSize.LETTER);
 				doc.open();
 				
-				//add a new paragraph
-				
-				
-				
-				
 				//start a new page here
 				doc.newPage();
 				//create a new paragraph for each country
@@ -114,10 +109,6 @@ public class PdfTicketServlet extends HttpServlet {
 				doc.add( new Paragraph(datetime+": "+String.format("%te.%1$tm.%1$tY (%1$TH:%1$TM)", ticket.getMovieSessionTime()), bf12));
 				doc.add( new Paragraph("-------------------------------------------", bf12));
 
-
-				
-				
-				
 				doc.close(); 
 				
 			}catch(DocumentException e){

@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.UUID;
 
 import javax.servlet.ServletContext;
@@ -25,6 +27,7 @@ public class TicketGeneratorServlet extends HttpServlet {
 	private final int SEATS = 96;
 	private String sessionToken;
 	private MovieSessionDAO msDao;
+	private String priceTr = "";
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -37,10 +40,15 @@ public class TicketGeneratorServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void processData(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession();
+
+		Locale locale = new Locale((String) session.getAttribute("l10n"));
+		ResourceBundle rb = ResourceBundle.getBundle("l10n_"+session.getAttribute("l10n"), locale);
+		priceTr =  rb.getString("price");
+		
 		TicketDAO tDao = new TicketDAO();
 		int availableSeats = 0;
 		
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm");
 		Timestamp time = new Timestamp(System.currentTimeMillis());
 		
 		Ticket ticket = new Ticket();
@@ -66,7 +74,6 @@ public class TicketGeneratorServlet extends HttpServlet {
 			}
 		}
 		
-		HttpSession session = request.getSession();
 		if(session.getAttribute("session_token") == null) {
 			session.setAttribute("session_token", UUID.randomUUID().toString());
 		}
@@ -89,18 +96,7 @@ public class TicketGeneratorServlet extends HttpServlet {
 		
 		availableSeats = SEATS - tDao.getBookedSeats(movieSession);
 		tDao.updateMovieSessionAvailableSeats(movieSession, availableSeats);
-		
-		//////WARNING EXPERIMENTS WITH LISTENER111
-		ServletContext sc = this.getServletContext();
-		//////WARNING EXPERIMENTS WITH LISTENER111
-		
 		Ticket[] tickets = tDao.getAllTickets(movieSession);
-		
-		//////WARING EXPERIMENTS WITH LISTENER111
-		sc.setAttribute("tickets", tickets);
-		//////WARING EXPERIMENTS WITH LISTENER111
-		
-		
 		out.print(getSeats(tickets, msDao.getPrice(coins, 1)));
 		
 		
@@ -142,7 +138,7 @@ public class TicketGeneratorServlet extends HttpServlet {
 	}
 	
 	private String getSeat(int seatNumber, double price,  String color, String disabled) {
-		return " <div><span id=\"seat"+(seatNumber+1)+"\" ><button onclick=\"add2cart("+(seatNumber+1)+");\" class=\"btn btn-sm btn-"+color+"\"  "+disabled+" />"+(seatNumber+1)+" <hr/> Price:<br/>"+price+"</button></span></div> ";
+		return " <div><span id=\"seat"+(seatNumber+1)+"\" ><button onclick=\"add2cart("+(seatNumber+1)+");\" class=\"btn btn-sm btn-"+color+"\"  "+disabled+" />"+(seatNumber+1)+" <hr/> "+priceTr+":<br/>"+price+"</button></span></div> ";
 	}
 	
 

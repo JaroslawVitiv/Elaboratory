@@ -4,6 +4,6 @@
       
     Exception is: <%= exception %>  
     <% 
-  	  	String redirectURL = "/cinema";
-        response.sendRedirect(redirectURL);
+  	  	//String redirectURL = "/cinema";
+       // response.sendRedirect(redirectURL);
     %>

@@ -3,12 +3,15 @@ package com.busvancar.cinema;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * Servlet implementation class UpdateMovieServlet
@@ -23,14 +26,14 @@ public class UpdateMovieServlet extends HttpServlet {
         super();
     }
 
-	/**
-	 * @throws IOException 
-	 * @throws ServletException 
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	
-
 	private void processData(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+		HttpSession session = request.getSession();
+		 Locale locale = new Locale((String) session.getAttribute("l10n"));
+		 ResourceBundle rb = ResourceBundle.getBundle("l10n_"+session.getAttribute("l10n"), locale);
+		 String successfullyUpdated = rb.getString("successfullyUpdated");
+		 String unfortunatelyNotUpdated = rb.getString("unfortunatelyNotUpdated");
+
+		 
 		PrintWriter out = response.getWriter();
 		Movie movie = new Movie();
 		movie.setId(Integer.parseInt(request.getParameter("id")));
@@ -44,9 +47,9 @@ public class UpdateMovieServlet extends HttpServlet {
 		MovieDAO mDao = new MovieDAO();
 		try {
 			if(mDao.update(movie)) {
-				out.print("Successfully updated");
+				out.print(successfullyUpdated);
 			} else {
-				out.print(":( unfortunately not updated");
+				out.print(":( "+unfortunatelyNotUpdated);
 			}
 			out.print(movie.getTitle());
 		} catch (SQLException e) {
@@ -60,9 +63,6 @@ public class UpdateMovieServlet extends HttpServlet {
 		processData(request, response);
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		processData(request, response);
 	}

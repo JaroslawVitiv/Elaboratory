@@ -9,7 +9,6 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.UUID;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -22,14 +21,14 @@ import javax.servlet.http.HttpSession;
  */
 public class Movies extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private String previousWeek;
-	private String thisWeek;
-	private String nextWeek;
 	
-    private void processData(HttpServletRequest request, HttpServletResponse response) {
+	private void processData(HttpServletRequest request, HttpServletResponse response) {
     		int page = 1;
     		HttpSession session = request.getSession();
-    		
+   		    Locale locale = new Locale((String) session.getAttribute("l10n"));
+   		    ResourceBundle rb = ResourceBundle.getBundle("l10n_"+session.getAttribute("l10n"), locale);
+   		   String sorryNoResultsFoundTryAnotherOption = rb.getString("sorryNoResultsFoundTryAnotherOption");
+   		    
 			User user = null;
 			List<String> genres = new ArrayList<String>();
 			response.setContentType("text/html");  
@@ -79,8 +78,6 @@ public class Movies extends HttpServlet {
      		 }
      		 
      		 
-    		 
-    		 
     		try {
     			
     			int sortBy = (int) session.getAttribute("sortBy");
@@ -120,7 +117,7 @@ public class Movies extends HttpServlet {
 				if(schedule.size()>0) {
 					request.setAttribute("schedule", schedule);
 				} else {
-					request.setAttribute("message", "Sorry, but no results found. Try another option...");
+					request.setAttribute("message", sorryNoResultsFoundTryAnotherOption+"...");
 				}
 				request.setAttribute("genres", genres);
 				
@@ -179,9 +176,6 @@ public class Movies extends HttpServlet {
 		}
 		return "";
 	}
-
-
-
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 			processData(request, response);

@@ -41,7 +41,6 @@ public class CinemaHallServlet extends HttpServlet {
 		   msDao = new MovieSessionDAO();
 		}
 	
-		
 		int coins = 0;
 		try {
 			 MovieSession ms = msDao.getMovieSession(movieSession);
@@ -49,9 +48,6 @@ public class CinemaHallServlet extends HttpServlet {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
-		
-		
 		
 		HttpSession session = request.getSession();
 		if(session.getAttribute("session_token") == null) {

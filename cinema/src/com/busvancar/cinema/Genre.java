@@ -11,7 +11,6 @@ public class Genre {
 	public static String[] genres_en_GB = {"All genres","comedy", "action", "drama", "historic", "cartoon","criminal", "thriller"};
 	public static String[] genres_uk_UA = {"Всі жанри","комедія", "пригодницький", "драма", "історичний", "мультфільм", "кримінал", "триллер" };
 	
-	
 	public static List<String> getGenreList(String[] genres)  {
 		return Arrays.asList(genres);
 	}
