@@ -659,36 +659,58 @@ public class TicketDAO {
 		return total;
 	}
 
-	public User getUser(Ticket ticket) {
-		User user = new User();
-		String sqlQuery = "SELECT user.first_name, user.last_name, user.email FROM ticket INNER JOIN user ON ticket.purchaser_id = user.id WHERE ticket.ticket_id = ?  ";
-		try {
-			connect();
-		} catch (SQLException ex) {
-			ex.printStackTrace();
-		}
-   	 	
-   	 	try(PreparedStatement statement = jdbcConnection.prepareStatement(sqlQuery)){
-         	statement.setInt(1, ticket.getTicketId());
-   	        
-         	try(ResultSet rs = statement.executeQuery()){
-   	        	if(rs.next()) {
-   	        		user.setFirstName(rs.getString("user.first_name"));
-   	        		user.setLastName(rs.getString("user.last_name"));
-   	        		user.setEmail(rs.getString("user.email"));
+	
 
-   	        	}
-   	        }
-        }catch (SQLException e) {
-			e.printStackTrace();
-		}
-   	 	
-   	   try {
-			disconnect();
-		} catch (SQLException ex) {
-			ex.printStackTrace();
-		}
-		return user;
+	public Ticket getTicket(int ticketId) {
+		 Ticket ticket;
+		 double floatPrice = 0;
+		  String sqlQuery = " SELECT movie.title, ticket.ticket_id, ticket.session_id, ticket.seat, ticket.price, ticket.purchaser_id, ticket.session_token, ticket.time, "
+		  		+ "	session.movie_id, session.session_time, movie.title, movie.duration FROM ticket   "
+		  		+ " INNER JOIN session ON ticket.session_id = session.session_id "
+		  		+ " INNER JOIN movie ON movie.id = session.movie_id "
+		  		+ "  WHERE ticket.ticket_id = ? ";
+	         
+	        try {
+				connect();
+			} catch (SQLException ex) {
+				ex.printStackTrace();
+			}
+	         
+	        try(PreparedStatement statement = jdbcConnection.prepareStatement(sqlQuery)) {
+	        	
+	        	statement.setInt(1, ticketId);
+
+	        	try(ResultSet rs = statement.executeQuery()){
+	    			
+					if(rs.next()) {
+						ticket = new Ticket();
+						ticket.setTicketId(ticketId);
+						ticket.setMovieTitle(rs.getString("movie.title"));
+						ticket.setSessionId(rs.getInt("ticket.session_id"));
+						ticket.setMovieDuration(rs.getInt("movie.duration"));
+						ticket.setSeat(rs.getInt("ticket.seat"));
+						floatPrice = (double) rs.getInt("ticket.price");
+						ticket.setPrice(floatPrice/100);
+						ticket.setPurchaserId(rs.getInt("ticket.purchaser_id"));
+						ticket.setSessionToken(rs.getString("ticket.session_token"));
+						ticket.setTime(rs.getTimestamp("session.session_time"));
+						int row = (((ticket.getSeat()-((ticket.getSeat()-1) % SEATS_IN_ROW))/SEATS_IN_ROW)+1);
+						ticket.setRow(row);
+						return ticket;
+					}
+	        	}
+	        	statement.close();
+	        }catch (SQLException e) {
+				e.printStackTrace();
+			}
+	    
+	        try {
+				disconnect();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+	         
+	        return null;
 	}
 	
 }

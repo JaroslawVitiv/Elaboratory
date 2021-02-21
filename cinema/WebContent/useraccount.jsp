@@ -103,20 +103,41 @@ String send2email = rb.getString("send2email");
 		text-align:center;
 		color:maroon
 	}
+	.loader {
+  border: 25px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 25px solid maroon;
+  border-bottom: 25px solid maroon;
+  width: 20px;
+  height: 20px;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+}
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
 </style>
 <script>
 function sendEmail(ticketId) {
-	
 	var xhttp = new XMLHttpRequest();
 	  xhttp.onreadystatechange = function() {
-      if (this.readyState == 4 && this.status == 200) {
-        bootbox.alert(this.responseText);
-	      $("#ticket"+ticketId).hide();
-	    }
+      		if (this.readyState == 4 && this.status == 200) {
+     	  		$("#ticket"+ticketId).hide();
+			 	bootbox.alert(this.responseText);
+			 	$("#loader"+ticketId).hide();
+	    	}
 	  };
 	 xhttp.open("GET", "/cinema/ticketSender?ticketId="+ticketId, true);
 	 xhttp.send();
-	 $("#ticket"+ticketId).hide();
+	$("#loader"+ticketId).show();
+    
 }
 </script>
 </head>
@@ -160,8 +181,10 @@ function sendEmail(ticketId) {
 					<div><% out.print(datetime); %>: <b><fmt:formatDate value="${ticket.time}" pattern="dd.MM.yyyy (HH:mm)" /></b> | <% out.print(duration); %>: <b>${ticket.movieDuration}</b> <% out.print(mins); %></div>
 					<div> <% out.print(row); %>: <b>${ticket.row}</b> | <% out.print(seat); %>: <b><c:out value="${ticket.seat}"/></b></div>
 					<div style="text-align: right; padding:10px;"><p>
-					<a class="btn btn-danger btn-sm" href="cinematicket?ticketId=${ticket.ticketId}&sessionToken=${ticket.sessionToken}&l10n=<% out.print(session.getAttribute("l10n")); %>" ><% out.print(download); %> .pdf</a></p>
-					<p><button id="ticket${ticket.ticketId}" class="btn btn-warning btn-sm" onclick="sendEmail(${ticket.ticketId});" ><% out.print(send2email); %></button></p></div>
+					<a class="btn btn-danger btn-sm" href="cinematicket?ticketId=${ticket.ticketId}&sessionToken=${ticket.sessionToken}" ><% out.print(download); %> .pdf</a></p>
+					<p><button id="ticket${ticket.ticketId}" class="btn btn-warning btn-sm" onclick="sendEmail(${ticket.ticketId});" ><% out.print(send2email); %></button></p>
+					<div class="loader" id="loader${ticket.ticketId}" style="display:none;"></div>
+					</div>
 				</div>
 			</div>
 			

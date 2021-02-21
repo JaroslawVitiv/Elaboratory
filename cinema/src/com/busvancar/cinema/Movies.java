@@ -25,9 +25,12 @@ public class Movies extends HttpServlet {
 	private void processData(HttpServletRequest request, HttpServletResponse response) {
     		int page = 1;
     		HttpSession session = request.getSession();
-   		    Locale locale = new Locale((String) session.getAttribute("l10n"));
+    		if(session.getAttribute("l10n")==null) {
+    			session.setAttribute("l10n", "uk_UA");
+    		}
+    		Locale locale = new Locale((String) session.getAttribute("l10n"));
    		    ResourceBundle rb = ResourceBundle.getBundle("l10n_"+session.getAttribute("l10n"), locale);
-   		   String sorryNoResultsFoundTryAnotherOption = rb.getString("sorryNoResultsFoundTryAnotherOption");
+   		    String sorryNoResultsFoundTryAnotherOption = rb.getString("sorryNoResultsFoundTryAnotherOption");
    		    
 			User user = null;
 			List<String> genres = new ArrayList<String>();

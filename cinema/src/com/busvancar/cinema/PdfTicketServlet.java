@@ -22,13 +22,13 @@ import com.itextpdf.text.Font.FontFamily;
 import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.parser.Path;
 
 /**
  * Servlet implementation class PdfTicketGeneratorServlet
  */
 public class PdfTicketServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -54,10 +54,11 @@ public class PdfTicketServlet extends HttpServlet {
 			
 			//create a new document
 			Document doc = new Document();
-			
+
 			//create some special styles and font sizes
 			Font bfBold18 = new Font(FontFamily.TIMES_ROMAN, 18, Font.BOLD, new BaseColor(0, 0, 0)); 
-			Font bf12 = new Font(FontFamily.TIMES_ROMAN, 12);
+			
+		 	    
 
 			try {
 				
@@ -86,9 +87,9 @@ public class PdfTicketServlet extends HttpServlet {
 				doc.add(paragraph);
 				
 				request.setCharacterEncoding("UTF-8");
-				String language = request.getParameter("l10n");
-		    	Locale locale = new Locale(language);
-				ResourceBundle rb = ResourceBundle.getBundle("l10n_"+language, locale);
+				HttpSession session = request.getSession();
+		    	Locale locale = new Locale((String) session.getAttribute("l10n"));
+				ResourceBundle rb = ResourceBundle.getBundle("l10n_"+session.getAttribute("l10n"), locale);
 				String seat = rb.getString("seat");
 				String row = rb.getString("row");
 				String movieTitle = rb.getString("movieTitle");
@@ -98,6 +99,9 @@ public class PdfTicketServlet extends HttpServlet {
 				String mins = rb.getString("mins");
 				String ticketTr = rb.getString("ticket");
 				
+				BaseFont unicode = BaseFont.createFont("arial.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+				Font bf12 = new Font(unicode, 12);
+				    	   
 				//add some detail information about the country
 				doc.add( new Paragraph("-------------------------------------------", bf12));
 				doc.add( new Paragraph(ticketTr+" NN: "+ticket.getTicketId(), bf12));
@@ -105,7 +109,7 @@ public class PdfTicketServlet extends HttpServlet {
 				doc.add( new Paragraph(duration+": "+ticket.getMovieDuration() +" "+mins , bf12));
 				doc.add( new Paragraph(seat+": "+ticket.getSeat() , bf12));
 				doc.add( new Paragraph(row+": "+ticket.getRow() , bf12));
-				doc.add( new Paragraph(price+": "+ticket.getPrice() , bf12));
+				doc.add( new Paragraph(price+": "+ticket.getPrice()+" ($$)", bf12));
 				doc.add( new Paragraph(datetime+": "+String.format("%te.%1$tm.%1$tY (%1$TH:%1$TM)", ticket.getMovieSessionTime()), bf12));
 				doc.add( new Paragraph("-------------------------------------------", bf12));
 
