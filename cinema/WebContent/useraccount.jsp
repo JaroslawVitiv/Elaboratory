@@ -8,6 +8,8 @@
 <%@ page import = "java.io.*, java.util.*, java.time.*" %>
 <%@ page import = "javax.servlet.*,javax.servlet.http.*, java.util.ResourceBundle "%>
 <%@ page import = "com.busvancar.cinema.Genre"%>
+<%@ taglib prefix = "vitiv" uri = "WEB-INF/footer.tld"%>
+
 <%
 Locale locale = new Locale((String) session.getAttribute("l10n"));
 ResourceBundle rb = ResourceBundle.getBundle("l10n_"+session.getAttribute("l10n"), locale);
@@ -193,5 +195,7 @@ function sendEmail(ticketId) {
 
 	
 </div>
+<vitiv:footer/>
+
 </body>
 </html>

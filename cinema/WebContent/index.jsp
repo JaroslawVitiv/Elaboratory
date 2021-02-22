@@ -8,6 +8,9 @@
 <%@ page import = "java.io.*, java.util.*, java.time.*" %>
 <%@ page import = "javax.servlet.*,javax.servlet.http.*, java.util.ResourceBundle "%>
 <%@ page import = "com.busvancar.cinema.Genre"%>
+<%@ taglib prefix = "vitiv" uri = "WEB-INF/footer.tld"%>
+
+
 <%
 String genreDropdownMenu_en_GB = Genre.getGenreOptions(Genre.genres_en_GB);
 String genreDropdownMenu_uk_UA = Genre.getGenreOptions(Genre.genres_uk_UA);
@@ -447,5 +450,7 @@ if(sc.getAttribute("currentUsers")!=null){
 				<div class="message">${message}</div>
 		</div>	
 </div>
+
+<vitiv:footer/>
 </body>
 </html>

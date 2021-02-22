@@ -1,0 +1,15 @@
+ 
+    <taglib version="2.1" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema">  
+      
+      <tlib-version>1.0</tlib-version>  
+      <jsp-version>1.2</jsp-version>  
+      <short-name>footer</short-name>  
+      <uri>footer.tld</uri>  
+      
+    <tag>  
+	    <name>footer</name>  
+	    <tag-class>com.busvancar.cinema.FooterTag</tag-class> 
+	    <info>Devolve Alo Mundo</info>
+        <bodycontent>EMPTY</bodycontent>   
+    </tag>  
+    </taglib>  
