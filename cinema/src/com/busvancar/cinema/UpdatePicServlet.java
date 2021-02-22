@@ -24,6 +24,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
 import org.apache.tomcat.util.http.fileupload.FileItem;
 import org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory;
 import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
@@ -36,7 +38,12 @@ import org.apache.tomcat.util.http.fileupload.servlet.ServletRequestContext;
 
 public class UpdatePicServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private Logger logger = null;
 	
+	public void init() {
+		logger = Logger.getRootLogger();
+		BasicConfigurator.configure();
+	}   
 	
 	 // upload settings
     private static final int MEMORY_THRESHOLD   = 1024 * 1024 * 3;  // 3MB
@@ -140,7 +147,7 @@ public class UpdatePicServlet extends HttpServlet {
 	                    	try {
 		                       Files.deleteIfExists(path);
 	                    	} catch (IOException x) {
-		                       System.out.println(x);
+		                       logger.info(x);
 	                    	}
                     	}
                     }
@@ -160,6 +167,7 @@ public class UpdatePicServlet extends HttpServlet {
             }
         } catch (Exception ex) {
             request.setAttribute("message", "Error: " + ex.getMessage());
+            logger.warn(ex);
         }
       
         getServletContext().getRequestDispatcher("/edit?m="+movie.getId()).forward(request, response);

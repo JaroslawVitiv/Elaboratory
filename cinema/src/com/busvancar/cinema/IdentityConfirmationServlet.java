@@ -9,12 +9,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
+
 /**
  * Servlet implementation class IdentityConfirmationServlet
  */
 public class IdentityConfirmationServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	private Logger logger = null;
+	
+	public void init() {
+		logger = Logger.getRootLogger();
+		BasicConfigurator.configure();
+	} 
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -39,8 +47,8 @@ public class IdentityConfirmationServlet extends HttpServlet {
 		String message = "Something wrong... Not confirmed";
 		if(uDao.confirm(user)) {
 			 message = "You are confirmed";
-			 
 		}
+		logger.info(message);
 		request.setAttribute("message", message);
 		RequestDispatcher rd = getServletContext().getRequestDispatcher("/messenger.jsp");
 		rd.include(request, response);

@@ -15,12 +15,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 
 /**
  * Servlet implementation class Movies
  */
 public class Movies extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private Logger logger = null;
+	
+	public void init() {
+		logger = Logger.getRootLogger();
+		BasicConfigurator.configure();
+	}
 	
 	private void processData(HttpServletRequest request, HttpServletResponse response) {
     		int page = 1;
@@ -140,7 +150,7 @@ public class Movies extends HttpServlet {
 				
 				
 			} catch (SQLException | ServletException | IOException e) {
-					e.printStackTrace();
+				logger.warn(e);
 		    }
 			
     }

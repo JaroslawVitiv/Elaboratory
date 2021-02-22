@@ -23,11 +23,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
+
 /**
  * Servlet implementation class SigninServlet
  */
 public class SigninServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
+	private Logger logger = null;
+	
+	public void init() {
+		logger = Logger.getRootLogger();
+		BasicConfigurator.configure();
+	}   
+
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -84,7 +95,7 @@ public class SigninServlet extends HttpServlet {
 					out.println("<font color=red>"+unfurtunatelyEmailNotInserted+"</font>");
 				}
 			} catch (SQLException e) {
-				e.printStackTrace();
+				logger.warn(e);
 			} 
 			
 		}
@@ -161,7 +172,7 @@ public class SigninServlet extends HttpServlet {
 	    	  
 	    	
 	      } catch (MessagingException mex) {
-	         mex.printStackTrace();
+	         logger.warn(mex);
 	      }
 		
 	}

@@ -18,6 +18,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
+
 /**
  * Servlet implementation class TicketGeneratorServlet
  */
@@ -28,6 +31,12 @@ public class TicketGeneratorServlet extends HttpServlet {
 	private String sessionToken;
 	private MovieSessionDAO msDao;
 	private String priceTr = "";
+	private Logger logger = null;
+	
+	public void init() {
+		logger = Logger.getRootLogger();
+		BasicConfigurator.configure();
+	}   
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -70,7 +79,7 @@ public class TicketGeneratorServlet extends HttpServlet {
 				coins = (int)(ms.getPrice()*100);
 				price =  msDao.getPrice(coins, seat);
 			} catch (SQLException e) {
-				e.printStackTrace();
+				logger.warn(e);
 			}
 		}
 		
@@ -138,7 +147,9 @@ public class TicketGeneratorServlet extends HttpServlet {
 	}
 	
 	private String getSeat(int seatNumber, double price,  String color, String disabled) {
-		return " <div><span id=\"seat"+(seatNumber+1)+"\" ><button onclick=\"add2cart("+(seatNumber+1)+");\" class=\"btn btn-sm btn-"+color+"\"  "+disabled+" />"+(seatNumber+1)+" <hr/> "+priceTr+":<br/>"+price+"</button></span></div> ";
+		return " <div>"
+				+ "<span id=\"seat"+(seatNumber+1)+"\" >"
+						+ "<button onclick=\"add2cart("+(seatNumber+1)+");\" class=\"btn btn-sm btn-"+color+"\"  "+disabled+" />"+(seatNumber+1)+" <hr/> "+price+" $$</button></span></div> ";
 	}
 	
 

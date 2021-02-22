@@ -17,12 +17,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
+
 /**
  * Servlet implementation class AdminServlet
  */
 public class AdminServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final int SEATS = 96;
+	private Logger logger = null;
+	
+	public void init() {
+		logger = Logger.getRootLogger();
+		BasicConfigurator.configure();
+	}
 	/**
      * @see HttpServlet#HttpServlet()
      */
@@ -94,7 +103,8 @@ public class AdminServlet extends HttpServlet {
 			
 			
 		} catch (SQLException | ServletException | IOException e) {
-				e.printStackTrace();
+			logger.warn(e);
+				
 	    }
 		
 		RequestDispatcher rd = getServletContext().getRequestDispatcher("/administration.jsp");

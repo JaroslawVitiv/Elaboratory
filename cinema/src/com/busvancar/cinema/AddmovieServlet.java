@@ -14,6 +14,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
+//import org.apache.log4j.BasicConfigurator;
+//import org.apache.log4j.Level;
+//import org.apache.log4j.Logger;
 import org.apache.tomcat.util.http.fileupload.FileItem;
 import org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory;
 import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
@@ -26,7 +31,12 @@ import org.apache.tomcat.util.http.fileupload.servlet.ServletRequestContext;
 
 public class AddmovieServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private Logger logger = null;
 	
+	public void init() {
+		logger = Logger.getRootLogger();
+		BasicConfigurator.configure();
+	}
 	
 	 // upload settings
     private static final int MEMORY_THRESHOLD   = 1024 * 1024 * 3;  // 3MB
@@ -34,14 +44,22 @@ public class AddmovieServlet extends HttpServlet {
     private static final int MAX_REQUEST_SIZE   = 1024 * 1024 * 50; // 50MB
 	private String UPLOAD_DIRECTORY = "images";
 
-	   
+	
+	
+	//private Logger logger = null;
+	
+	//public void init() {
+		//logger = Logger.getRootLogger();
+		//BasicConfigurator.configure();
+	//}
     /**
      * @see HttpServlet#HttpServlet()
      */
     public AddmovieServlet() {
         super();
     }
-
+    
+    
    
     protected void processData(HttpServletRequest request, HttpServletResponse response)    throws ServletException, IOException {
     	HttpSession session = request.getSession();
@@ -164,6 +182,7 @@ public class AddmovieServlet extends HttpServlet {
             }
         } catch (Exception ex) {
             request.setAttribute("message", "Error: " + ex.getMessage());
+            logger.warn(ex);
         }
         
         // redirects client to message page

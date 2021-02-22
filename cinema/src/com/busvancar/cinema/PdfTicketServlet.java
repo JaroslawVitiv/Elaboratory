@@ -11,6 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
+
 import com.itextpdf.text.Anchor;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
@@ -29,6 +32,12 @@ import com.itextpdf.text.pdf.parser.Path;
  */
 public class PdfTicketServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private Logger logger = null;
+	
+	public void init() {
+		logger = Logger.getRootLogger();
+		BasicConfigurator.configure();
+	}
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -115,11 +124,10 @@ public class PdfTicketServlet extends HttpServlet {
 
 				doc.close(); 
 				
-			}catch(DocumentException e){
-				e.printStackTrace();
-			}
-			catch(Exception e){
-				e.printStackTrace();
+			} catch (DocumentException e){
+				logger.warn(e);
+			} catch(Exception e) {
+				logger.warn(e);
 			}
 	}
 

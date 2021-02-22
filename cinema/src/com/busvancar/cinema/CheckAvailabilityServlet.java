@@ -17,6 +17,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
+
 /**
  * Servlet implementation class CheckAvailabilityServlet
  */
@@ -27,6 +30,12 @@ public class CheckAvailabilityServlet extends HttpServlet {
 	private int userId = 0;
 	public String message = "";
      
+	private Logger logger = null;
+	
+	public void init() {
+		logger = Logger.getRootLogger();
+		BasicConfigurator.configure();
+	}
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -121,7 +130,7 @@ public class CheckAvailabilityServlet extends HttpServlet {
 			request.getRequestDispatcher("availability.jsp").forward(request,response);
 			
 		} catch (SQLException | ServletException | IOException e) {
-				e.printStackTrace();
+			logger.warn(e);
 	    }
 		
 		

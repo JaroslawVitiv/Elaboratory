@@ -15,6 +15,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
+
 import com.busvancar.cinema.User;
 import com.busvancar.cinema.UserDAO;
 
@@ -24,6 +27,12 @@ import com.busvancar.cinema.UserDAO;
 public class ChangePasswordServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
+	private Logger logger = null;
+	
+	public void init() {
+		logger = Logger.getRootLogger();
+		BasicConfigurator.configure();
+	}
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -71,6 +80,7 @@ public class ChangePasswordServlet extends HttpServlet {
 						rd.include(request, response);
 					}else {
 						out.println("<font color=red>"+unfortunatelyPasswordNotUpdated+"</font>");
+						logger.warn(unfortunatelyPasswordNotUpdated);
 						rd.include(request, response);
 					} 
 					

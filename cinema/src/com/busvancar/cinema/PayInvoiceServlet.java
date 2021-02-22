@@ -14,12 +14,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
+
 /**
  * Servlet implementation class PayInvoiceServlet
  */
 public class PayInvoiceServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	private Logger logger = null;
+	
+	public void init() {
+		logger = Logger.getRootLogger();
+		BasicConfigurator.configure();
+	}   
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -42,10 +50,10 @@ public class PayInvoiceServlet extends HttpServlet {
 		if(session.getAttribute("session_token") == null) {
 			session.setAttribute("session_token", UUID.randomUUID().toString());
 		}
-    	String sessionToken =   request.getParameter("session_token");
+    	String sessionToken = request.getParameter("session_token");
 		User user = (User) session.getAttribute("user");
 		
-			PrintWriter out = response.getWriter();
+		PrintWriter out = response.getWriter();
 		
 		TicketDAO tDao = new TicketDAO();
 		double total = 0;
@@ -55,6 +63,7 @@ public class PayInvoiceServlet extends HttpServlet {
 			out.print("<h4 style=\"color:green\">"+youPaidUs+" "+total+" $$ </h4>");
 		}else {
 			out.print("<h3 style=\"color:red\">"+sorryPaymentIsNotThrough+"...:(</h3>");
+			logger.warn(sorryPaymentIsNotThrough);
 		}
     		
     }

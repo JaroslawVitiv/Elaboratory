@@ -13,6 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
+
 import javax.mail.*;
 import javax.mail.internet.*;
 import javax.activation.*;
@@ -23,6 +26,12 @@ import java.util.ResourceBundle.*;
  */
 public class TicketEmailSendingServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private Logger logger = null;
+	
+	public void init() {
+		logger = Logger.getRootLogger();
+		BasicConfigurator.configure();
+	}   
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -120,7 +129,7 @@ public class TicketEmailSendingServlet extends HttpServlet {
 	    	  
 	    	
 	      } catch (MessagingException mex) {
-	         mex.printStackTrace();
+	         logger.warn(mex);
 	      }
 	     
 	}

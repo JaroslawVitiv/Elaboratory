@@ -46,7 +46,6 @@ public class UserAccountServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void processData(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//PrintWriter out = response.getWriter();
 		TicketDAO tDao = new TicketDAO();
 		List<Ticket> allUserstickets = new ArrayList<>();
 		

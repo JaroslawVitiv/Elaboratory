@@ -13,12 +13,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
+
 /**
  * Servlet implementation class RemovesessionServlet
  */
 public class RemovesessionServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+    
+	private Logger logger = null;
+	
+	public void init() {
+		logger = Logger.getRootLogger();
+		BasicConfigurator.configure();
+	}
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -56,7 +65,7 @@ public class RemovesessionServlet extends HttpServlet {
 			}
 			message.append("<div><a href=\"edit?m="+mSession.getMovieId()+"\">"+continue2admin+"...</div>");
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.warn(e);
 		}
 		request.setAttribute("message", message);
 		RequestDispatcher rd = getServletContext().getRequestDispatcher("/messenger.jsp");

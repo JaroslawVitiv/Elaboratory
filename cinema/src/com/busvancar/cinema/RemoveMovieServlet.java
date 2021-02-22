@@ -14,13 +14,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
+
 /**
  * Servlet implementation class RemoveMovieServlet
  */
-@WebServlet("/RemoveMovieServlet")
 public class RemoveMovieServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	private Logger logger = null;
+	
+	public void init() {
+		logger = Logger.getRootLogger();
+		BasicConfigurator.configure();
+	}   
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -52,7 +59,7 @@ public class RemoveMovieServlet extends HttpServlet {
 			request.getRequestDispatcher("messenger.jsp").forward(request,response);
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.warn(e);
 		}
 		RequestDispatcher rd = getServletContext().getRequestDispatcher("/messenger.jsp");
 		rd.include(request, response);

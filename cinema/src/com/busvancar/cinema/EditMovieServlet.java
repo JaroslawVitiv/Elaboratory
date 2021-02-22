@@ -12,6 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
+
 /**
  * Servlet implementation class EditMovieServlet
  */
@@ -19,7 +22,12 @@ public class EditMovieServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	 private final int SEATS = 96;
-       
+     private Logger logger = null;
+     	
+     public void init() {
+     	logger = Logger.getRootLogger();
+     	BasicConfigurator.configure();
+     }
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -34,8 +42,7 @@ public class EditMovieServlet extends HttpServlet {
     	 List<MovieSession> msdList;
     	 MovieSessionDAO msDao = new MovieSessionDAO();
          DecimalFormat df = new DecimalFormat("###.##");
-    	 
-		
+       
     	 response.setContentType("text/html");
     	 
     	 PrintWriter out = response.getWriter();
@@ -55,36 +62,34 @@ public class EditMovieServlet extends HttpServlet {
 		try {
 			cinemaHallOccupationRate = ((double) views / (msDao.getAllMovieSessions(movie).size() * SEATS)) * 100;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.warn(e);
 		} 
 		
  		request.setAttribute("views", views);
  		request.setAttribute("income", income);
  		request.setAttribute("cinemaHallOccupationRate", df.format(cinemaHallOccupationRate));
  		
- 		 
-         
-         	try {
-				mDao = new MovieDAO();
-				movie = mDao.getMovie(movie.getId());
+ 		try {
+			mDao = new MovieDAO();
+			movie = mDao.getMovie(movie.getId());
 				
-				if(movie!=null) {
+			if(movie!=null) {
 					
-					msDao = new MovieSessionDAO();
-					msdList = msDao.getAllMovieSessions(movie);
+				msDao = new MovieSessionDAO();
+				msdList = msDao.getAllMovieSessions(movie);
 				
-					request.setAttribute("listOfAllSessions", msdList);
-					request.setAttribute("movie", movie);
+				request.setAttribute("listOfAllSessions", msdList);
+				request.setAttribute("movie", movie);
 					
-					request.getRequestDispatcher("editmovie.jsp").forward(request,response);
-				} else {
-					out.print("Error: Movie is not found");
-				}
+				request.getRequestDispatcher("editmovie.jsp").forward(request,response);
+			} else {
+				out.print("Error: Movie is not found");
+			}
 				
 			
-			} catch (SQLException ex) {
-				ex.printStackTrace();
-			}
+		} catch (SQLException ex) {
+			logger.warn(ex);
+		}
 			
 	}
     

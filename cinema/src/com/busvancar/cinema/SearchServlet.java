@@ -15,12 +15,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
+
 /**
  * Servlet implementation class SearchServlet
  */
 public class SearchServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	private Logger logger = null;
+	
+	public void init() {
+		logger = Logger.getRootLogger();
+		BasicConfigurator.configure();
+	}   
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -69,13 +77,13 @@ public class SearchServlet extends HttpServlet {
 			try {
 				schedule = movieSessDao.getSchedule(sortBy, ascDesc, request.getParameter("request"));
 			} catch (SQLException e) {
-				e.printStackTrace();
+				logger.warn(e);
 			}
 		}else {
 			try {
 				schedule = movieSessDao.getSchedule(sortBy, ascDesc, "");
 			} catch (SQLException e) {
-				e.printStackTrace();
+				logger.warn(e);
 			}
 		}
     
