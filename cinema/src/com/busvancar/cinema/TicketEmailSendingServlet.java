@@ -39,11 +39,6 @@ public class TicketEmailSendingServlet extends HttpServlet {
 		
 		Locale locale = new Locale((String) session.getAttribute("l10n"));
 		ResourceBundle rb = ResourceBundle.getBundle("l10n_"+session.getAttribute("l10n"), locale);
-		String greeting = rb.getString("greeting");
-		String changePassword = rb.getString("changePassword");
-		String hello = rb.getString("hello");
-		String homePage = rb.getString("homePage");
-		String download = rb.getString("download");
 		String movie = rb.getString("movie");
 		String datetime = rb.getString("datetime");
 		String priceTr = rb.getString("price");
@@ -51,7 +46,6 @@ public class TicketEmailSendingServlet extends HttpServlet {
 		String mins = rb.getString("mins");
 		String row = rb.getString("row");
 		String seat = rb.getString("seat");
-		String send2email = rb.getString("send2email");
 		String isSuccessfullySentCheckYourInboxInludingSPAMbox =  rb.getString("isSuccessfullySentCheckYourInboxInludingSPAMbox");
 		String ticketTr =  rb.getString("ticket");
 		
@@ -116,11 +110,9 @@ public class TicketEmailSendingServlet extends HttpServlet {
 	          
 	            message.setRecipients(
 	                    Message.RecipientType.TO,
-	                    //InternetAddress.parse(user.getEmail())
-	                    InternetAddress.parse("nataliaobertas@gmail.com")
+	                    InternetAddress.parse(user.getEmail())
 	            );
 	            message.setSubject("VitivCinema");
-	            //message.setText(sb.toString());
 	            message.setContent(sb.toString(), "text/html;charset=UTF-8");
 	            Transport.send(message);
 

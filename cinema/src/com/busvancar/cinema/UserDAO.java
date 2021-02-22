@@ -124,7 +124,7 @@ public class UserDAO {
     
    
     public boolean insertUser(User user) throws SQLException {
-        String sql = "INSERT INTO user (first_name, last_name, email, password) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO user (first_name, last_name, email, password, conf_code) VALUES (?, ?, ?, ?, ?)";
         connect();
          
         PreparedStatement statement = jdbcConnection.prepareStatement(sql);
@@ -134,6 +134,7 @@ public class UserDAO {
         statement.setString(2, user.getLastName());
         statement.setString(3, user.getEmail());
         statement.setString(4, user.getPassword());
+        statement.setLong(5, user.getConfirmationCode());
 
 
         boolean rowInserted = statement.executeUpdate() > 0;
@@ -232,6 +233,33 @@ public class UserDAO {
 		}
 		return user;
 	}
-     
-  
+
+	public boolean confirm(User user) {
+String sql = "UPDATE user SET conf_code = 0 WHERE conf_code = ? AND email = ?";
+        
+        try {
+			connect();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+         
+        try( PreparedStatement statement = jdbcConnection.prepareStatement(sql)){
+	        statement.setLong(1, user.getConfirmationCode());
+	        statement.setString(2, user.getEmail());
+
+	         
+	        boolean rowUpdated = statement.executeUpdate() > 0;
+	        statement.close(); 
+	        return rowUpdated;
+        } catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+        try {
+			disconnect();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
 }

@@ -328,9 +328,9 @@ public class TicketDAO {
 	        statement.setString(2, sessionToken);
 
 	         
-	        boolean rowDeleted = statement.executeUpdate() > 0;
+	        boolean rowUpdated = statement.executeUpdate() > 0;
 	        statement.close(); 
-	        return rowDeleted;
+	        return rowUpdated;
         } catch (SQLException ex) {
 			ex.printStackTrace();
 		}

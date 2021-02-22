@@ -263,7 +263,15 @@
     <servlet-name>TicketEmailSendingServlet</servlet-name>
     <url-pattern>/ticketSender</url-pattern>
   </servlet-mapping>
-
+<servlet>
+      <servlet-name>IdentityConfirmationServlet</servlet-name>
+      <servlet-class>com.busvancar.cinema.IdentityConfirmationServlet</servlet-class>
+   </servlet>
+    
+  <servlet-mapping>
+    <servlet-name>IdentityConfirmationServlet</servlet-name>
+    <url-pattern>/confirmation</url-pattern>
+  </servlet-mapping>
   
   
    <filter>

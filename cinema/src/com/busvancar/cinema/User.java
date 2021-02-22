@@ -8,6 +8,7 @@ public class User {
 	private String password;
 	private int admin;
 	private double revenue;
+	private long generatedLong;
 	
 	public int getId() {
 		return id;
@@ -63,5 +64,13 @@ public class User {
 	
 	public double getRevenue() {
 		return revenue;
+	}
+
+	public void setConfirmationCode(long generatedLong) {
+		this.generatedLong = generatedLong;
+	}
+	
+	public long getConfirmationCode() {
+		return generatedLong;
 	}
 }
