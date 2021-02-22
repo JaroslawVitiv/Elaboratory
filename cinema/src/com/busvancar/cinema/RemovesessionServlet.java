@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +26,7 @@ public class RemovesessionServlet extends HttpServlet {
         super();
     }
 
-    private void processData(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private void processData(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
     	HttpSession session = request.getSession();
 
 		Locale locale = new Locale((String) session.getAttribute("l10n"));
@@ -37,31 +38,29 @@ public class RemovesessionServlet extends HttpServlet {
 		String sessionTr = rb.getString("session");
 		String fromMovie = rb.getString("fromMovie");
 
-		
-		
-		PrintWriter out = response.getWriter();
-		
 		MovieSession mSession = new MovieSession();
 		MovieSessionDAO msDao = new MovieSessionDAO();
 		mSession.setSessionId(Integer.parseInt(request.getParameter("sessionId")));
 		mSession.setMovieId(Integer.parseInt(request.getParameter("movieId")));
 
-	
-		out.print("<div>"+movieSessionRemoval+"</div><hr/>");
+		StringBuilder message = new StringBuilder();
+		message.append("<div>"+movieSessionRemoval+"</div><hr/>");
 		try {
-			out.print("<div>"+sessionTr+" N:"+mSession.getSessionId()+"</div>");
-			out.print("<div>"+fromMovie+" N: "+mSession.getMovieId()+"</div>");
+			message.append("<div>"+sessionTr+" N:"+mSession.getSessionId()+"</div>");
+			message.append("<div>"+fromMovie+" N: "+mSession.getMovieId()+"</div>");
 			
 			if(msDao.removeMovieSession(mSession)) {
-				out.print("<div style=\"color:green\">..."+wasSuccessfullyRemoved+"</div>");
+				message.append("<div style=\"color:green\">..."+wasSuccessfullyRemoved+"</div>");
 			} else {
-				out.print("<div style=\"color:red\">..."+stillExistsNotProperlyRemoved+"!</div>");
+				message.append("<div style=\"color:red\">..."+stillExistsNotProperlyRemoved+"!</div>");
 			}
-			out.print("<div><a href=\"edit?m="+mSession.getMovieId()+"\">"+continue2admin+"...</div>");
+			message.append("<div><a href=\"edit?m="+mSession.getMovieId()+"\">"+continue2admin+"...</div>");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+		request.setAttribute("message", message);
+		RequestDispatcher rd = getServletContext().getRequestDispatcher("/messenger.jsp");
+		rd.include(request, response);
 	}
 	
 	/**

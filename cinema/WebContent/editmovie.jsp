@@ -380,7 +380,7 @@ function closeModal(){
 		<h6><% out.print(datetime); %>:</h6>
 		<input type="hidden" name="movieId" id="movieId" value="${movie.id}">
 		<input type="date" name="sessionDate" id="sessionDate" max="9999-12-12T00:00:00.00" required/>
-		<input type="time" name="sessionTime" id="sessionTime"  required/>
+		<input type="time" name="sessionTime" id="sessionTime" min="09:00" max="22:00"  required/>
 		<hr/>
 		<h6><% out.print(sessionPrice); %>:</h6>
 		<input type="text" placeholder="<% out.print(basicPrice); %>" name="sessionPrice" id="sessionPrice" value="${movie.price}" required/>

@@ -3,11 +3,7 @@ package com.busvancar.cinema;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintWriter;
-import java.math.BigDecimal;
-import java.sql.SQLException;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;

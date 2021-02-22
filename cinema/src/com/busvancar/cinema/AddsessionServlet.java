@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -31,21 +31,24 @@ public class AddsessionServlet extends HttpServlet {
         // TODO Auto-generated constructor stub
     }
 	
-	private void processData(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	private void processData(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		HttpSession session = request.getSession();
 
 		Locale locale = new Locale((String) session.getAttribute("l10n"));
 		ResourceBundle rb = ResourceBundle.getBundle("l10n_"+session.getAttribute("l10n"), locale);
 		String movieSessionSuccessfullyInserted =  rb.getString("movieSessionSuccessfullyInserted");
-		String uploadWithExtensions =  rb.getString("uploadWithExtensions");
 		String movieSessionNotInserted = rb.getString("movieSessionNotInserted");
-		PrintWriter out = response.getWriter();
+		String priceTr = rb.getString("price");
+		String datetime = rb.getString("datetime");
+		String continue2admin = rb.getString("continue2admin");
+
 		MovieSession mSession = new MovieSession();
 		MovieSessionDAO msDao = new MovieSessionDAO();
 		mSession.setMovieId(Integer.parseInt(request.getParameter("movieId")));
 		mSession.setPrice(Double.parseDouble(replaceCommas(request.getParameter("sessionPrice"))));
 		
 		String dateTime = request.getParameter("sessionDate")+" "+request.getParameter("sessionTime");
+		StringBuilder message = new StringBuilder();
 		
 		Timestamp timestamp = null;
 
@@ -59,17 +62,20 @@ public class AddsessionServlet extends HttpServlet {
 		} 
 		try {
 			if(msDao.insertMovieSession2db(mSession)) {
-				out.print("<div style=\"color:green\">"+movieSessionSuccessfullyInserted+"</div>");
-				out.print("<div>Time and date: "+String.format("%te %1$tB, %1$tY (%1$TH:%1$TM)", mSession.getDateTime().toLocalDateTime())+"</div>");
-				out.print("<div>Price: "+mSession.getPrice()+"</div>");
+				message.append("<div style=\"color:green\">"+movieSessionSuccessfullyInserted+"</div>");
+				message.append("<div>"+datetime+": "+String.format("%te.%1$tm.%1$tY (%1$TH:%1$TM)", mSession.getDateTime().toLocalDateTime())+"</div>");
+				message.append("<div>"+priceTr+": "+mSession.getPrice()+" ($$)</div>");
 				
 			} else {
-				out.print("<div style=\"color:red\">"+movieSessionNotInserted+"</div>");
+				message.append("<div style=\"color:red\">"+movieSessionNotInserted+"</div>");
 			}
-			out.print("<div><a href=\"edit?m="+mSession.getMovieId()+"\">Continue...</div>");
+			message.append("<div><a href=\"edit?m="+mSession.getMovieId()+"\">"+continue2admin+"</div>");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		request.setAttribute("message", message);
+		RequestDispatcher rd = getServletContext().getRequestDispatcher("/messenger.jsp");
+		rd.include(request, response);
 		
 	}
 	

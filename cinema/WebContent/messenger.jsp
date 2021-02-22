@@ -18,6 +18,8 @@ ResourceBundle rb = ResourceBundle.getBundle("l10n_"+session.getAttribute("l10n"
 String movieRemovied = rb.getString("movieRemovied");
 String movieNotRemovied = rb.getString("movieNotRemovied");
 String continue2admin = rb.getString("continue2admin");
+String homePage = rb.getString("homePage");
+
 
 
 
@@ -67,8 +69,9 @@ if(sc.getAttribute("currentUsers")!=null){
 </head>
 <body>
 			<div class="message">
+				<div><a href="/cinema"><% out.print(homePage);%></a></div>
+				
 				<div>${message}</div>
-				<div><a href="/cinema"><% out.print(continue2admin);%></a></div>
 			</div>
 </body>
 </html>
