@@ -1,4 +1,9 @@
 package com.busvancar.cinema;
+/**
+ * @author Vitiv
+ * Main ticket class
+ * with its getters and setters
+ */
 
 import java.sql.Timestamp;
 

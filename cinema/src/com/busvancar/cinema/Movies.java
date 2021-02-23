@@ -16,12 +16,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 
 /**
  * Servlet implementation class Movies
+ * is the main handler linked to welcoming page
+ * @author Vitiv
+ *  
  */
 public class Movies extends HttpServlet {
 	private static final long serialVersionUID = 1L;

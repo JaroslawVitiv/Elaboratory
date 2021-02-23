@@ -1,5 +1,10 @@
 package com.busvancar.cinema;
 
+/**
+ * Data Access Object for Movie
+ * @author Vitiv
+ */
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

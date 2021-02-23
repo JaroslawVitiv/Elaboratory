@@ -23,6 +23,8 @@ import com.busvancar.cinema.UserDAO;
 
 /**
  * Servlet implementation class ChangePasswordServlet
+ * processes changing of users passwords
+ * @author Vitiv
  */
 public class ChangePasswordServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;

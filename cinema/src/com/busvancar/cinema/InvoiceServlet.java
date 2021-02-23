@@ -18,6 +18,9 @@ import org.apache.log4j.Logger;
 
 /**
  * Servlet implementation class InvoiceServlet
+ * 
+ * creates a list of unpaid ticket sent to users interface through AJAX
+ * @author Vitiv
  */
 public class InvoiceServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -49,10 +52,6 @@ public class InvoiceServlet extends HttpServlet {
 		String seat = rb.getString("seat");
 
 
-
-
-
-		
 		TicketDAO tDao = new TicketDAO();
 		List<Ticket> bookedUnpaidList = tDao.getBookedUnpaidTickets(sessionToken);
 

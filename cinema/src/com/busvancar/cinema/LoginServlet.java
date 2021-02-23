@@ -3,14 +3,10 @@ package com.busvancar.cinema;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
 import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +15,8 @@ import javax.servlet.http.HttpSession;
 
 /**
  * Servlet implementation class LoginServlet
+ * logs users in or declines if email or password are wrong
+ * @author Vitiv
  */
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;

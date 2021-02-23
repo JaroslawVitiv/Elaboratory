@@ -17,6 +17,8 @@ import org.apache.log4j.Logger;
 
 /**
  * Servlet implementation class EditMovieServlet
+ * is the main handling part of admin boad for editing movies
+ * @author Vitiv
  */
 public class EditMovieServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;

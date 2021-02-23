@@ -2,18 +2,24 @@ package com.busvancar.cinema;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 
 /**
  * Servlet implementation class IdentityConfirmationServlet
+ * handles incoming data from user and approves or declines 
+ * identification of the user
+ * @author Vitiv
  */
 public class IdentityConfirmationServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -40,13 +46,21 @@ public class IdentityConfirmationServlet extends HttpServlet {
 		out.print(email);
 		out.print(confCode);
 		
+		HttpSession session = request.getSession();
+
+		Locale locale = new Locale((String) session.getAttribute("l10n"));
+		ResourceBundle rb = ResourceBundle.getBundle("l10n_"+session.getAttribute("l10n"), locale);
+		String somethingWrongNotConfirmed =  rb.getString("somethingWrongNotConfirmed");
+		String youAreConfirmed =  rb.getString("youAreConfirmed");
+
+		
 		User user = new User();
 		user.setEmail(email);
 		user.setConfirmationCode(confCode);
 		UserDAO uDao = new UserDAO();
-		String message = "Something wrong... Not confirmed";
+		String message = somethingWrongNotConfirmed;
 		if(uDao.confirm(user)) {
-			 message = "You are confirmed";
+			 message = youAreConfirmed;
 		}
 		logger.info(message);
 		request.setAttribute("message", message);

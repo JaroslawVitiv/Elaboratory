@@ -22,6 +22,9 @@ import org.apache.log4j.Logger;
 
 /**
  * Servlet implementation class AddsessionServlet
+ * created to handle information from administration application form
+ * at inserting data about new movie session
+ * @author Vitiv
  */
 public class AddsessionServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;

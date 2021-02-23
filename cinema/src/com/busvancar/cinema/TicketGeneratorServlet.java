@@ -6,12 +6,10 @@ import java.math.RoundingMode;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.UUID;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -23,14 +21,19 @@ import org.apache.log4j.Logger;
 
 /**
  * Servlet implementation class TicketGeneratorServlet
+ * @author Vitiv
+ * generates cinema hall model with the numbered seats
+ * colored according to different status:
+ * red - for booked and paid
+ * yellow - for marked but unpaid and pending 15 minutes before dropping if not paid
+ * green - for available seats 
  */
 public class TicketGeneratorServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private final int ROWS = 12;
+	private final int SEATS_IN_ROW = 12;
 	private final int SEATS = 96;
 	private String sessionToken;
 	private MovieSessionDAO msDao;
-	private String priceTr = "";
 	private Logger logger = null;
 	
 	public void init() {
@@ -53,7 +56,7 @@ public class TicketGeneratorServlet extends HttpServlet {
 
 		Locale locale = new Locale((String) session.getAttribute("l10n"));
 		ResourceBundle rb = ResourceBundle.getBundle("l10n_"+session.getAttribute("l10n"), locale);
-		priceTr =  rb.getString("price");
+		rb.getString("price");
 		
 		TicketDAO tDao = new TicketDAO();
 		int availableSeats = 0;
@@ -138,7 +141,7 @@ public class TicketGeneratorServlet extends HttpServlet {
 					seatsLine.append(getSeat(num, Double.parseDouble(df.format(basePrice * priceIncrementRate)), "success", ""));
 			}
 			
-			if((num+1) % ROWS  == 0) {
+			if((num+1) % SEATS_IN_ROW  == 0) {
 				priceIncrementRate += 0.049;
 			}
 		}

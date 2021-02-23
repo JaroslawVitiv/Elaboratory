@@ -1,14 +1,12 @@
 package com.busvancar.cinema;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,6 +17,8 @@ import org.apache.log4j.Logger;
 
 /**
  * Servlet implementation class RemoveMovieServlet
+ * @author Vitiv
+ * removes movies from admin board with its sessions on cascade 
  */
 public class RemoveMovieServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -40,10 +40,12 @@ public class RemoveMovieServlet extends HttpServlet {
 	 */
 	protected void processData(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
+		
 		Locale locale = new Locale((String) session.getAttribute("l10n"));
 		ResourceBundle rb = ResourceBundle.getBundle("l10n_"+session.getAttribute("l10n"), locale);
 		String movieRemovied = rb.getString("movieRemovied");
 		String movieNotRemovied = rb.getString("movieNotRemovied");
+		
 		Movie movie = new Movie();
 		MovieDAO mDao = new MovieDAO();
 		int movieId = Integer.parseInt(request.getParameter("m"));

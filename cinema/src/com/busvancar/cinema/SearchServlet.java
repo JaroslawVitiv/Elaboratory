@@ -20,6 +20,11 @@ import org.apache.log4j.Logger;
 
 /**
  * Servlet implementation class SearchServlet
+ * @author Vitiv
+ * helps to find the movie and its sessions for the next few days
+ * by the entering of movie title
+ * 
+ * Searching is performed by mysql LIKE command
  */
 public class SearchServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;

@@ -4,6 +4,10 @@ import javax.servlet.jsp.tagext.*;
 import javax.servlet.jsp.*;
 import java.io.*;
 
+/**
+ * @author Vitiv
+ * Just a footer. Very primitive, but I am not a designer ;)
+ */
 public class FooterTag extends SimpleTagSupport{
 	public void doTag() throws IOException {
 		JspWriter out = getJspContext().getOut();

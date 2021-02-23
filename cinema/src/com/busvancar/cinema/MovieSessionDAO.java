@@ -1,5 +1,10 @@
 package com.busvancar.cinema;
 
+/**
+ * @author Vitiv
+ * Data Access Object to Movie Session class
+ */
+
 import java.math.RoundingMode;
 import java.sql.Connection;
 import java.sql.Date;

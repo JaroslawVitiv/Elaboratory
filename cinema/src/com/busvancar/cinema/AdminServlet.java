@@ -1,13 +1,10 @@
 package com.busvancar.cinema;
 
 
-import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -22,6 +19,8 @@ import org.apache.log4j.Logger;
 
 /**
  * Servlet implementation class AdminServlet
+ * manages administration board
+ * @author Vitiv
  */
 public class AdminServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;

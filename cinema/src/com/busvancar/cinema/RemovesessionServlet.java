@@ -18,6 +18,8 @@ import org.apache.log4j.Logger;
 
 /**
  * Servlet implementation class RemovesessionServlet
+ * @author Vitiv
+ * removies movie sessions from a movie by Admin
  */
 public class RemovesessionServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;

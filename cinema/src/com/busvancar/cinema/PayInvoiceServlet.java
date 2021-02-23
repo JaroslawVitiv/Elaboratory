@@ -7,8 +7,6 @@ import java.util.ResourceBundle;
 import java.util.UUID;
 
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,7 +16,11 @@ import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 
 /**
+ * @author Vitiv
  * Servlet implementation class PayInvoiceServlet
+ * returns a payment confirmation message to user through AJAX
+ * upon clicking payment button
+ * 
  */
 public class PayInvoiceServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;

@@ -4,7 +4,6 @@ package com.busvancar.cinema;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.ResourceBundle;
@@ -28,6 +27,8 @@ import org.apache.log4j.Logger;
 
 /**
  * Servlet implementation class SigninServlet
+ * @author Vitiv
+ * handles users signing up
  */
 public class SigninServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;

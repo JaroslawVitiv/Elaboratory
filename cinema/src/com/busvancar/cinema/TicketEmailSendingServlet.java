@@ -18,11 +18,11 @@ import org.apache.log4j.Logger;
 
 import javax.mail.*;
 import javax.mail.internet.*;
-import javax.activation.*;
-import java.util.ResourceBundle.*;
 
 /**
  * Servlet implementation class TicketEmailSendingServlet
+ * @author Vitiv
+ * sends tickets to users email
  */
 public class TicketEmailSendingServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;

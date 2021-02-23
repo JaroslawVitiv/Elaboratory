@@ -9,6 +9,9 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * Servlet implementation class PurgeAllUnpaidTickets
+ * @author Vitiv
+ * 
+ * distroys all marked but unpaid tickets upon 15 minutes timeout
  */
 public class PurgeAllUnpaidTickets extends HttpServlet {
 	private static final long serialVersionUID = 1L;

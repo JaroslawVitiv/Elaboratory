@@ -17,7 +17,12 @@ import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 
 /**
- * Servlet implementation class TicketGeneratorServlet
+ * Servlet implementation class CinemaHallServlet
+ * shows a model of cinema hall for a particular movie of particular movie session
+ * for better representation of free, booked and pre-paid seats.
+ * 
+ * The servlet gets updated information from CheckAvailabilityServlet through AJAX
+ * @author Vitiv
  */
 public class CinemaHallServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;

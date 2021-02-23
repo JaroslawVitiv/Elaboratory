@@ -1,23 +1,16 @@
 package com.busvancar.cinema;
 
 
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintWriter;
-import java.math.BigDecimal;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.sql.SQLException;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import javax.imageio.ImageIO;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -33,6 +26,8 @@ import org.apache.tomcat.util.http.fileupload.servlet.ServletRequestContext;
 
 /**
  * Servlet implementation class AddmovieServlet
+ * @author Vitiv
+ * updates posters in admin board movie handler
  */
 
 

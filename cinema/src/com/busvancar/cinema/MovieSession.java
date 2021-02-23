@@ -1,5 +1,9 @@
 package com.busvancar.cinema;
 
+/**
+ * Movie Session class with its getters and setters
+ * @author Vitiv
+ */
 import java.sql.Timestamp;
 
 public class MovieSession {

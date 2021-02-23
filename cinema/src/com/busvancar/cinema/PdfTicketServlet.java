@@ -22,13 +22,13 @@ import com.itextpdf.text.Font;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Font.FontFamily;
-import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfWriter;
-import com.itextpdf.text.pdf.parser.Path;
 
 /**
  * Servlet implementation class PdfTicketGeneratorServlet
+ * @author Vitiv
+ * creates .pdf files for each ticket that user can download from his profile
  */
 public class PdfTicketServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;

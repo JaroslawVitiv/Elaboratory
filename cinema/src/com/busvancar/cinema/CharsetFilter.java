@@ -10,6 +10,8 @@ import javax.servlet.ServletResponse;
 
 /**
  * Servlet Filter implementation class CharsetFilter
+ * helps to convert characters from different formats into UTF-8
+ * @author Vitiv
  */
 public class CharsetFilter implements Filter {
 

@@ -1,5 +1,11 @@
 package com.busvancar.cinema;
 
+/**
+ * Getters and setters describing Movie
+ * @author Vitiv
+ *
+ */
+
 public class Movie {
 	
 

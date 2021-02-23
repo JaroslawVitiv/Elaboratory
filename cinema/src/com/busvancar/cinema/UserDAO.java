@@ -1,5 +1,6 @@
 package com.busvancar.cinema;
 import java.math.BigInteger;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
@@ -12,6 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+/**
+ * Users Data Access Object with methods interaction with DB MySQL
+ * @author Vitiv
+ *
+ */
 
 public class UserDAO {
 

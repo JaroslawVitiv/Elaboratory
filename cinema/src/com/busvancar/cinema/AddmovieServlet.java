@@ -25,7 +25,11 @@ import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 import org.apache.tomcat.util.http.fileupload.servlet.ServletRequestContext;
 
 /**
- * Servlet implementation class AddmovieServlet
+ * Servlet implementation class AddmovieServlet.
+ * 
+ * The class is created to process application form from administration board at 
+ * inserting picture, title, description in both languages, duration, price and genre  
+ * @author Vitiv
  */
 
 
@@ -46,13 +50,7 @@ public class AddmovieServlet extends HttpServlet {
 
 	
 	
-	//private Logger logger = null;
-	
-	//public void init() {
-		//logger = Logger.getRootLogger();
-		//BasicConfigurator.configure();
-	//}
-    /**
+	/**
      * @see HttpServlet#HttpServlet()
      */
     public AddmovieServlet() {
@@ -167,7 +165,7 @@ public class AddmovieServlet extends HttpServlet {
 
                     			break;
                     		default:
-                    			out.print("Vitiv");
+                    			out.print("VitivCinema");
                     			
                     			
                     	}

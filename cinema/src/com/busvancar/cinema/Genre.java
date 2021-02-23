@@ -1,10 +1,15 @@
 package com.busvancar.cinema;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
+
+/**
+ * A list of genres. I dropped a table with genres and made this class,
+ * as the genres are not changed so 
+ * fast as other table. However, if the client wants to control editing of genres, you need to 
+ * recreate the MySQL table 
+ * @author Vitiv
+ */
 
 public class Genre {
 	

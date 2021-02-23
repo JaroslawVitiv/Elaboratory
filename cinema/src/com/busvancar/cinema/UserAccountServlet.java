@@ -31,6 +31,9 @@ import com.itextpdf.text.pdf.PdfWriter;
 
 /**
  * Servlet implementation class UserAccountServlet
+ * @author Vitiv
+ * 
+ * processes users data and distinguishes roles of Customer and Admin
  */
 public class UserAccountServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;

@@ -1,4 +1,9 @@
 package com.busvancar.cinema;
+/**
+ * Main User class with its getters and setters
+ * @author Vitiv
+ *
+ */
 
 public class User {
 	private int id;

@@ -22,6 +22,10 @@ import org.apache.log4j.Logger;
 
 /**
  * Servlet implementation class CheckAvailabilityServlet
+ * shows a model of cinema hall for a particular movie of particular movie session
+ * for better representation of free, booked and pre-paid seats 
+ * which later is passed through AJAX to CinemaHallServlet
+ * @author Vitiv
  */
 public class CheckAvailabilityServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;

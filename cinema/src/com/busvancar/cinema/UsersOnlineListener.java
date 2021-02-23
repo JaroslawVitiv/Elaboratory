@@ -5,6 +5,12 @@ import javax.servlet.annotation.WebListener;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
+/**
+ * 
+ * @author User
+ *helps to count number of users visiting application online
+ *  through HttpSessions  
+ */
 
 @WebListener
 public class UsersOnlineListener implements HttpSessionListener{

@@ -14,6 +14,9 @@ import javax.servlet.http.HttpSession;
 
 /**
  * Servlet implementation class TickerRemoverServlet
+ * @author Vitiv
+ * removes unpaid tickets and returns available seats gren
+ * 
  */
 public class TicketRemoverServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -29,11 +32,11 @@ public class TicketRemoverServlet extends HttpServlet {
 
 	protected void processData(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		 Locale locale = new Locale((String) session.getAttribute("l10n"));
-		 ResourceBundle rb = ResourceBundle.getBundle("l10n_"+session.getAttribute("l10n"), locale);
-		 String priceTr = rb.getString("price");
-		 String duration = rb.getString("duration");
-		 String youHaveChosenNoTickets = rb.getString("youHaveChosenNoTickets");
+		Locale locale = new Locale((String) session.getAttribute("l10n"));
+		ResourceBundle rb = ResourceBundle.getBundle("l10n_"+session.getAttribute("l10n"), locale);
+		String priceTr = rb.getString("price");
+		String duration = rb.getString("duration");
+		String youHaveChosenNoTickets = rb.getString("youHaveChosenNoTickets");
 		 
 		PrintWriter out = response.getWriter();
 		Ticket ticket = new Ticket();

@@ -7,7 +7,6 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,6 +17,8 @@ import org.apache.log4j.Logger;
 
 /**
  * Servlet implementation class UpdateMovieServlet
+ * @author Vitiv
+ * updates movie data at mySQL
  */
 public class UpdateMovieServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -35,11 +36,12 @@ public class UpdateMovieServlet extends HttpServlet {
     }
 
 	private void processData(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+		
 		HttpSession session = request.getSession();
-		 Locale locale = new Locale((String) session.getAttribute("l10n"));
-		 ResourceBundle rb = ResourceBundle.getBundle("l10n_"+session.getAttribute("l10n"), locale);
-		 String successfullyUpdated = rb.getString("successfullyUpdated");
-		 String unfortunatelyNotUpdated = rb.getString("unfortunatelyNotUpdated");
+		Locale locale = new Locale((String) session.getAttribute("l10n"));
+		ResourceBundle rb = ResourceBundle.getBundle("l10n_"+session.getAttribute("l10n"), locale);
+		String successfullyUpdated = rb.getString("successfullyUpdated");
+		String unfortunatelyNotUpdated = rb.getString("unfortunatelyNotUpdated");
 
 		 
 		PrintWriter out = response.getWriter();
