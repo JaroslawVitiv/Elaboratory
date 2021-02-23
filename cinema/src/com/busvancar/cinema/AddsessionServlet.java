@@ -40,7 +40,6 @@ public class AddsessionServlet extends HttpServlet {
      */
     public AddsessionServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 	
 	private void processData(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
