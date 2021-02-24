@@ -29,7 +29,7 @@ import org.apache.log4j.Logger;
  */
 public class CheckAvailabilityServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private final int ROWS = 12;
+	private final int SEATS_IN_ROWS = 12;
 	private String sessionToken;
 	private int userId = 0;
 	public String message = "";
@@ -130,22 +130,19 @@ public class CheckAvailabilityServlet extends HttpServlet {
 				
 				request.setAttribute("bookedUnpaidList", bookedUnpaidList);
 		
-			request.setAttribute("autos", getAutoGrid(ROWS));
+			request.setAttribute("autos", getAutoGrid(SEATS_IN_ROWS));
 			request.getRequestDispatcher("availability.jsp").forward(request,response);
 			
 		} catch (SQLException | ServletException | IOException e) {
 			logger.warn(e);
 	    }
 		
-		
-		
-		
 		RequestDispatcher rd = getServletContext().getRequestDispatcher("/availability.jsp");
 		rd.include(request, response);
 	}
 	
 
-	private String getAutoGrid(int rows) {
+	public String getAutoGrid(int rows) {
 		StringBuilder autoGrid = new  StringBuilder();
 		int row=0;
 		while(rows>row++) {
@@ -156,7 +153,7 @@ public class CheckAvailabilityServlet extends HttpServlet {
 
 	
 
-	private String getSeats( Ticket[] seats, double basePrice) {
+	public String getSeats( Ticket[] seats, double basePrice) {
 		StringBuilder seatsLine = new StringBuilder();
 		double priceIncrementRate = 1;
 		DecimalFormat df = new DecimalFormat("#.##");
@@ -182,7 +179,7 @@ public class CheckAvailabilityServlet extends HttpServlet {
 					seatsLine.append(getSeat(num, Double.parseDouble(df.format(basePrice * priceIncrementRate)), "success ", " ", userId));
 			}
 			
-			if((num+1) % ROWS  == 0) {
+			if((num+1) % SEATS_IN_ROWS  == 0) {
 				priceIncrementRate += 0.049;
 			}
 		}

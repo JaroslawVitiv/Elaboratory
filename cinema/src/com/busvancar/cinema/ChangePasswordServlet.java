@@ -47,11 +47,11 @@ public class ChangePasswordServlet extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		User user = null;
 		HttpSession session = request.getSession();
-		 Locale locale = new Locale((String) session.getAttribute("l10n"));
-		 ResourceBundle rb = ResourceBundle.getBundle("l10n_"+session.getAttribute("l10n"), locale);
-		 String passwordsDontCoincide = rb.getString("passwordsDontCoincide");
-		 String passwordIsOK = rb.getString("passwordIsOK");
-		 String unfortunatelyPasswordNotUpdated = rb.getString("unfortunatelyPasswordNotUpdated");
+		Locale locale = new Locale((String) session.getAttribute("l10n"));
+		ResourceBundle rb = ResourceBundle.getBundle("l10n_"+session.getAttribute("l10n"), locale);
+		String passwordsDontCoincide = rb.getString("passwordsDontCoincide");
+		String passwordIsOK = rb.getString("passwordIsOK");
+		String unfortunatelyPasswordNotUpdated = rb.getString("unfortunatelyPasswordNotUpdated");
 		
 		String password = request.getParameter("psw");
 		String confirmed = request.getParameter("repPsw");

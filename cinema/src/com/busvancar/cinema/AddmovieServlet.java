@@ -196,7 +196,7 @@ public class AddmovieServlet extends HttpServlet {
   }
 	    
 	
-	private String replaceCommas(String number) {
+	public String replaceCommas(String number) {
 		return number.replace(',','.');
 	}
 
