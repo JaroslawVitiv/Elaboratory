@@ -38,6 +38,8 @@ public class MovieDAOTest {
 	  @Mock private boolean inserted;
 	  @Mock private boolean removed;
 	  @Mock private boolean updated;
+	  @Mock private List<Movie> mList;
+
 
 
 
@@ -75,9 +77,8 @@ public class MovieDAOTest {
 	void listAllMovies() throws SQLException  {
 
 		MovieDAO mDao = Mockito.mock(MovieDAO.class);
-		List<Movie> mList = new ArrayList<>();
+		mList = new ArrayList<>();
 		mList.add(new Movie());
-		
 		Mockito.when(mDao.listAllMovies()).thenReturn(mList);
 		List<Movie> movies = mDao.listAllMovies();
 		

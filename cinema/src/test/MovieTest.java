@@ -188,7 +188,7 @@ public class MovieTest {
    	public void setPoster() {
     	movie = new Movie();
     	String value = "Poster";
-    	movie.setGenreUa(value);
+    	movie.setPoster(value);
        	Assert.assertEquals(movie.getPoster(), value);
     }
     

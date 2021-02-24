@@ -55,8 +55,7 @@ public class TicketDAO {
         }catch (SQLException e) {
 			e.printStackTrace();
 		}
-   	
-		return false;
+   	 	return false;
 	}
 
 	
@@ -404,7 +403,6 @@ public class TicketDAO {
 	}
 
 	
-	//UPDATE table_name SET column1 = value1, column2 = value2 WHERE condition
 	public void updateMovieSessionAvailableSeats(int movieSession, int availableSeats) {
 		 String sql = "UPDATE session SET available = ?  WHERE session_id = ? ";
 	        
