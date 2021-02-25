@@ -40,7 +40,6 @@ public class LoginServlet extends HttpServlet {
 		
 		User user = uDao.findUser(email, password);
 		
-		
 		if(user.getFirstName()!=null){
 			session.setAttribute("user", user);
 			session.setMaxInactiveInterval(60*60);
@@ -54,12 +53,9 @@ public class LoginServlet extends HttpServlet {
 
 	}
 	
-
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-			processData(request, response);
-	
+		processData(request, response);
 	}
-	
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		processData(request, response);

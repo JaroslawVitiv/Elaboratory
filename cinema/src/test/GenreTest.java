@@ -24,23 +24,19 @@ import org.mockito.stubbing.Answer;
 import com.busvancar.cinema.AddmovieServlet;
 import com.busvancar.cinema.CheckAvailabilityServlet;
 import com.busvancar.cinema.ConnectionPool;
+import com.busvancar.cinema.Genre;
 import com.busvancar.cinema.Movie;
 import com.busvancar.cinema.MovieDAO;
 import com.busvancar.cinema.Ticket;
 
 import junit.framework.Assert;
 
-public class CheckAvailabilityServletTest {
+public class GenreTest {
 	private static Logger logger = null;
 	 @InjectMocks private Connection jdbcConnection;
-	 @Mock private int rows = 3;
-	 @Mock private Ticket[] seats = new Ticket[2];
-	 @Mock private double price = 100;
+	 @Mock private String[] genres = Genre.genres_en_GB;
+	
 
-
-
-
-	  
 	 
 	@Before
     public void setup() {
@@ -53,20 +49,14 @@ public class CheckAvailabilityServletTest {
         logger.info("closing DB connection");
     }
 
-    @Test
-	void getAutoGrid() throws SQLException  {
-    	CheckAvailabilityServlet cas = Mockito.spy(CheckAvailabilityServlet.class);
-    	String result =  "auto  auto  auto";
-    	Assert.assertEquals(cas.getAutoGrid(rows).trim(), result);
-   	  
-	}
+   
     
     
     @Test
-   	void getSeats() throws SQLException  {
-       	CheckAvailabilityServlet cas = Mockito.spy(CheckAvailabilityServlet.class);
-       	String result =  "<div id=\"cinemaHall\"> <div class=\"grid-container\">   <div><span id=\"seat1\" ><button  onclick=\" bootbox.alert('<h2></h2>'); \" class=\"btn btn-sm btn-success \"   >1 <hr/>100.0 $$</button></span></div>  <div><span id=\"seat2\" ><button  onclick=\" bootbox.alert('<h2></h2>'); \" class=\"btn btn-sm btn-success \"   >2 <hr/>100.0 $$</button></span></div> </div></div>";
-       	Assert.assertEquals(cas.getSeats(seats, price), result);
+   	public void getGenreSelectOptions() throws SQLException  {
+       	Genre genre = Mockito.spy(Genre.class);
+       	String result =  "<option value=\"0\">All genres</option><option value=\"1\">comedy</option><option value=\"2\">action</option><option value=\"3\">drama</option><option value=\"4\">historic</option><option value=\"5\">cartoon</option><option value=\"6\">criminal</option><option value=\"7\">thriller</option>";
+       	Assert.assertEquals(genre.getGenreSelectOptions(genres), result);
       	  
    	}
   

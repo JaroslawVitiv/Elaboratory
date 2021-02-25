@@ -50,6 +50,8 @@ public class InvoiceServlet extends HttpServlet {
 		String mins = rb.getString("mins");
 		String row = rb.getString("row");
 		String seat = rb.getString("seat");
+		String priceTr = rb.getString("price");
+
 
 
 		TicketDAO tDao = new TicketDAO();
@@ -58,7 +60,7 @@ public class InvoiceServlet extends HttpServlet {
 		for(Ticket t : bookedUnpaidList) {
 			out.print("<div> "
 					+ "  	<div style=\" border: 1px solid grey;  border-radius: 5px;\"> "
-					+ "  		<div>"+movieTitle+": <b>"+t.getMovieTitle()+"</b> |  Price: <b>"+t.getPrice()+"</b> $$</div>"
+					+ "  		<div>"+movieTitle+": <b>"+t.getMovieTitle()+"</b> |  "+priceTr+": <b>"+t.getPrice()+"</b> $$</div>"
 					+ "  		<div> "+datetime+" <b>"+String.format("%te.%1$tm.%1$tY (%1$TH:%1$TM)", t.getMovieSessionTime())+"</b> | "+duration+": <b>"+t.getMovieDuration()+"</b> "+mins+"</div>"
 					+ "  		<div> "+row+": <b>"+(((t.getSeat()-((t.getSeat()-1) % SEAT_IN_ROW))/SEAT_IN_ROW)+1)+"</b> | "+seat+": <b><c:out value=\"${ticket.seat}\"/></b></div>"
 					+ "  		<div style=\"text-align: right; padding:10px;\"><p><button onclick=\"removeTicket("+t.getTicketId()+")\" class=\"btn btn-danger btn-sm\" >x</button></p></div>"

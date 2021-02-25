@@ -76,12 +76,13 @@ public class CinemaHallServlet extends HttpServlet {
 		
 		double basicPrice = msDao.getPrice(coins, 1);
 		
+		
 		out.print(getSeats(tickets, basicPrice));
 		
 		
 	}
 	
-	private String getSeats(Ticket[] seats, double basePrice) {
+	public String getSeats(Ticket[] seats, double basePrice) {
 		StringBuilder seatsLine = new StringBuilder();
 		double priceIncrementRate = 1;
 		DecimalFormat df = new DecimalFormat("#.##");
@@ -125,14 +126,10 @@ public class CinemaHallServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-			processData(request, response);
-	
+		processData(request, response);
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-			processData(request, response);
-	
+		processData(request, response);
 	}
 }

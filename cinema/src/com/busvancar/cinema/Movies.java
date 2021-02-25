@@ -94,14 +94,13 @@ public class Movies extends HttpServlet {
      		 
      		 
     		try {
-    			
     			int sortBy = (int) session.getAttribute("sortBy");
     			int ascDesc =  (int) session.getAttribute("ascDesc");
     			if(request.getParameter("genre") != null) {
     				session.setAttribute("genre",  Integer.parseInt(request.getParameter("genre")));
     			}
     			int genreCategoryIndex = 0;
-    			if(session.getAttribute("genre")!=null) {
+    			if(session.getAttribute("genre") != null) {
     				genreCategoryIndex = (int) session.getAttribute("genre");
     			}
     			
@@ -147,18 +146,13 @@ public class Movies extends HttpServlet {
 				} else {	
 					request.getRequestDispatcher("index.jsp").forward(request,response);
 				}
-				
-				
-				
-				
 			} catch (SQLException | ServletException | IOException e) {
 				logger.warn(e);
-		    }
-			
+		    }	
     }
 
 
-	private String getPagination(int page, HttpServletRequest request) {
+	public String getPagination(int page, HttpServletRequest request) {
 		int p;
 		if(page<2) {
 			p=1;
@@ -193,7 +187,7 @@ public class Movies extends HttpServlet {
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-			processData(request, response);
+		processData(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

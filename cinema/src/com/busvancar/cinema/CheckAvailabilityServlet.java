@@ -29,7 +29,7 @@ import org.apache.log4j.Logger;
  */
 public class CheckAvailabilityServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private final int SEATS_IN_ROWS = 12;
+	private final int SEATS_IN_ROW = 12;
 	private String sessionToken;
 	private int userId = 0;
 	public String message = "";
@@ -78,7 +78,6 @@ public class CheckAvailabilityServlet extends HttpServlet {
 			user = (User) session.getAttribute("user");
 			userId = user.getId();
 		}
-		
 		
 		
 		StringBuilder cinemaHall = new StringBuilder();
@@ -130,7 +129,7 @@ public class CheckAvailabilityServlet extends HttpServlet {
 				
 				request.setAttribute("bookedUnpaidList", bookedUnpaidList);
 		
-			request.setAttribute("autos", getAutoGrid(SEATS_IN_ROWS));
+			request.setAttribute("autos", getAutoGrid(SEATS_IN_ROW));
 			request.getRequestDispatcher("availability.jsp").forward(request,response);
 			
 		} catch (SQLException | ServletException | IOException e) {
@@ -151,16 +150,14 @@ public class CheckAvailabilityServlet extends HttpServlet {
 		return autoGrid.toString();
 	}
 
-	
-
-	public String getSeats( Ticket[] seats, double basePrice) {
+	public String getSeats(Ticket[] seats, double basePrice) {
 		StringBuilder seatsLine = new StringBuilder();
 		double priceIncrementRate = 1;
 		DecimalFormat df = new DecimalFormat("#.##");
 		df.setRoundingMode(RoundingMode.CEILING);
 		
 		
-		seatsLine.append("<div  id=\"cinemaHall\"> <div  class=\"grid-container\">  ");
+		seatsLine.append("<div id=\"cinemaHall\"> <div class=\"grid-container\">  ");
 		
 		for(int num = 0; num < seats.length; num++) {
 			
@@ -179,7 +176,7 @@ public class CheckAvailabilityServlet extends HttpServlet {
 					seatsLine.append(getSeat(num, Double.parseDouble(df.format(basePrice * priceIncrementRate)), "success ", " ", userId));
 			}
 			
-			if((num+1) % SEATS_IN_ROWS  == 0) {
+			if((num+1) % SEATS_IN_ROW  == 0) {
 				priceIncrementRate += 0.049;
 			}
 		}
