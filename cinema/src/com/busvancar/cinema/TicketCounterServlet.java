@@ -25,22 +25,14 @@ public class TicketCounterServlet extends HttpServlet {
         super();
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-    
 	protected void processData(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		PrintWriter out = response.getWriter();
 		String sessionToken =  request.getParameter("session_token");
 		TicketDAO tDao = new TicketDAO();
 		out.print(tDao.getTicketCount(sessionToken));
 	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		processData(request, response);
 	}
-
 }

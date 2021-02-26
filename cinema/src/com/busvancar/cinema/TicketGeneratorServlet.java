@@ -67,8 +67,6 @@ public class TicketGeneratorServlet extends HttpServlet {
 		int movieSession = Integer.parseInt(request.getParameter("movie_session"));
 		int seat  = Integer.parseInt(request.getParameter("seat"));
 		
-		
-		
 		if(msDao==null) {
 			msDao = new MovieSessionDAO();
 		}
@@ -103,7 +101,7 @@ public class TicketGeneratorServlet extends HttpServlet {
 		if(tDao.isCreated(ticket)) {
 			tDao.removeTicket(ticket);
 		} else {
-			tDao.createTicket(ticket);		
+			tDao.createTicket(ticket);	
 		}
 		
 		availableSeats = SEATS - tDao.getBookedSeats(movieSession);

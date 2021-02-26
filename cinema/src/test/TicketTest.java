@@ -46,6 +46,7 @@ public class TicketTest {
 	 @Mock	private Timestamp movieSessionTime;
 	 @Mock	private int row; 
 	 @Mock  private Ticket ticket;
+	 @Mock private int value = 2;
 	 
 	@Before
     public void setup() {
@@ -62,7 +63,6 @@ public class TicketTest {
     @Test
 	void setTicketId() {
     	ticket = new Ticket();
-    	int value = anyInt();
     	ticket.setTicketId(value);
     	Assert.assertEquals(ticket.getTicketId(), value);
  	}
@@ -70,7 +70,6 @@ public class TicketTest {
     @Test
    	void getTicketId() {
     	ticket = new Ticket();
-    	int value = anyInt();
        	ticket.setTicketId(value);
        	Assert.assertEquals(ticket.getTicketId(), value);
     }
@@ -78,7 +77,6 @@ public class TicketTest {
     @Test
     public void setSeat() {
     	ticket = new Ticket();
-    	int value = anyInt();
     	ticket.setSeat(value);
     	Assert.assertEquals(ticket.getSeat(), value);
 	}
@@ -86,7 +84,6 @@ public class TicketTest {
     @Test
 	public void getSeat() {
     	ticket = new Ticket();
-    	int value = anyInt();
     	ticket.setSeat(value);
     	Assert.assertEquals(ticket.getSeat(), value);
 	}
@@ -94,7 +91,6 @@ public class TicketTest {
     @Test
     public void setSessionId() {
     	ticket = new Ticket();
-    	int value = anyInt();
     	ticket.setSessionId(value);
     	Assert.assertEquals(ticket.getSessionId(), value);
 	}
@@ -102,7 +98,6 @@ public class TicketTest {
     @Test
 	public void getSessionId() {
     	ticket = new Ticket();
-    	int value = anyInt();
     	ticket.setSessionId(value);
     	Assert.assertEquals(ticket.getSessionId(), value);
 	}
@@ -110,39 +105,38 @@ public class TicketTest {
     @Test
     public void setPrice() {
     	ticket = new Ticket();
-    	double value = 1.23;
-    	ticket.setPrice(value);
-    	Assert.assertEquals(ticket.getPrice(), value);
+    	double dValue = 1.23;
+    	ticket.setPrice(dValue);
+    	Assert.assertEquals(ticket.getPrice(), dValue);
 	}
     
     @Test
 	public void getPrice() {
     	ticket = new Ticket();
-    	double value = 1.23;
-    	ticket.setPrice(value);
-    	Assert.assertEquals(ticket.getPrice(), value);
+    	double dValue = 1.23;
+    	ticket.setPrice(dValue);
+    	Assert.assertEquals(ticket.getPrice(), dValue);
 	}
     
     @Test
     public void setGenre() {
     	ticket = new Ticket();
-    	String value = "Genre";
-    	ticket.setGenre(value);
-    	Assert.assertEquals(ticket.getGenre(), value);
+    	String line = "Genre";
+    	ticket.setGenre(line);
+    	Assert.assertEquals(ticket.getGenre(), line);
 	}
     
     @Test
 	public void getGenre() {
     	ticket = new Ticket();
-    	String value = "Genre";
-    	ticket.setGenre(value);
-    	Assert.assertEquals(ticket.getGenre(), value);
+    	String line = "Genre";
+    	ticket.setGenre(line);
+    	Assert.assertEquals(ticket.getGenre(), line);
 	}
     
     @Test
    	public void setPurchaserId() {
     	ticket = new Ticket();
-    	int value = anyInt();
     	ticket.setPurchaserId(value);
        	Assert.assertEquals(ticket.getPurchaserId(), value);
     }
@@ -150,7 +144,6 @@ public class TicketTest {
     @Test
     public void getPurchaserId() {
     	ticket = new Ticket();
-    	int value = anyInt();
     	ticket.setPurchaserId(value);
        	Assert.assertEquals(ticket.getPurchaserId(), value);
 	}
@@ -158,55 +151,54 @@ public class TicketTest {
     @Test
    	public void setSessionToken() {
     	ticket = new Ticket();
-    	String value = "Token";
-    	ticket.setSessionToken(value);
-       	Assert.assertEquals(ticket.getSessionToken(), value);
+    	String line = "Token";
+    	ticket.setSessionToken(line);
+       	Assert.assertEquals(ticket.getSessionToken(), line);
     }
     
     @Test
     public void getSessionToken() {
     	ticket = new Ticket();
-    	String value = "Token";
-    	ticket.setSessionToken(value);
-       	Assert.assertEquals(ticket.getSessionToken(), value);
+    	String line = "Token";
+    	ticket.setSessionToken(line);
+       	Assert.assertEquals(ticket.getSessionToken(), line);
 	}
     
     @Test
    	public void setTime() {
     	ticket = new Ticket();
-    	Timestamp value = new Timestamp(1111111111);
-    	ticket.setTime(value);
-       	Assert.assertEquals(ticket.getTime(), value);
+    	Timestamp time = new Timestamp(1111111111);
+    	ticket.setTime(time);
+       	Assert.assertEquals(ticket.getTime(), time);
     }
     
     @Test
    	public void getTime() {
     	ticket = new Ticket();
-    	Timestamp value = new Timestamp(1111111111);
-    	ticket.setTime(value);
-       	Assert.assertEquals(ticket.getTime(), value);
+    	Timestamp time = new Timestamp(1111111111);
+    	ticket.setTime(time);
+       	Assert.assertEquals(ticket.getTime(), time);
     }
     
     @Test
    	public void setMovieTitle() {
     	ticket = new Ticket();
-    	String value = "MovieTitle";
-    	ticket.setMovieTitle(value);
-       	Assert.assertEquals(ticket.getMovieTitle(), value);
+    	String line = "MovieTitle";
+    	ticket.setMovieTitle(line);
+       	Assert.assertEquals(ticket.getMovieTitle(), line);
     }
     
     @Test
    	public void getMovieTitle() {
     	ticket = new Ticket();
-    	String value = "MovieTitle";
-    	ticket.setMovieTitle(value);
-       	Assert.assertEquals(ticket.getMovieTitle(), value);
+    	String line = "MovieTitle";
+    	ticket.setMovieTitle(line);
+       	Assert.assertEquals(ticket.getMovieTitle(), line);
     }
     
     @Test
    	public void setMovieDuration() {
     	ticket = new Ticket();
-    	int value = anyInt();
     	ticket.setMovieDuration(value);
        	Assert.assertEquals(ticket.getMovieDuration(), value);
     }
@@ -214,7 +206,6 @@ public class TicketTest {
     @Test
    	public void getMovieDuration() {
     	ticket = new Ticket();
-    	int value = anyInt();
     	ticket.setMovieDuration(value);
        	Assert.assertEquals(ticket.getMovieDuration(), value);
     }
@@ -222,23 +213,22 @@ public class TicketTest {
     @Test
    	public void setMovieSessionTime() {
     	ticket = new Ticket();
-    	Timestamp value = new Timestamp(1111111111);
-    	ticket.setMovieSessionTime(value);
-       	Assert.assertEquals(ticket.getMovieSessionTime(), value);
+    	Timestamp time = new Timestamp(1111111111);
+    	ticket.setMovieSessionTime(time);
+       	Assert.assertEquals(ticket.getMovieSessionTime(), time);
     }
     
     @Test
    	public void getMovieSessionTime() {
     	ticket = new Ticket();
-    	Timestamp value = new Timestamp(1111111111);
-    	ticket.setMovieSessionTime(value);
-       	Assert.assertEquals(ticket.getMovieSessionTime(), value);
+    	Timestamp time = new Timestamp(1111111111);
+    	ticket.setMovieSessionTime(time);
+       	Assert.assertEquals(ticket.getMovieSessionTime(), time);
     }
     
     @Test
    	public void setRow() {
     	ticket = new Ticket();
-    	int value = anyInt();
     	ticket.setRow(value);
        	Assert.assertEquals(ticket.getRow(), value);
     }
@@ -246,7 +236,6 @@ public class TicketTest {
     @Test
    	public void getRow() {
     	ticket = new Ticket();
-    	int value = anyInt();
     	ticket.setRow(value);
        	Assert.assertEquals(ticket.getRow(), value);
     }

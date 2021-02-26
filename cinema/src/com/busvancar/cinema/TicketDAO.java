@@ -24,9 +24,9 @@ public class TicketDAO {
     protected void connect() throws SQLException {
         if (jdbcConnection == null || jdbcConnection.isClosed()) {
             try {
-                Class.forName("com.mysql.cj.jdbc.Driver");
+               Class.forName("com.mysql.cj.jdbc.Driver");
             } catch (ClassNotFoundException e) {
-                throw new SQLException(e);
+               throw new SQLException(e);
             }
             jdbcConnection = ConnectionPool.getInstance().getConnection();
         }
@@ -42,8 +42,8 @@ public class TicketDAO {
 		String sqlQuery = "SELECT * FROM ticket WHERE seat = ? AND session_id = ? ";
 		try {
 			connect();
-		} catch (SQLException e1) {
-			e1.printStackTrace();
+		} catch (SQLException ex) {
+			ex.printStackTrace();
 		}
    	 	
    	 	try(PreparedStatement statement = jdbcConnection.prepareStatement(sqlQuery)){
@@ -69,7 +69,6 @@ public class TicketDAO {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-			
 	         
 	        try(PreparedStatement statement = jdbcConnection.prepareStatement(sql);){
 	       
@@ -111,12 +110,9 @@ public class TicketDAO {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-			
-	         
-	        try(PreparedStatement statement = jdbcConnection.prepareStatement(sql);){
-	       
-			
-		        statement.setInt(1, ticket.getSeat());
+
+	     	try(PreparedStatement statement = jdbcConnection.prepareStatement(sql);){
+	            statement.setInt(1, ticket.getSeat());
 		        statement.setInt(2, ticket.getSessionId());
 		        statement.setInt(3, ticket.getPurchaserId());
 		        statement.setString(4, ticket.getSessionToken());
@@ -127,8 +123,6 @@ public class TicketDAO {
 	        } catch(SQLException ex) {
 	        	ex.printStackTrace();
 	        }
-
-	        
 	        
 	        try {
 				disconnect();

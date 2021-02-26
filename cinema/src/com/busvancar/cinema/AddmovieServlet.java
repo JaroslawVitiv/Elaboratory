@@ -167,7 +167,6 @@ public class AddmovieServlet extends HttpServlet {
                     		default:
                     			out.print("VitivCinema");
                     			
-                    			
                     	}
                     	
                     }

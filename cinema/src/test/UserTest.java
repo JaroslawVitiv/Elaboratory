@@ -58,7 +58,7 @@ public class UserTest {
     @Test
 	void setId() {
     	user = new User();
-    	int value = anyInt();
+    	int value = 92;
     	user.setId(value);
     	Assert.assertEquals(user.getId(), value);
  	}
@@ -66,7 +66,7 @@ public class UserTest {
     @Test
    	void getId() {
     	user = new User();
-    	int value = anyInt();
+    	int value = 92;
        	user.setId(value);
        	Assert.assertEquals(user.getId(), value);
     }
@@ -122,7 +122,7 @@ public class UserTest {
     @Test
     public void setAdmin() {
     	user = new User();
-    	int value = anyInt();
+    	int value = 92;
     	user.setAdmin(value);
     	Assert.assertEquals(user.getAdmin(), value);
 	}
@@ -130,7 +130,7 @@ public class UserTest {
     @Test
 	public void getAdmin() {
     	user = new User();
-    	int value = anyInt();
+    	int value = 92;
     	user.setAdmin(value);
     	Assert.assertEquals(user.getAdmin(), value);
 	}

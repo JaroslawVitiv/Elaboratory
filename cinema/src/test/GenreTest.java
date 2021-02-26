@@ -59,6 +59,20 @@ public class GenreTest {
        	Assert.assertEquals(genre.getGenreSelectOptions(genres), result);
       	  
    	}
+    
+    @Test
+   	public void getGenreOptions() throws SQLException  {
+       	Genre genre = Mockito.spy(Genre.class);
+       	String result =  "<li><a class=\"dropdown-item\" href=\"/cinema/?genre=0\">All genres</a></li><li><hr/></li><li><a class=\"dropdown-item\" href=\"/cinema/?genre=1\">comedy</a></li><li><hr/></li><li><a class=\"dropdown-item\" href=\"/cinema/?genre=2\">action</a></li><li><hr/></li><li><a class=\"dropdown-item\" href=\"/cinema/?genre=3\">drama</a></li><li><hr/></li><li><a class=\"dropdown-item\" href=\"/cinema/?genre=4\">historic</a></li><li><hr/></li><li><a class=\"dropdown-item\" href=\"/cinema/?genre=5\">cartoon</a></li><li><hr/></li><li><a class=\"dropdown-item\" href=\"/cinema/?genre=6\">criminal</a></li><li><hr/></li><li><a class=\"dropdown-item\" href=\"/cinema/?genre=7\">thriller</a></li><li><hr/></li>";
+       	Assert.assertEquals(genre.getGenreOptions(genres), result);
+    }
+    
+    @Test
+   	public void getGenreList() throws SQLException  {
+       	Genre genre = Mockito.spy(Genre.class);
+       	int result =  8;
+       	Assert.assertEquals(genre.getGenreList(genres).size(), result);
+    }
   
 	
 }

@@ -60,7 +60,6 @@ public class SigninServlet extends HttpServlet {
 		String suchEmailExists  = rb.getString("suchEmailExists");
 		String newUserSussessfullyAdded = rb.getString("newUserSussessfullyAdded");
 		String unfurtunatelyEmailNotInserted = rb.getString("unfurtunatelyEmailNotInserted");
-
 		
 		UserDAO uDao = new UserDAO();
 		PrintWriter out = response.getWriter();

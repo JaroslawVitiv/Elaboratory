@@ -41,7 +41,7 @@ public class MovieTest {
 	  @Mock private String poster;
 	  @Mock private double price;
 	  @Mock private Movie movie;
-
+	  @Mock private int value = 92;
 	
 	 
 	@Before
@@ -59,7 +59,6 @@ public class MovieTest {
     @Test
 	void setId() {
     	movie = new Movie();
-    	int value = anyInt();
     	movie.setId(value);
     	Assert.assertEquals(movie.getId(), value);
  	}
@@ -67,7 +66,6 @@ public class MovieTest {
     @Test
    	void getId() {
     	movie = new Movie();
-    	int value = anyInt();
        	movie.setId(value);
        	Assert.assertEquals(movie.getId(), value);
     }
@@ -75,7 +73,6 @@ public class MovieTest {
     @Test
     public void setGenreId() {
     	movie = new Movie();
-    	int value = anyInt();
     	movie.setGenreId(value);
     	Assert.assertEquals(movie.getGenreId(), value);
 	}
@@ -83,7 +80,6 @@ public class MovieTest {
     @Test
 	public void getGenreId() {
 		movie = new Movie();
-    	int value = anyInt();
     	movie.setGenreId(value);
     	Assert.assertEquals(movie.getGenreId(), value);
 	}
@@ -91,55 +87,54 @@ public class MovieTest {
     @Test
     public void setTitle() {
     	movie = new Movie();
-    	String value = "Cinema";
-    	movie.setTitle(value);
-    	Assert.assertEquals(movie.getTitle(), value);
+    	String line = "Cinema";
+    	movie.setTitle(line);
+    	Assert.assertEquals(movie.getTitle(), line);
 	}
     
     @Test
 	public void getTitle() {
-		movie = new Movie();
-    	String value = "Cinema";
-    	movie.setTitle(value);
-    	Assert.assertEquals(movie.getTitle(), value);
+    	movie = new Movie();
+    	String line = "Cinema";
+    	movie.setTitle(line);
+    	Assert.assertEquals(movie.getTitle(), line);
 	}
     
     @Test
     public void setDescriptionUa() {
     	movie = new Movie();
-    	String value = "Description";
-    	movie.setDescriptionUa(value);
-    	Assert.assertEquals(movie.getDescriptionUa(), value);
+    	String line = "Description";
+    	movie.setDescriptionUa(line);
+    	Assert.assertEquals(movie.getDescriptionUa(), line);
 	}
     
     @Test
 	public void getDescriptionUa() {
 		movie = new Movie();
-    	String value = "Description";
-    	movie.setDescriptionUa(value);
-    	Assert.assertEquals(movie.getDescriptionUa(), value);
+    	String line = "Description";
+    	movie.setDescriptionUa(line);
+    	Assert.assertEquals(movie.getDescriptionUa(), line);
 	}
     
     @Test
     public void setDescriptionEn() {
     	movie = new Movie();
-    	String value = "DescriptionEn";
-    	movie.setDescriptionUa(value);
-    	Assert.assertEquals(movie.getDescriptionUa(), value);
+    	String line = "DescriptionEn";
+    	movie.setDescriptionUa(line);
+    	Assert.assertEquals(movie.getDescriptionUa(), line);
 	}
     
     @Test
 	public void getDescriptionEn() {
 		movie = new Movie();
-    	String value = "DescriptionEn";
-    	movie.setDescriptionEn(value);
-    	Assert.assertEquals(movie.getDescriptionEn(), value);
+    	String line = "DescriptionEn";
+    	movie.setDescriptionEn(line);
+    	Assert.assertEquals(movie.getDescriptionEn(), line);
 	}
     
     @Test
    	public void setDuration() {
     	movie = new Movie();
-    	int value = anyInt();
        	movie.setDuration(value);
        	Assert.assertEquals(movie.getDuration(), value);
     }
@@ -147,7 +142,6 @@ public class MovieTest {
     @Test
     public void getDuration() {
     	movie = new Movie();
-    	int value = anyInt();
     	movie.setDuration(value);
     	Assert.assertEquals(movie.getDuration(), value);
 	}
@@ -155,64 +149,64 @@ public class MovieTest {
     @Test
    	public void setGenre() {
     	movie = new Movie();
-    	String value = "Genre";
-    	movie.setGenre(value);
-       	Assert.assertEquals(movie.getGenre(), value);
+    	String line = "Genre";
+    	movie.setGenre(line);
+       	Assert.assertEquals(movie.getGenre(), line);
     }
     
     @Test
     public void getGenre() {
     	movie = new Movie();
-    	String value = "Genre";
-    	movie.setGenre(value);
-    	Assert.assertEquals(movie.getGenre(), value);
+    	String line = "Genre";
+    	movie.setGenre(line);
+    	Assert.assertEquals(movie.getGenre(), line);
 	}
     
     @Test
    	public void setGenreUa() {
     	movie = new Movie();
-    	String value = "GenreUa";
-    	movie.setGenreUa(value);
-       	Assert.assertEquals(movie.getGenreUa(), value);
+    	String line = "GenreUa";
+    	movie.setGenreUa(line);
+       	Assert.assertEquals(movie.getGenreUa(), line);
     }
     
     @Test
     public void getGenreUa() {
     	movie = new Movie();
-    	String value = "GenreUa";
-    	movie.setGenreUa(value);
-    	Assert.assertEquals(movie.getGenreUa(), value);
+    	String line = "GenreUa";
+    	movie.setGenreUa(line);
+    	Assert.assertEquals(movie.getGenreUa(), line);
 	}
    
     @Test
    	public void setPoster() {
     	movie = new Movie();
-    	String value = "Poster";
-    	movie.setPoster(value);
-       	Assert.assertEquals(movie.getPoster(), value);
+    	String line = "Poster";
+    	movie.setPoster(line);
+       	Assert.assertEquals(movie.getPoster(), line);
     }
     
     @Test
     public void getPoster() {
     	movie = new Movie();
-    	String value = "Puster";
-    	movie.setPoster(value);
-    	Assert.assertEquals(movie.getPoster(), value);
+    	String line = "Puster";
+    	movie.setPoster(line);
+    	Assert.assertEquals(movie.getPoster(), line);
 	}
     
     @Test
    	public void setPrice() {
     	movie = new Movie();
-    	double value = 1.11;
-    	movie.setPrice(value);
-    	Assert.assertEquals(movie.getPrice(), value);
+    	double dValue = 1.11;
+    	movie.setPrice(dValue);
+    	Assert.assertEquals(movie.getPrice(), dValue);
 	}
     
     @Test
     public void getPrice() {
     	movie = new Movie();
-    	double value = 1.11;
-    	movie.setPrice(value);
-    	Assert.assertEquals(movie.getPrice(), value);
+    	double dValue = 1.11;
+    	movie.setPrice(dValue);
+    	Assert.assertEquals(movie.getPrice(), dValue);
 	}
 }

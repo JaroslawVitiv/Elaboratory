@@ -73,7 +73,6 @@ public class TicketEmailSendingServlet extends HttpServlet {
 		// message 2 b sent with email
 		StringBuilder sb = new StringBuilder();
 		sb.append("<div>Вітаємо!  "+user.getFirstName()+" "+user.getLastName()+"! You have new tickets!</div>");
-		
 		sb.append("<div style=\"border: 1px solid grey;  border-radius: 5px;\">");
 		sb.append("<div>"+movie+": <b>"+ticket.getMovieTitle()+"</b> |  "+priceTr+": <b>"+ticket.getPrice()+"</b> $$</div>");
 		sb.append("<div>"+datetime+": <b>"+df.format(ticket.getTime())+"</b> | "+duration+": <b>"+ticket.getMovieDuration()+"</b> "+mins+"</div>");
@@ -82,7 +81,6 @@ public class TicketEmailSendingServlet extends HttpServlet {
 		sb.append("<div> <a href=\"https://www.busvancar.com\">click it</a> </div>");
 		sb.append("<div>regards, VitivCinema</div>");
 		// message 2 b sent with email //end
-
 		
 		final String username = "jaroslaw.vitiv@gmail.com";
         final String password = "jaars200219815x6q8Z3jvitiv";

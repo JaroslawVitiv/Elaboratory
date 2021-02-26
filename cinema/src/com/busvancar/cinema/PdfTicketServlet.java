@@ -67,10 +67,7 @@ public class PdfTicketServlet extends HttpServlet {
 			//create some special styles and font sizes
 			Font bfBold18 = new Font(FontFamily.TIMES_ROMAN, 18, Font.BOLD, new BaseColor(0, 0, 0)); 
 			
-		 	    
-
 			try {
-				
 				//create an instance of the PdfWriter using the output stream
 				PdfWriter.getInstance(doc, os); 
 				
