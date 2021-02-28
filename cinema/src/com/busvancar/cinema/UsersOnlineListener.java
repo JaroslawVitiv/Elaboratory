@@ -30,10 +30,14 @@ public class UsersOnlineListener implements HttpSessionListener{
 	      
 	    ctx=e.getSession().getServletContext();  
 	    ctx.setAttribute("currentUsers", current);  
+	    System.out.print("Session is created");
     }  
   
     public void sessionDestroyed(HttpSessionEvent e) {  
         current--;  
+        if(ctx.getAttribute("currentUsers")==null)
+        	ctx.setAttribute("currentUsers", 1);
         ctx.setAttribute("currentUsers", current);  
+        System.out.print("Session is destroyed");
     }  
 }

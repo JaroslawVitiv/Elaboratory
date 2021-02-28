@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.junit.After;
@@ -58,6 +59,17 @@ public class MoviesTest {
     	Movies movies = Mockito.spy(Movies.class);
        	String result =  "";
        	Assert.assertEquals(movies.getPagination(page, req), result);
+      	  
+   	}
+    
+    @Test
+   	public void setGenres() throws SQLException  {
+    	Movies movies = Mockito.spy(Movies.class);
+    	HttpSession session = Mockito.mock(HttpSession.class);
+    	List<String> genres = movies.setGenres("en_GB", session);
+    	
+       	int expected =  8;
+       	Assert.assertEquals(genres.size(), expected);
       	  
    	}
   

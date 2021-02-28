@@ -16,10 +16,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TicketDAO {
-	private static final int SEATS_IN_ROW = 12;
+public class TicketDAO implements CinemaHall {
 	private Connection jdbcConnection;
-	private final int SEATS = 96;
 	
     protected void connect() throws SQLException {
         if (jdbcConnection == null || jdbcConnection.isClosed()) {

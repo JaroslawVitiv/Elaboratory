@@ -1,7 +1,6 @@
 package test;
 
 
-import java.sql.Connection;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,12 +8,14 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 import com.busvancar.cinema.Ticket;
 import com.busvancar.cinema.TicketDAO;
 import com.busvancar.cinema.User;
@@ -23,8 +24,8 @@ import junit.framework.Assert;
 
 public class TicketDAOTest {
 	private static Logger logger = null;
-	 @InjectMocks private Connection jdbcConnection;
-	 @Mock  private Ticket ticket = new Ticket();
+	
+	 @Mock private Ticket ticket;
 	 @Mock private boolean created = true;
 	 @Mock private boolean removed = true;
 	 @Mock private boolean remove = true;
@@ -41,10 +42,12 @@ public class TicketDAOTest {
 	 @Mock private int ticketId = 44;
 	 @Mock private LocalDate start = LocalDate.of(2007, 11, 12);
 	 @Mock private LocalDate end = LocalDate.of(2007, 12, 12);
-	 @Mock private TicketDAO tDao;
-
-
+	 @InjectMocks TicketDAO tDao = new TicketDAO();
+	 @Rule public MockitoRule rule = MockitoJUnit.rule();
+	
 	 
+	
+	 	 
 	@Before
     public void setup() {
 		MockitoAnnotations.initMocks(this);
@@ -60,7 +63,11 @@ public class TicketDAOTest {
 
     @Test
 	public void isCreated() {
-    	tDao = Mockito.mock(TicketDAO.class);
+    	tDao =  Mockito.mock(TicketDAO.class);
+    	ticket = Mockito.mock(Ticket.class);
+    	ticket.setSessionId(5);
+    	ticket.setSeat(96);
+    	
     	Mockito.when(tDao.isCreated(ticket)).thenReturn(created);
 		Assert.assertTrue(created);
  	}
@@ -156,6 +163,7 @@ public class TicketDAOTest {
     @Test
    	public void getTicket() {
     	tDao = Mockito.mock(TicketDAO.class);
+    	ticket = Mockito.spy(Ticket.class);
    		Mockito.when(tDao.getTicket(ticketId, token)).thenReturn(ticket);
    		Assert.assertNotNull(ticket);   		
     }

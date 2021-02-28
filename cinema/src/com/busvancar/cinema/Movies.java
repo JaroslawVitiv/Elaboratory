@@ -37,15 +37,14 @@ public class Movies extends HttpServlet {
 	private void processData(HttpServletRequest request, HttpServletResponse response) {
     		int page = 1;
     		HttpSession session = request.getSession();
-    		if(session.getAttribute("l10n")==null) {
-    			session.setAttribute("l10n", "uk_UA");
-    		}
+    		List<String> genres = setGenres(request.getParameter("language"), session);
+
     		Locale locale = new Locale((String) session.getAttribute("l10n"));
    		    ResourceBundle rb = ResourceBundle.getBundle("l10n_"+session.getAttribute("l10n"), locale);
    		    String sorryNoResultsFoundTryAnotherOption = rb.getString("sorryNoResultsFoundTryAnotherOption");
    		    
 			User user = null;
-			List<String> genres = new ArrayList<String>();
+			
 			response.setContentType("text/html");  
     		MovieSessionDAO movieSessDao = new MovieSessionDAO();
     		List<MovieSession> schedule;
@@ -54,18 +53,9 @@ public class Movies extends HttpServlet {
     			session.setAttribute("session_token", UUID.randomUUID().toString());
     		}
     		
-    		if(session.getAttribute("l10n") == null || "uk_UA".equals(request.getParameter("language"))) {
-    			session.setAttribute("l10n",  "uk_UA");
-    			genres = Genre.getGenreList(Genre.genres_uk_UA);
-    		}
-    		 
-    		 if("en_GB".equals(request.getParameter("language"))) {
-    			 session.setAttribute("l10n", "en_GB"); 
-    			 genres = Genre.getGenreList(Genre.genres_en_GB);
-    		 }
-    		 
-    		 LocalDate chosendate = LocalDate.now();
-    		 if(request.getParameter("date") != null) {
+    		
+    		LocalDate chosendate = LocalDate.now();
+    		if(request.getParameter("date") != null) {
     			 chosendate = LocalDate.parse(request.getParameter("date"));
     		}
     		 request.setAttribute("chosendate", chosendate);
@@ -140,17 +130,30 @@ public class Movies extends HttpServlet {
 				}
 				request.setAttribute("user", user);
 				
+				FrontController frontController = new FrontController();
+				frontController.dispatch(user, request, response);
+		
 				
-				if(user!=null &&  user.getAdmin()>0) {
-					response.sendRedirect(request.getContextPath() + "/administration");
-				} else {	
-					request.getRequestDispatcher("index.jsp").forward(request,response);
-				}
 			} catch (SQLException | ServletException | IOException e) {
 				logger.warn(e);
 		    }	
     }
 
+
+	public List<String> setGenres(String language, HttpSession session) {
+		List <String> genres = new ArrayList<>();
+		if(session.getAttribute("l10n") == null || "uk_UA".equals(language)) {
+			session.setAttribute("l10n",  "uk_UA");
+			genres = Genre.getGenreList(Genre.genres_uk_UA);
+		}
+		 
+		if("en_GB".equals(language)) {
+			 session.setAttribute("l10n", "en_GB"); 
+			 genres = Genre.getGenreList(Genre.genres_en_GB);
+		}
+		
+		return genres;
+	}
 
 	public String getPagination(int page, HttpServletRequest request) {
 		int p;

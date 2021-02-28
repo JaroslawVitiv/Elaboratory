@@ -20,10 +20,9 @@ import org.apache.log4j.Logger;
  * is the main handling part of admin boad for editing movies
  * @author Vitiv
  */
-public class EditMovieServlet extends HttpServlet {
+public class EditMovieServlet extends HttpServlet implements CinemaHall {
 	private static final long serialVersionUID = 1L;
 	
-	 private final int SEATS = 96;
      private Logger logger = null;
      	
      public void init() {

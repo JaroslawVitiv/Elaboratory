@@ -24,9 +24,8 @@ import org.apache.log4j.Logger;
  * The servlet gets updated information from CheckAvailabilityServlet through AJAX
  * @author Vitiv
  */
-public class CinemaHallServlet extends HttpServlet {
+public class CinemaHallServlet extends HttpServlet implements CinemaHall{
 	private static final long serialVersionUID = 1L;
-	private final int SEATS_IN_ROW = 12;
 	private String sessionToken;
 	private MovieSessionDAO msDao;
 	private Logger logger = null;

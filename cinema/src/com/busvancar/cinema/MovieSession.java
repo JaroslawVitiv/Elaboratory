@@ -64,6 +64,7 @@ public class MovieSession {
 	public String getMovieDescriptionEn() {
 		return movieDescriptionEn;
 	}
+	
 	public void setMovieDescriptionEn(String movieDescriptionEn) {
 		this.movieDescriptionEn = movieDescriptionEn;
 	}
@@ -84,12 +85,9 @@ public class MovieSession {
 		this.movieDuration =  movieDuration;
 	}
 	
-	
-	
 	public int getAvailableSeats() {
 		return availableSeats;
 	}
-	
 	
 	public void setAvailableSeats(int availableSeats) {
 		this.availableSeats = availableSeats;		

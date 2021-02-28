@@ -40,11 +40,6 @@ public class MovieDAOTest {
 	  @Mock private boolean updated;
 	  @Mock private List<Movie> mList;
 
-
-
-
-
-	  
 	 
 	@Before
     public void setup() {

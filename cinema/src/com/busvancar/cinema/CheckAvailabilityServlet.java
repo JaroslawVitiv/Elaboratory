@@ -27,9 +27,8 @@ import org.apache.log4j.Logger;
  * which later is passed through AJAX to CinemaHallServlet
  * @author Vitiv
  */
-public class CheckAvailabilityServlet extends HttpServlet {
+public class CheckAvailabilityServlet extends HttpServlet implements CinemaHall{
 	private static final long serialVersionUID = 1L;
-	private final int SEATS_IN_ROW = 12;
 	private String sessionToken;
 	private int userId = 0;
 	public String message = "";

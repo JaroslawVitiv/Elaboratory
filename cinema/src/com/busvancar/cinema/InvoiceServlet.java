@@ -22,9 +22,8 @@ import org.apache.log4j.Logger;
  * creates a list of unpaid ticket sent to users interface through AJAX
  * @author Vitiv
  */
-public class InvoiceServlet extends HttpServlet {
+public class InvoiceServlet extends HttpServlet implements CinemaHall {
 	private static final long serialVersionUID = 1L;
-	private final int SEAT_IN_ROW = 12;
 	  
     /**
      * @see HttpServlet#HttpServlet()
@@ -62,7 +61,7 @@ public class InvoiceServlet extends HttpServlet {
 					+ "  	<div style=\" border: 1px solid grey;  border-radius: 5px;\"> "
 					+ "  		<div>"+movieTitle+": <b>"+t.getMovieTitle()+"</b> |  "+priceTr+": <b>"+t.getPrice()+"</b> $$</div>"
 					+ "  		<div> "+datetime+" <b>"+String.format("%te.%1$tm.%1$tY (%1$TH:%1$TM)", t.getMovieSessionTime())+"</b> | "+duration+": <b>"+t.getMovieDuration()+"</b> "+mins+"</div>"
-					+ "  		<div> "+row+": <b>"+(((t.getSeat()-((t.getSeat()-1) % SEAT_IN_ROW))/SEAT_IN_ROW)+1)+"</b> | "+seat+": <b><c:out value=\"${ticket.seat}\"/></b></div>"
+					+ "  		<div> "+row+": <b>"+(((t.getSeat()-((t.getSeat()-1) % SEATS_IN_ROW))/SEATS_IN_ROW)+1)+"</b> | "+seat+": <b><c:out value=\"${ticket.seat}\"/></b></div>"
 					+ "  		<div style=\"text-align: right; padding:10px;\"><p><button onclick=\"removeTicket("+t.getTicketId()+")\" class=\"btn btn-danger btn-sm\" >x</button></p></div>"
 					+ "  	</div>"
 					+ "</div>");

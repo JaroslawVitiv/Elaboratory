@@ -22,9 +22,8 @@ import org.apache.log4j.Logger;
  * manages administration board
  * @author Vitiv
  */
-public class AdminServlet extends HttpServlet {
+public class AdminServlet extends HttpServlet implements CinemaHall{
 	private static final long serialVersionUID = 1L;
-	private static final int SEATS = 96;
 	private Logger logger = null;
 	
 	public void init() {
