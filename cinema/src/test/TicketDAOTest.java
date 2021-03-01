@@ -64,10 +64,6 @@ public class TicketDAOTest {
     @Test
 	public void isCreated() {
     	tDao =  Mockito.mock(TicketDAO.class);
-    	ticket = Mockito.mock(Ticket.class);
-    	ticket.setSessionId(5);
-    	ticket.setSeat(96);
-    	
     	Mockito.when(tDao.isCreated(ticket)).thenReturn(created);
 		Assert.assertTrue(created);
  	}

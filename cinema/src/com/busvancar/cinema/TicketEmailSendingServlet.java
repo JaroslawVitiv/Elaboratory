@@ -41,6 +41,7 @@ public class TicketEmailSendingServlet extends HttpServlet {
     }
 
 	/**
+	 * @throws MessagingException 
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void processData(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -85,21 +86,10 @@ public class TicketEmailSendingServlet extends HttpServlet {
 		final String username = "jaroslaw.vitiv@gmail.com";
         final String password = "jaars200219815x6q8Z3jvitiv";
         
-		  String host = "smtp.gmail.com";
-	 
-	      // Get system properties
-	      Properties properties = System.getProperties();
-	 
-	      
-	      properties.put("mail.smtp.host", host);
-	      properties.put("mail.smtp.auth", "true");
-	      properties.put("mail.smtp.port", "465");
-	      properties.put("mail.smtp.socketFactory.port", "465");
-	      properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-	      properties.put("mail.smtp.socketFactory.fallback", "false");
+		  
 
 	     // Get the default Session object.
-	      Session mailSession = Session.getInstance(properties,
+	     Session mailSession = Session.getInstance(getProperties(),
 	                new javax.mail.Authenticator() {
 	                    protected PasswordAuthentication getPasswordAuthentication() {
 	                        return new PasswordAuthentication(username, password);
@@ -110,29 +100,53 @@ public class TicketEmailSendingServlet extends HttpServlet {
 	      
 	      response.setContentType("text/html");
 
-	      try {
-	    	  
-	    	  Message message = new MimeMessage(mailSession);
-	            message.setFrom(new InternetAddress("jaroslaw.vitiv@gmail.com"));
-	          
-	            message.setRecipients(
-	                    Message.RecipientType.TO,
-	                    InternetAddress.parse(user.getEmail())
-	            );
-	            message.setSubject("VitivCinema");
-	            message.setContent(sb.toString(), "text/html;charset=UTF-8");
-	            Transport.send(message);
-
-	            System.out.println("Done");
-	    	  
-	    	
-	      } catch (MessagingException mex) {
-	         logger.warn(mex);
+	      if(getMessage(mailSession, user, sb.toString()) != null) {
+	    	  Message message = getMessage(mailSession, user, sb.toString());
+	    	 try {
+				Transport.send(message);
+			} catch (MessagingException e) {
+				e.printStackTrace();
+			}
 	      }
-	     
+	    	
 	}
 	
 	
+
+	public Message getMessage(Session mailSession, User user, String text) {
+ 	    Message message = new MimeMessage(mailSession);
+		try { 
+	        
+			 message.setFrom(new InternetAddress("jaroslaw.vitiv@gmail.com"));
+			 message.setRecipients(
+	                 Message.RecipientType.TO,
+	                 InternetAddress.parse(user.getEmail())
+	         );
+	         message.setSubject("VitivCinema");
+	         message.setContent(text, "text/html;charset=UTF-8");
+	         
+	
+	         System.out.println("Done");
+		} catch (MessagingException mex) {
+			logger.warn(mex);
+		}
+        return message;	
+	}
+
+	public Properties getProperties() {
+		String host = "smtp.gmail.com";
+		
+		Properties properties = System.getProperties();
+	 
+	    properties.put("mail.smtp.host", host);
+	    properties.put("mail.smtp.auth", "true");
+	    properties.put("mail.smtp.port", "465");
+	    properties.put("mail.smtp.socketFactory.port", "465");
+	    properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+	    properties.put("mail.smtp.socketFactory.fallback", "false");
+	      
+		return properties;
+	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		processData(request, response);

@@ -122,7 +122,6 @@ public class AddmovieServlet extends HttpServlet {
                         String fileName = new File(item.getName()).getName();
                         String filePath = uploadPath + File.separator + fileName;
                         File storeFile = new File(filePath);
-                        
                         extension = fileName.split("\\.")[1];
                         if(extension.equals("jpg") || extension.equals("jpeg") || extension.equals("png") || extension.equals("gif")) {
 	                        movie.setPoster(fileName);
@@ -181,7 +180,6 @@ public class AddmovieServlet extends HttpServlet {
             request.setAttribute("message", "Error: " + ex.getMessage());
             logger.warn(ex);
         }
-        
         // redirects client to message page
         getServletContext().getRequestDispatcher("/administration").forward(request, response);
     }
