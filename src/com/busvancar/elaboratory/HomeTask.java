@@ -26,7 +26,7 @@ public class HomeTask extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served www vit at: ").append(request.getContextPath());
+		response.getWriter().append("Served www viat at: ").append(request.getContextPath());
 	}
 
 	/**
