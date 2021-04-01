@@ -47,11 +47,11 @@ public class HomeTask {
         	collectionBean.printDrinks();
 
         ApplicationContext factory5 = new AnnotationConfigApplicationContext(Task4.class);
-		      Bar newBean = factory5.getBean(Bar.class);
-		      newBean.serve();
+		   Bar newBean = factory5.getBean(Bar.class);
+		   newBean.serve();
 
 		      
-		  ApplicationContext factory6 = new AnnotationConfigApplicationContext(Task1.class, Task2.class, Task3.class, Task4.class);
+		ApplicationContext factory6 = new AnnotationConfigApplicationContext(Task1.class, Task2.class, Task3.class, Task4.class);
 	      for (String beanName : factory6.getBeanDefinitionNames()) {
 	          System.out.println(beanName);
 	      }
