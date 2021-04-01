@@ -51,9 +51,9 @@ public class HomeTask {
 		      newBean.serve();
 
 		      
-		ApplicationContext AllContext = new AnnotationConfigApplicationContext(Task1.class, Task2.class, Task3.class, Task4.class);
-	      for (String beanDefinitionName : AllContext.getBeanDefinitionNames()) {
-	          System.out.println(beanDefinitionName);
+		  ApplicationContext factory6 = new AnnotationConfigApplicationContext(Task1.class, Task2.class, Task3.class, Task4.class);
+	      for (String beanName : factory6.getBeanDefinitionNames()) {
+	          System.out.println(beanName);
 	      }
 	}
 }
