@@ -1,40 +1,59 @@
 package com.busvancar.elaboratory;
 
-import java.io.IOException;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+import beansInterfaces.Bar;
+import beansInterfaces.CollectionBean;
+
+import otherbeans.Andorra;
+import otherbeans.Bhutan;
+import otherbeans.Columbia;
+
+
 
 /**
  * Servlet implementation class HomeTask
  */
-@WebServlet("/HomeTask")
-public class HomeTask extends HttpServlet {
-	private static final long serialVersionUID = 1L;
 
-    /**
-     * Default constructor. 
-     */
-    public HomeTask() {
-        // TODO Auto-generated constructor stub
-    }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served www viat at: ").append(request.getContextPath());
+public class HomeTask {
+	
+	
+	public static void main(String[] args) {
+		ApplicationContext factory1 = new AnnotationConfigApplicationContext(Task1.class);
+		
+		for (String beanName : factory1.getBeanDefinitionNames()) {
+            System.out.println(beanName);
+        }
+		
+		ApplicationContext factory2 = new AnnotationConfigApplicationContext(Task2.class);
+		
+		for (String beanName : factory2.getBeanDefinitionNames()) {
+				System.out.println(beanName);
+        }
+		
+		
+		ApplicationContext factory3 = new AnnotationConfigApplicationContext(Task3.class);
+	      Andorra andorra = factory3.getBean(Andorra.class);
+	      andorra.drinkCoffe();
+	      Bhutan bhutan = factory3.getBean(Bhutan.class);
+	      bhutan.drinkCoffe();
+	      Columbia columbia = factory3.getBean(Columbia.class);
+	      columbia.drinkCoffe();
+
+	    ApplicationContext factory4 = new AnnotationConfigApplicationContext(Task4.class);
+	      	CollectionBean collectionBean = factory4.getBean(CollectionBean.class);
+        	collectionBean.printDrinks();
+
+        ApplicationContext factory5 = new AnnotationConfigApplicationContext(Task4.class);
+		      Bar newBean = factory5.getBean(Bar.class);
+		      newBean.serve();
+
+		      
+		ApplicationContext AllContext = new AnnotationConfigApplicationContext(Task1.class, Task2.class, Task3.class, Task4.class);
+	      for (String beanDefinitionName : AllContext.getBeanDefinitionNames()) {
+	          System.out.println(beanDefinitionName);
+	      }
 	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
-	}
-
 }
