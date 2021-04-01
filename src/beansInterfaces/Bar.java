@@ -8,16 +8,18 @@ import org.springframework.stereotype.Component;
 public class Bar {
     @Autowired
     private Coffee drink;
-    public void serve()
-    {
+   
+    @Autowired
+    @Qualifier("mocca")
+    private Coffee drinkMocca;
+    
+    @Autowired
+    @Qualifier("capuccino")
+    private Coffee drinkCapuccino;
+    
+    public void serve(){
         System.out.println(drink);
         System.out.println(drinkMocca);
         System.out.println(drinkCapuccino);
     }
-    @Autowired
-    @Qualifier("mocca")
-    private Coffee drinkMocca;
-    @Autowired
-    @Qualifier("capuccino")
-    private Coffee drinkCapuccino;
 }

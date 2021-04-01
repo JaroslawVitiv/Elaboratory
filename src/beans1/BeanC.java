@@ -18,7 +18,4 @@ public class BeanC {
 	    public String getOrigin() {
 	        return this.coffeeName + " " + this.countryName;
 	    }
-
-
-   
 }
