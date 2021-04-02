@@ -21,7 +21,6 @@ public class HomeTask {
 	
 	
 	public static void main(String[] args) {
-		/*
 		ApplicationContext factory1 = new AnnotationConfigApplicationContext(Task1.class);
 		
 		for (String beanName : factory1.getBeanDefinitionNames()) {
@@ -46,17 +45,14 @@ public class HomeTask {
 	    ApplicationContext factory4 = new AnnotationConfigApplicationContext(Task4.class);
 	      	CollectionBean collectionBean = factory4.getBean(CollectionBean.class);
         	collectionBean.printDrinks();
-*/
         ApplicationContext factory5 = new AnnotationConfigApplicationContext(Task4.class);
 		   Bar newBean = factory5.getBean(Bar.class);
 		   newBean.serve();
 
-	/*	      
 		ApplicationContext factory6 = new AnnotationConfigApplicationContext(Task1.class, Task2.class, Task3.class, Task4.class);
 	      for (String beanName : factory6.getBeanDefinitionNames()) {
 	          System.out.println(beanName);
 	      }
-	      */
 	}
 	
 }
