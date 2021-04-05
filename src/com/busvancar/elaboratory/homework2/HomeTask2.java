@@ -3,60 +3,46 @@ package com.busvancar.elaboratory.homework2;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import beansInterfaces.Bar;
-import beansInterfaces.CollectionBean;
-
-import otherbeans.Andorra;
-import otherbeans.Bhutan;
-import otherbeans.Columbia;
-
-
-
-/**
- * Servlet implementation class HomeTask
- */
+import sixpojos4homework2.BeanA;
+import sixpojos4homework2.BeanB;
+import sixpojos4homework2.BeanC;
+import sixpojos4homework2.BeanD;
+import sixpojos4homework2.BeanE;
+import sixpojos4homework2.FactoryPostBean;
+import sixpojos4homework2.BeanF;
 
 
 public class HomeTask2 {
 	
-	
-	public static void main(String[] args) {
-		System.out.println("Ooooh");
-		/*
-		ApplicationContext factory1 = new AnnotationConfigApplicationContext(Task1.class);
-		
-		for (String beanName : factory1.getBeanDefinitionNames()) {
-            System.out.println(beanName);
-        }
-		
-		ApplicationContext factory2 = new AnnotationConfigApplicationContext(Task2.class);
-		
-		for (String beanName : factory2.getBeanDefinitionNames()) {
-				System.out.println(beanName);
-        }
-		
-		
-		ApplicationContext factory3 = new AnnotationConfigApplicationContext(Task3.class);
-	      Andorra andorra = factory3.getBean(Andorra.class);
-	      andorra.drinkCoffe();
-	      Bhutan bhutan = factory3.getBean(Bhutan.class);
-	      bhutan.drinkCoffe();
-	      Columbia columbia = factory3.getBean(Columbia.class);
-	      columbia.drinkCoffe();
+	private static ApplicationContext ctxt;
 
-	    ApplicationContext factory4 = new AnnotationConfigApplicationContext(Task4.class);
-	      	CollectionBean collectionBean = factory4.getBean(CollectionBean.class);
-        	collectionBean.printDrinks();
+	public static void main(String[] args)  {
+		
+		ctxt = new AnnotationConfigApplicationContext(Config1.class);
+		
+		BeanB bb = ctxt.getBean(BeanB.class);
+		BeanC bc = ctxt.getBean(BeanC.class);
+		BeanD bd = ctxt.getBean(BeanD.class);
+		
+		BeanA ba = ctxt.getBean(BeanA.class);
+		BeanE be = ctxt.getBean(BeanE.class);
+		BeanF bf = ctxt.getBean(BeanF.class);
+		
+		
+		FactoryPostBean fpb = ctxt.getBean(FactoryPostBean.class);
+		System.out.println("FactoryPostBean name: "+fpb.getName()+" --> FactoryPostBean value: "+fpb.getValue()); 
 
-        ApplicationContext factory5 = new AnnotationConfigApplicationContext(Task4.class);
-		   Bar newBean = factory5.getBean(Bar.class);
-		   newBean.serve();
+		System.out.println("Name: "+bb.getName()+" --> Value: "+bb.getValue()); 
+		System.out.println("Name: "+bc.getName()+" --> Value: "+bc.getValue());  
+		System.out.println("Name: "+bd.getName()+" --> Value: "+bd.getValue());  
+		
+		System.out.println("Name: "+ba.getName()+" --> Value: "+ba.getValue()); 
+		System.out.println("Name: "+be.getName()+" --> Value: "+be.getValue());  
+		System.out.println("Name: "+bf.getName()+" --> Value: "+bf.getValue());  
 
-		      
-		ApplicationContext factory6 = new AnnotationConfigApplicationContext(Task1.class, Task2.class, Task3.class, Task4.class);
-	      for (String beanName : factory6.getBeanDefinitionNames()) {
-	          System.out.println(beanName);
-	      }
-	      */
+		System.out.println(" ----------- ");    
+		for (String beanName : ctxt.getBeanDefinitionNames()) {
+	       System.out.println(beanName);
+	    }
 	}
 }

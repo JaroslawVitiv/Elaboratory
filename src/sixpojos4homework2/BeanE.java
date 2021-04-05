@@ -1,13 +1,11 @@
 package sixpojos4homework2;
 
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.DisposableBean;
-
 import org.springframework.stereotype.Component;
-
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 
 @Component
-public class BeanA implements InitializingBean, DisposableBean{
+public class BeanE {
 	
 	private String name;
 	private int value;
@@ -28,21 +26,23 @@ public class BeanA implements InitializingBean, DisposableBean{
 		this.value = value;
 	}
 
-	public BeanA() {}
+	public BeanE() {}
 	
 	@Override
 	public String toString() {
-		return "BeanA from HomeWork2";
+		return "BeanE from HomeWork2";
 	}
 	
-
-	@Override
+	@PostConstruct
+	public void init() throws Exception {
+        System.out.println("Initialization of BeanE");
+	}
+	
+	@PreDestroy
 	public void destroy() throws Exception {
-        System.out.println("Destroying BeanA");		
+        System.out.println("Destroying BeanE");		
 	}
 
-	@Override
-	public void afterPropertiesSet() throws Exception {
-        System.out.println("Initialization of BeanA");
-	}
+	
+
 }

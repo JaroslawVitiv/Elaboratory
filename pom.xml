@@ -73,6 +73,12 @@
 		    <version>5.2.13.RELEASE</version>
 		</dependency>
 
+<!-- https://mvnrepository.com/artifact/javax.annotation/javax.annotation-api -->
+<dependency>
+    <groupId>javax.annotation</groupId>
+    <artifactId>javax.annotation-api</artifactId>
+    <version>1.2-b04</version>
+</dependency>
      
   </dependencies>
 </project>
