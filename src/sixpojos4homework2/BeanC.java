@@ -43,4 +43,5 @@ public class BeanC {
 	public void close() {
         System.out.println("Destroying BeanC");
     }
+	
 }

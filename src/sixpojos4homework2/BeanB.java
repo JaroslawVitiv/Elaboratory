@@ -47,4 +47,5 @@ public class BeanB {
 	     System.out.println("Calling anotherInitMethod in BeanB...");
 	}
 
+	
 }

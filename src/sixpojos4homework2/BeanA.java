@@ -15,7 +15,7 @@ public class BeanA implements InitializingBean, DisposableBean{
 	public String getName() {
 		return name;
 	}
-
+	
 	public void setName(String name) {
 		this.name = name;
 	}

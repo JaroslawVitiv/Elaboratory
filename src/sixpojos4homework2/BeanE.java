@@ -43,6 +43,4 @@ public class BeanE {
         System.out.println("Destroying BeanE");		
 	}
 
-	
-
 }

@@ -44,5 +44,6 @@ public class HomeTask2 {
 		for (String beanName : ctxt.getBeanDefinitionNames()) {
 	       System.out.println(beanName);
 	    }
+		
 	}
 }

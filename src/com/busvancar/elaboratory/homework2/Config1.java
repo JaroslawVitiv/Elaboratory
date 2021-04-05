@@ -35,8 +35,6 @@ public class Config1 {
 		return new BeanD();
 	}
 	
-
-	
 	@Bean
     public static FactoryPostBean factoryPostBean() {
         return new FactoryPostBean();

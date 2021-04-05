@@ -33,5 +33,4 @@ public class BeanF {
 	public String toString() {
 		return "BeanF from HomeWork2";
 	}
-
 }
